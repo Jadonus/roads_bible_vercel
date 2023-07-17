@@ -1,0 +1,208 @@
+
+{% extends 'base.html' %}
+
+{% block content %}
+
+<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
+  </script>
+<div class="text-center card mx-auto p-1 " style="width:80vw; background-color: #343A40; border-color:  #343A40; font-size: 24px">
+<div class="card-body">
+<p id="sentence">For we all have sinned and are in need of the glory of God. Romans 3:23</p>
+<p id="sentence2">For sin’s meager wages is death,  but God’s lavish gift is life eternal, found in your union with our Lord Jesus, the Anointed One. Romans 6:23</p>
+<p id="sentence3">But Christ proved God’s passionate love for us by dying in our place while we were still lost and ungodly! Romans 5:8</p>
+<p id="sentence4">And what is God’s “living message”? It is the revelation of faith for salvation,  which is the message that we preach. For if you publicly declare with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will experience salvation.  Romans 10:9</p>
+
+<p id="sentence5">The heart that believes in him receives the gift of the righteousness of God—and then the mouth confesses, resulting in salvation.  Romans 10:10</p>
+</div>
+</div>
+<div class="mx-auto text-center p-5">
+<button id="incrementButton" class="btn btn-primary">Hide</button>
+<button id="finishButton" class="btn btn-primary">Finish</button>
+
+<button id="nextButton" class="btn btn-primary">Next</button>
+
+</div>
+<div class="progress-container">
+<div class="progress">
+  <div id="progressBar" class="progress-bar lrm-5" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+</div>
+</div>
+<style>
+nav{
+  margin:0;
+}
+.hide-word {
+         
+        color: transparent;
+        text-shadow: 0 0 13px #000;
+}
+  html,
+  body {
+    height: 15vh;
+    overflowX: hidden;
+  }
+
+  body {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    
+    overflow-x: hidden;
+  }
+hr.rounded {
+  border-top: 8px solid #bbb;
+  border-radius: 5px;
+}
+.progress-container {
+  padding: 0 15vw; /* Adjust the padding as needed */
+  max-width: 600vw; /* Set a maximum width for the progress bar container */
+  margin: 0 auto; /* Center the container on the screen */
+}
+</style>
+<script>
+
+var sentences = document.querySelectorAll("p[id^='sentence']");
+var currentSentenceIndex = 0;
+var hiddenWordIndices = [];
+var hideButton = document.getElementById("incrementButton"); // Get the hide button element
+var nextButton = document.getElementById("nextButton"); // Get the next button element
+var finishButton = document.getElementById("finishButton"); // Get the finish button element
+var progressBar = document.getElementById("progressBar"); // Get the progress bar element
+
+hideButton.addEventListener('click', function () {
+  hideRandomWords(3);
+}, true);
+
+nextButton.addEventListener('click', function () {
+  moveToNextSentence();
+}, true);
+
+var finishButtonClicks = 0; // Variable to track the number of finish button clicks
+
+finishButton.addEventListener('click', function () {
+  finishButtonClicks++;
+  if (finishButtonClicks === 1) {
+    hideAllWords();
+  } else if (finishButtonClicks === 2) {
+    revealAllWords();
+    finishButtonClicks = 0; // Reset the click counter
+  }
+}, true);
+
+function hideRandomWords(numWords) {
+  var currentSentence = sentences[currentSentenceIndex];
+  var sentenceText = currentSentence.textContent;
+
+  var words = sentenceText.split(" ");
+
+  var visibleWordIndices = words
+    .map(function (_, index) {
+      return index;
+    })
+    .filter(function (index) {
+      return hiddenWordIndices.indexOf(index) === -1;
+    });
+
+  if (visibleWordIndices.length === 0) {
+    console.log("No visible words left to hide.");
+    hideButton.disabled = true; // Disable the hide button if there are no visible words
+    return;
+  }
+
+  // Adjust numWords to ensure it doesn't exceed the number of visible words
+  numWords = Math.min(numWords, visibleWordIndices.length);
+
+  var randomIndices = [];
+  while (randomIndices.length < numWords && visibleWordIndices.length > 0) {
+    var randomIndex = Math.floor(Math.random() * visibleWordIndices.length);
+    var randomVisibleIndex = visibleWordIndices[randomIndex];
+    randomIndices.push(randomVisibleIndex);
+    visibleWordIndices.splice(randomIndex, 1);
+  }
+
+  hiddenWordIndices = hiddenWordIndices.concat(randomIndices);
+
+  for (var i = 0; i < words.length; i++) {
+    if (hiddenWordIndices.indexOf(i) !== -1) {
+      words[i] = '<span class="hide-word">' + words[i] + "</span>";
+    }
+  }
+
+  currentSentence.innerHTML = words.join(" ");
+
+  console.log("Total Hidden Words in Sentence " + (currentSentenceIndex + 1) + ": " + hiddenWordIndices.length);
+
+  if (hiddenWordIndices.length === words.length) {
+    hideButton.disabled = true;
+  }
+}
+
+function hideAllWords() {
+  var currentSentence = sentences[currentSentenceIndex];
+  var words = currentSentence.textContent.split(" ");
+
+  hiddenWordIndices = [];
+  for (var i = 0; i < words.length; i++) {
+    hiddenWordIndices.push(i);
+    words[i] = '<span class="hide-word">' + words[i] + "</span>";
+  }
+
+  currentSentence.innerHTML = words.join(" ");
+  hideButton.disabled = true;
+}
+
+function revealAllWords() {
+  var currentSentence = sentences[currentSentenceIndex];
+  var words = currentSentence.getElementsByTagName("span");
+
+  for (var i = 0; i < words.length; i++) {
+    words[i].classList.remove("hide-word");
+  }
+
+  hideButton.disabled = false;
+}
+
+function moveToNextSentence() {
+  currentSentenceIndex++;
+
+  if (currentSentenceIndex >= sentences.length) {
+    console.log("You have finished all the sentences.");
+    hideButton.disabled = true;
+    nextButton.disabled = true;
+    swal({
+  title: "Good job!",
+  text: "You Finished this road!",
+  icon: "success",
+});
+    finishButton.disabled = true;
+    return;
+  }
+   
+
+  // Reset hiddenWordIndices array and enable the buttons
+  hiddenWordIndices = [];
+  hideButton.disabled = false;
+  nextButton.disabled = false;
+  finishButton.disabled = false;
+
+  // Hide the current sentence
+  var currentSentence = sentences[currentSentenceIndex - 1];
+  currentSentence.style.display = "none";
+
+  // Show the next sentence
+  var nextSentence = sentences[currentSentenceIndex];
+  nextSentence.style.display = "block";
+
+  // Update the progress bar
+  var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
+  progressBar.style.width = progressWidth + "%";
+  progressBar.setAttribute("aria-valuenow", progressWidth);
+}
+  
+
+// Hide all sentences except the first one
+for (var i = 1; i < sentences.length; i++) {
+  sentences[i].style.display = "none";
+}</script>
+{% endblock %}

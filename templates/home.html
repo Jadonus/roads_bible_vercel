@@ -1,0 +1,86 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Tangerine">
+<body class="text-center">
+<div class="container pt-5">
+<img class="mb-4" src="https://i.postimg.cc/SxpphzRp/road.png" alt="" width="250" height="250">
+<h1 class="display-2 animate__animated animate__fadeInUp" id="heading">Roads</h1>
+<p class="animate__animated animate__fadeIn" id="label">Bible memory verses for the modern user<p>
+    {% if user.is_authenticated %}
+  <a class="animate__animated animate__fadeInUp btn btn-primary" href="{% url 'dashboard' %}">Dashboard</a>
+  <a class="animate__animated animate__fadeInUp btn btn-primary" href="{% url 'logout' %}">Logout</a>
+{% else %}
+  
+  <a class="animate__animated animate__fadeInUp btn btn-primary col-sm-1.5" href="{% url 'login' %}">Log In</a>
+  <a class="animate__animated animate__fadeInUp btn btn-primary col-sm-1.5" href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+</div>
+<div class="about-section mt-5">
+
+ <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="card mt-5" data-aos="zoom-in-right" data-aos-duration="400">
+                    <img class="card-img-top" src="" alt="">
+  
+                    <div class="card-body">
+              <h4 class="card-title">No distractions!</h4>
+                        <p class="card-text">
+                          Roads is designed to eliminate destractions and help you memorize Bible verses. 
+                        </p>
+  
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="card mt-5" data-aos="zoom-in-left" data-aos-duration="400">
+                    <img class="card-img-top" src="" alt="">
+  
+                    <div class="card-body">
+                        <h5 class="card-title">Pre Selected verses</h5>
+                        <p class="card-text">
+                The verses are preselected and categorized into various "roads", these help you stay on track by giving you an exact verse to memorize, Instead of making you hunt for the right verse to practice.
+                                                    </p>
+                          
+                    </div>
+                </div>
+            </div>
+<div class="col-lg-4 mb-4">
+                <div class="card mt-5" data-aos="zoom-in-left" data-aos-duration="400">
+                    <img class="card-img-top" src="" alt="">
+  
+                    <div class="card-body">
+                        <h5 class="card-title">Easy to use</h5>
+                        <p class="card-text">
+              Roads it easy to use. 
+                                                    </p>
+                          
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div></div>
+<style>
+
+html {
+    font-size: 24px;
+   
+} 
+  </style>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+  AOS.init();
+</script>
+{% endblock %}

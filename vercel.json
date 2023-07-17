@@ -1,0 +1,14 @@
+{
+    "builds": [
+      {
+        "src": "road_bible/wsgi.py",
+        "use": "@vercel/python"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "road_bible/wsgi.py"
+      }
+    ]
+}

@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block content %}
+ <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
+  </script>
+<!-- Image and text -->
+</nav><h2 class="text-center display-4">Hello {{user.username}}, Start memorizing bible verses</h2>
+<div class=" text-center container-fluid  p-5 ">
+
+<hr class="rounded">
+<h1>Verse of The day</h1>
+<p id="sentence" class="lead">The earth is the Lord’s, and everything in it,
+    the world, and all who live in it;
+ for he founded it on the seas
+    and established it on the waters.</p>
+
+<button id="incrementButton" class="btn btn-primary">Hide</button>
+<button id="finishButton" class="btn btn-primary">Finish</button>
+</div>
+<div class="container p-5 mx-auto">
+   <h1 data-aos="zoom-in" class="p-5 text-center  ">Find the perfect road for you <br> <br> <br></h1>
+   <h1 class="animate__animated animate__shakeY text-center animate__infinite animate__slower animate__delay-5s"><i class="bi bi-arrow-bar-down"></i></h1>
+<div data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+  <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">The Romans Road</h5>
+    <p class="card-text">The Romans Road is a short collection of verses in the book of Romans that explain the basics of salvation. </p>
+    
+  <a class=" btn btn-primary" href="{% url 'romans' %}">Start memorizing</a>
+  </div>
+</div>
+<div data-aos="fade-left" class="card mx-auto m-5" style="width: 18rem;">
+  <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Another random road</h5>
+       <p class="card-text"> This is my wonderful road yay. </p>
+    
+  <a class=" btn btn-primary" href="{% url 'romans' %}">Start memorizing</a>
+  </div>
+</div>
+</div>
+<style>
+html {
+
+}
+nav{
+  margin:0;
+}
+.hide-word {
+         
+        color: transparent;
+        text-shadow: 0 0 13px #000;
+}
+
+  body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+    
+     
+  }
+
+hr.rounded {
+  border-top: 8px solid #bbb;
+  border-radius: 5px;
+}
+</style>
+<script>
+
+var hiddenWordIndices = [];
+
+function hideRandomWords(numWords) {
+  var sentence = document.getElementById("sentence");
+
+  var sentenceText = sentence.textContent;
+
+  var words = sentenceText.split(" ");
+
+  var visibleWordIndices = words
+    .map(function (_, index) {
+      return index;
+    })
+    .filter(function (index) {
+      return hiddenWordIndices.indexOf(index) === -1;
+    });
+
+  if (visibleWordIndices.length === 0) {
+    console.log("No visible words left to hide.");
+    return;
+  }
+
+  var randomIndices = [];
+  while (randomIndices.length < numWords && visibleWordIndices.length > 0) {
+    var randomIndex = Math.floor(Math.random() * visibleWordIndices.length);
+    var randomVisibleIndex = visibleWordIndices[randomIndex];
+    randomIndices.push(randomVisibleIndex);
+    visibleWordIndices.splice(randomIndex, 1);
+  }
+
+  hiddenWordIndices = hiddenWordIndices.concat(randomIndices);
+
+  for (var i = 0; i < words.length; i++) {
+    if (hiddenWordIndices.indexOf(i) !== -1) {
+      words[i] = '<span class="hide-word">' + words[i] + "</span>";
+    }
+  }
+  sentence.innerHTML = words.join(" ");
+
+  console.log("Total Hidden Words: " + hiddenWordIndices.length);
+
+  if (hiddenWordIndices.length === words.length) {
+    var button = document.getElementById("incrementButton");
+  }
+}
+
+function handleButtonClick() {
+  hideRandomWords(3);
+}
+
+var button = document.getElementById("incrementButton");
+button.addEventListener("click", handleButtonClick);
+
+function handleFinishButtonClick() {
+  hideRandomWords(Number.MAX_SAFE_INTEGER);
+}
+
+var finishButton = document.getElementById("finishButton");
+var clickCounter=0;
+var isHidden=false;
+
+var hiddenWordIndices = [];
+finishButton.addEventListener('click', function () {
+ if (!isHidden) {
+    hideRandomWords(Number.MAX_SAFE_INTEGER);
+    isHidden = true;
+    hideButton.disabled = true;
+  } else {
+   swal({
+  title: "Are you sure?",
+  text: "You are about to unhide all the words. Are you sure you want to do this?",
+  icon: "info",
+  buttons: ["Cancel", "Yes"],
+  closeOnClickOutside: false,
+}).then(function (result) {
+  if (result) {
+    revealHiddenWords();
+    hiddenWordIndices = []; // Clear the index cache
+    isHidden = false;
+    hideButton.disabled = false;
+  }
+});
+
+    
+  }
+}, true);
+function revealHiddenWords() {
+  var sentence = document.getElementById("sentence");
+  var words = sentence.getElementsByTagName("span");
+  
+  for (var i = 0; i < words.length; i++) {
+    words[i].classList.remove("hide-word");
+  }
+}
+
+</script>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init();
+  </script>
+</body>
+{% endblock %}
