@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-&x$2rzcqf5w_jkx(zzz+u=99$(f^l^l*hw7f^wgi5cajc$92jp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.200.185"]
+ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app"]
 
 
 # Application definition
@@ -122,7 +122,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static', 'admin')
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = "home"
+LOGIN_REDIRECT_URL = "/dashboard"
 
 LOGOUT_REDIRECT_URL = "home"
 
