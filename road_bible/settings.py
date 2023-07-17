@@ -76,11 +76,15 @@ WSGI_APPLICATION = 'road_bible.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'URL': 'postgresql://postgres:v6GPdLniITwWPQBcT4rr@containers-us-west-101.railway.app:7763/railway',
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'v6GPdLniITwWPQBcT4rr',
+        'HOST': 'containers-us-west-101.railway.app',
+        'PORT': 7763,
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
