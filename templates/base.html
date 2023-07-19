@@ -19,11 +19,14 @@
   {% block content %}
 
   {% endblock %}
-<div id="pwa-installation-popup" style="display: none;">
-  <p>Install this as a web app! If on Safari, Press the share button, then press add to home screen.</p>
-  <button id="close-button">Close</button>
-</div>
-<style>
+<div class="toast align-items-center" id="pwa-installation-popup" role="alert" aria-live="assertive" aria-atomic="true" style="display::none">
+  <div class="d-flex">
+    <div class="toast-body">
+   Install Roads as a web app! If on Safari, press the share button, then press add to home screen. 
+   </div>
+    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+  </div>
+</div><style>
 html {
  overflow-y: visible;
 overflow-x: clip;
@@ -46,12 +49,10 @@ overflow-x: clip;
 
   function showInstallPopup() {
     const popup = document.getElementById('pwa-installation-popup');
-    const closeButton = document.getElementById('close-button');
 
     // Show the popup
     popup.style.display = 'block';
 
-    installButton.addEventListener('click', () => {
       // Logic to prompt the user to install the PWA
       // You can use the 'beforeinstallprompt' event for this, but remember it only works once per user gesture
       // To keep this example simple, we're not implementing the installation logic here.
@@ -60,9 +61,6 @@ overflow-x: clip;
       popup.style.display = 'none';
     });
 
-    closeButton.addEventListener('click', () => {
-      // Close the popup when the user clicks 'Close'
-      popup.style.display = 'none';
     });
   }
 
