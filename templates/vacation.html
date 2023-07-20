@@ -7,23 +7,28 @@
 <script src=
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
 </script>
-
-<a class="pt-5 link-text display-5" style="color: #adb5b1" href ="{% url "dashboard" %}"><i class="bi bi-arrow-left "></i></a>
+<nav class="navbar navbar-expand-sm">
+  <div class="container-fluid">
+    <a class=" link-text display-5" style="color: #adb5b1" href ="{% url "dashboard" %}"><i class="bi bi-caret-left-fill "></i></a>
+  
+    <span class="navbar-text"><i class="bi bi-book-fill display-6" style="color: #adb5b1"></i></span>
+  </div>
+</nav>
 <div class="text-center card mx-auto p-1 " style="width:80vw; background-color: #343A40; border-color:  #343A40; font-size: 24px">
 <div class="card-body">
 <p id="sentence">Give thanks to the lord For he is good; His love endures forever. 1 Chronicles 16:34</p>
 <p id="sentence2">Trust in the Lord with all your heart. Proverbs 3:5</p>
-<p id="sentence3">But the fruit of the spirit is Love, Joy, Peace, Patience, Gentleness and Self-Control. Galatians 5:22-23</p>
+<p id="sentence3">But the fruit of the spirit is Love, Joy, Peace, Patience, Kindness, Goodness, Faithfullness, Gentleness and Self-Control. Galatians 5:22-23</p>
 <p id="sentence4">Do not be afraid for I am with you.  Isaiah 43:5</p>
 
 <p id="sentence5">Do unto others as you would have them do unto you. Luke 6:31</p>
 </div>
 </div>
 <div class="mx-auto text-center p-5">
-<button id="incrementButton" class="btn btn-primary">Hide More</button>
-<button id="finishButton" class="btn btn-primary">Finish Verse</button>
+<button id="incrementButton" class="btn btn-primary mb-2">Hide More</button>
+<button id="finishButton" class="btn btn-primary mb-2">Finish Verse</button>
 
-<button id="nextButton" class="btn btn-primary">Next Verse</button>
+<button id="nextButton" class="btn btn-primary mb-2">Next Verse</button>
 
 </div>
 <div class="progress-container">
