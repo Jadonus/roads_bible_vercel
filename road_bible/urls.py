@@ -37,7 +37,7 @@ urlpatterns = [
     path('dashboard/', views.my_view, name='dashboard'),
     path("accounts/", include("django.contrib.auth.urls")),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
-    
+    path("dashboard/Psalm23", TemplateView.as_view(template_name="Psalm23.html"), name="Psalm23"),
     path("dashboard/vacation", TemplateView.as_view(template_name="vacation.html"), name="vacation"),
     path("dashboard/romans", TemplateView.as_view(template_name="romansroad.html"), name="romans"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]

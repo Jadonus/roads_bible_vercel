@@ -28,7 +28,7 @@
    <h1 data-aos="zoom-in" class="p-5 text-center  ">Find the perfect road for you <br> <br> <br></h1>
    <h1 class="animate__animated animate__shakeY text-center animate__infinite animate__slower animate__delay-5s"><i class="bi bi-arrow-bar-down"></i></h1>
 <div data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
-  <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
+     <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">The Romans Road</h5>
     <p class="card-text">The Romans Road is a short collection of verses in the book of Romans that explain the basics of salvation. </p>
@@ -43,6 +43,15 @@
        <p class="card-text"> Temporary road for vacation.</p>
     
   <a class=" btn btn-primary" href="{% url 'vacation' %}">Start memorizing</a>
+  </div>
+</div>
+<div data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+     <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Psalm 23</h5>
+    <p class="card-text">Psalm 23 is one of the most commonly memorized verses. It talks about God being with, and comforting someone wherever they go.</p>
+    
+  <a class=" btn btn-primary" href="{% url 'Psalm23' %}">Start memorizing</a>
   </div>
 </div>
 </div>
@@ -69,6 +78,13 @@ nav{
 hr.rounded {
   border-top: 8px solid #bbb;
   border-radius: 5px;
+}
+.gradient {
+/*
+* Created with https://www.css-gradient.com
+* Gradient link: https://www.css-gradient.com/?c1=f312a1&c2=95a759&gt=r&gd=dtl
+*/
+      background-image: linear-gradient(to bottom, #ff0000, #00ff00)
 }
 </style>
 <script>
