@@ -177,6 +177,7 @@ function moveToNextSentence() {
     hideButton.disabled = true;
     nextButton.disabled = true;
     swal("You Finished this road!", {
+    title:"Good job!",
     icon:"success",
     buttons: {
     catch: {
@@ -217,7 +218,7 @@ function moveToNextSentence() {
   // Show the next sentence
   var nextSentence = sentences[currentSentenceIndex];
   nextSentence.style.display = "block";
-
+  
   // Update the progress bar
   var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
   progressBar.style.width = progressWidth + "%";
