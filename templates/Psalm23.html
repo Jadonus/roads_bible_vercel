@@ -193,12 +193,30 @@ function moveToNextSentence() {
     console.log("You have finished all the sentences.");
     hideButton.disabled = true;
     nextButton.disabled = true;
-    swal({
-  title: "Good job!",
-  text: "You Finished this road!",
-  icon: "success",
-});
-    finishButton.disabled = true;
+    swal("You Finished this road!", {
+    icon:"success",
+    buttons: {
+    catch: {
+      text: "Back to dashboard",
+      value: "catch",
+    },
+      text : "try again",
+  },
+})
+.then((value) => {
+  switch (value) {
+ 
+    
+ 
+    case "catch":
+      window.location.href = "{% url 'dashboard' %}";
+      break;
+ 
+    default:
+
+    location.reload();
+  }
+});    finishButton.disabled = true;
     return;
   }
    
