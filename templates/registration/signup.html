@@ -6,12 +6,9 @@
   <form class="form-signin" method="post" action="{% url 'signup' %}">
     {% csrf_token %}
     <img class="mb-4" src="https://i.postimg.cc/SxpphzRp/road.png" alt="" width="175" height="175">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign up</h1>
-    <label for="inputUsername" class="sr-only">Username</label>
+    <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
     <input class="form-control" placeholder="Username" required="" autofocus="" type="text" name="username">
-    <label for="id_password1" class="sr-only">Password</label>
     <input id="id_password1" class="form-control" placeholder="Password" required="" type="password" name="password1">
-    <label for="id_password2" class="sr-only">Confirm Password</label>
     <input id="id_password2" class="form-control" placeholder="Confirm Password" type="password" name="password2">
     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign up</button>
 
