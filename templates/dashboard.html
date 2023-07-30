@@ -11,7 +11,7 @@
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
   </script>
 <!-- Image and text -->
-<div class="alert alert-info alert-dismissible fade show" role="alert" id="toast">
+<div class="alert alert-info alert-dismissible fade" role="alert" id="toast">
 
 <i class="bi bi-app-indicator"></i>
    <strong>Install as app.</strong> If you are on safari, press the share button, and then click "Add to home screen"
@@ -94,7 +94,6 @@ hr.rounded {
 <script>
 
 var hiddenWordIndices = [];
-
 function hideRandomWords(numWords) {
   var sentence = document.getElementById("sentence");
 
@@ -135,10 +134,9 @@ function hideRandomWords(numWords) {
   console.log("Total Hidden Words: " + hiddenWordIndices.length);
 
   if (hiddenWordIndices.length === words.length) {
-    var button = document.getElementById("incrementButton");
+    document.getElementById("incrementButton").disabled = true;
   }
 }
-
 function handleButtonClick() {
   hideRandomWords(3);
 }
@@ -151,73 +149,64 @@ function handleFinishButtonClick() {
 }
 
 var finishButton = document.getElementById("finishButton");
-var clickCounter=0;
-var isHidden=false;
+var clickCounter = 0;
+var isHidden = false;
 
-var hiddenWordIndices = [];
+// Remove the extra closing brace on line 287
 finishButton.addEventListener('click', function () {
- if (!isHidden) {
+  if (!isHidden) {
     hideRandomWords(Number.MAX_SAFE_INTEGER);
     isHidden = true;
     hideButton.disabled = true;
   } else {
-   swal({
-  title: "Are you sure?",
-  text: "You are about to unhide all the words. Are you sure you want to do this?",
-  icon: "info",
-  buttons: ["Cancel", "Yes"],
-  closeOnClickOutside: false,
-}).then(function (result) {
-  if (result) {
-    revealHiddenWords();
-    hiddenWordIndices = []; // Clear the index cache
-    isHidden = false;
-    hideButton.disabled = false;
-  }
-});
-
-    
+    swal({
+      title: "Are you sure?",
+      text: "You are about to unhide all the words. Are you sure you want to do this?",
+      icon: "info",
+      buttons: ["Cancel", "Yes"],
+      closeOnClickOutside: false,
+    }).then(function (result) {
+      if (result) {
+        revealHiddenWords();
+        hiddenWordIndices = []; // Clear the index cache
+        isHidden = false;
+        hideButton.disabled = false;
+      }
+    });
   }
 }, true);
-function revealHiddenWords() {
-  var sentence = document.getElementById("sentence");
-  var words = sentence.getElementsByTagName("span");
-  
-  for (var i = 0; i < words.length; i++) {
-    words[i].classList.remove("hide-word");
-  }
+
+function isIOS() {
+  // Get the user agent string.
+  var userAgent = navigator.userAgent;
+
+  // Check if the user agent contains any of the following strings.
+  var isIOS = /iPad|iPhone|iPod/.test(userAgent);
+
+  // Return true if the user is on iOS, false otherwise.
+  return isIOS;
 }
-// Check if the user is on iOS.
-    function isIOS() {
-      // Get the user agent string.
-      var userAgent = navigator.userAgent;
-
-      // Check if the user agent contains any of the following strings.
-      var isIOS = /iPad|iPhone|iPod/.test(userAgent);
-      
-      var isPWA = /PWA/.test(userAgent);
-      // Return true if the user is on iOS, false otherwise.
-      return isIOS;
-      return !isPWA;
-    }
-
-    // Send a notification if the user is on iOS.
-    
-// Check if the conditions are met.
-    function showToast() {
+  function showToast() {
       // Get the toast element.
       var toast = document.getElementById('toast');
 
       // Show the toast.
       toast.classList.add('show');
     }
+function isPWA() {
+  // Get the user agent string.
+  var userAgent = navigator.userAgent;
 
-    // Check if the user is on iOS and send a notification.
-    if (isIOS()) {
-  showToast()
-    }
+  // Check if the user agent contains the "PWA" string.
+  var isPWA = /PWA/.test(userAgent);
 
-</script>
+  // Return true if the user is on a PWA, false otherwise.
+  return isPWA;
+}
+// Check if the user is on iOS and not on the PWA.
+if (isIOS() && !isPWA()) {
+  showToast();
+}</script>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init();
