@@ -29,10 +29,18 @@
 <button id="incrementButton" class="btn btn-primary">Hide</button>
 <button id="finishButton" class="btn btn-primary">Finish</button>
 </div>
-<div class="container p-5 mx-auto">
-   <h1 data-aos="zoom-in" class="p-5 text-center  ">Find the perfect road for you <br> <br> <br></h1>
+
+ <div class="container p-5 mx-auto">
+   <h1 data-aos="zoom-in" class="p-5 text-center  ">Find the perfect road for you</h1>
+<div class="d-flex align-items-center justify-content-center input-group">
+
+     <span class="input-group-text bg-primary" id="basic-addon1"><i class="bi bi-search"></i></span>
+<input class="form-control"type="text" id="searchInput" placeholder="Search...">
+
+  </div>
+<ul style="list-style: none;"class="text-center fs-3" id="searchResults"></ul>
    <h1 class="animate__animated animate__shakeY text-center animate__infinite animate__slower animate__delay-5s"><i class="bi bi-arrow-bar-down"></i></h1>
-<div data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+<div id="romans-road" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
      <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">The Romans Road</h5>
@@ -41,7 +49,7 @@
   <a class=" btn btn-primary" href="{% url 'romans' %}">Start memorizing</a>
   </div>
 </div>
-<div data-aos="fade-left" class="card mx-auto m-5" style="width: 18rem;">
+<div id="vacation-verses" data-aos="fade-left" class="card mx-auto m-5" style="width: 18rem;">
   <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">Vacation verses</h5>
@@ -50,7 +58,7 @@
   <a class=" btn btn-primary" href="{% url 'vacation' %}">Start memorizing</a>
   </div>
 </div>
-<div data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+<div id="Psalm23" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
      <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">Psalm 23</h5>
@@ -92,8 +100,56 @@ hr.rounded {
 }
 </style>
 <script>
+const arrayOfStrings = [
+    "vacation-verses",
+    "romans-road",
+    "Psalm23",
+    
+  ];
 
-var hiddenWordIndices = [];
+  function searchArray() {
+    const searchInput = document.getElementById("searchInput").value.toLowerCase();
+    const searchResults = [];
+
+    for (let i = 0; i < arrayOfStrings.length; i++) {
+      if (arrayOfStrings[i].toLowerCase().includes(searchInput)) {
+        searchResults.push(arrayOfStrings[i]);
+      }
+    }
+
+    const resultContainer = document.getElementById("searchResults");
+    resultContainer.innerHTML = "";
+
+    if (searchResults.length > 0) {
+      for (let i = 0; i < searchResults.length; i++) {
+        const listItem = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = "#" + searchResults[i];
+        link.textContent = searchResults[i];
+        listItem.appendChild(link);
+        resultContainer.appendChild(listItem);
+      }
+    } else {
+      const noResultsItem = document.createElement("li");
+      noResultsItem.textContent = "No results found.";
+      resultContainer.appendChild(noResultsItem);
+    }
+  }
+
+  function activateTopItem() {
+    const topItem = document.querySelector("#searchResults li:first-child a");
+    if (topItem) {
+      window.location.hash = topItem.getAttribute("href");
+    }
+  }
+
+  document.getElementById("searchInput").addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+      activateTopItem();
+    } else {
+      searchArray();
+    }
+  });var hiddenWordIndices = [];
 function hideRandomWords(numWords) {
   var sentence = document.getElementById("sentence");
 
