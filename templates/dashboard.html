@@ -11,7 +11,12 @@
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
   </script>
 <!-- Image and text -->
-</nav><h2 class="text-center display-4">Hello {{user.username}}, Start memorizing bible verses</h2>
+<div class="alert alert-info alert-dismissible fade show" role="alert" id="toast">
+
+<i class="bi bi-app-indicator"></i>
+   <strong>Install as app.</strong> If you are on safari, press the share button, and then click "Add to home screen"
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div></div></nav><h2 class="text-center pt-5 fw-bold display-4">Hello {{user.username}}, Start memorizing bible verses</h2>
 <div class=" text-center container-fluid  p-5 ">
 
 <hr class="rounded">
@@ -69,7 +74,6 @@ nav{
 }
 
   body {
-    padding-top: 60px;
     padding-bottom: 40px;
     
      
@@ -183,6 +187,35 @@ function revealHiddenWords() {
     words[i].classList.remove("hide-word");
   }
 }
+// Check if the user is on iOS.
+    function isIOS() {
+      // Get the user agent string.
+      var userAgent = navigator.userAgent;
+
+      // Check if the user agent contains any of the following strings.
+      var isIOS = /iPad|iPhone|iPod/.test(userAgent);
+      
+      var isPWA = /PWA/.test(userAgent);
+      // Return true if the user is on iOS, false otherwise.
+      return isIOS;
+      return !isPWA;
+    }
+
+    // Send a notification if the user is on iOS.
+    
+// Check if the conditions are met.
+    function showToast() {
+      // Get the toast element.
+      var toast = document.getElementById('toast');
+
+      // Show the toast.
+      toast.classList.add('show');
+    }
+
+    // Check if the user is on iOS and send a notification.
+    if (isIOS()) {
+  showToast()
+    }
 
 </script>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
