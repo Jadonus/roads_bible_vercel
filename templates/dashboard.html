@@ -263,7 +263,7 @@ function isPWA() {
   return isPWA;
 }
 // Check if the user is on iOS and not on the PWA.
-if (isIOS() && !isPWA()) {
+if (!isPWA()) {
   showToast();
 }</script>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
