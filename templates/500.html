@@ -3,9 +3,28 @@
 {% block content %}
 <html>
 <head>
+
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
 {% load static %}
 <body>
-<h1 class="display-3">Whoops!</h1>
-<h4>Thats a 500</h4>
-{% endblock %}
+<div class="d-flex justify-content-md-center align-items-center ">
+<h1 class="text-danger bafs"><i class="ph ph-cloud-x"></i></h1>
+</div>
 
+<div class="d-flex justify-content-md-center align-items-center ">
+<h1 class="display-1">Whoops!</h1>
+</div>
+
+<div class="d-flex justify-content-md-center align-items-center ">
+<h2>Thats a 500. This is not your fault</h2>
+</div>
+<div>
+<div class="d-flex justify-content-md-center align-items-center ">
+<a class=" lead m-4 p-3" href="{% url 'home' %}">Go Home</a>
+
+</div>
+<body>
+<style>
+.bafs {
+font-size: 20em;
+}
