@@ -4,10 +4,9 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-
+{% load static %}
 <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<link rel="icon" type="image/png" href="favicon.png">
 <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 <link
     rel="stylesheet"
@@ -19,7 +18,7 @@
   <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     Roads is still under development, it is not yet a finished product.
   </div><div class="container pt-5">
-<img class="mb-4" src="https://i.postimg.cc/SxpphzRp/road.png" alt="" width="250" height="250">
+  <img class="mb-4" src="{% static 'roads.png' %}" alt="" width="250" height="250">
 <h1 class="display-2 animate__animated animate__fadeInUp" id="heading">Roads</h1>
 <p class="animate__animated animate__fadeIn" id="label">Bible memory verses for the modern user<p>
     {% if user.is_authenticated %}
@@ -41,7 +40,7 @@
           <div class="card-body p-5">
 
             <div class="text-center mb-4 pb-2">
-              <img src="https://i.postimg.cc/ry9F2sc9/lantern.png"
+              <img src="{% static 'images/lantern.png' %}"
                 alt="Bulb" width="100">
             </div>
 

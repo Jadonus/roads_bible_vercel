@@ -2,10 +2,11 @@
 
 {% block content %}
 
+{% load static %}
 <body class="text-center">
   <form class="form-signin" method="post" action="{% url 'signup' %}">
     {% csrf_token %}
-    <img class="mb-4" src="https://i.postimg.cc/SxpphzRp/road.png" alt="" width="175" height="175">
+    <img class="mb-4" src="{% static 'roads.png' %}" alt="" width="175" height="175">
     <h1 class="h3 mb-3 font-weight-normal">Sign up</h1>
     <input class="form-control" placeholder="Username" required="" autofocus="" type="text" name="username">
     <input id="id_password1" class="form-control" placeholder="Password" required="" type="password" name="password1">
