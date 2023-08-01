@@ -1,6 +1,6 @@
 
 Django==4.2.2
-
+whitenoise==6.5.0
 django-pwa==1.1.0
 psycopg2-binary==2.9.6
 virtualenv==20.21.0
