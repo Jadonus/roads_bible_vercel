@@ -1,5 +1,8 @@
 import sys
 import shutil
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
 default='''
 {% extends 'base.html' %}
 
@@ -67,6 +70,75 @@ hr.rounded {
 </style>
 <script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+  var sentences = document.querySelectorAll("p[id^='sentence']");
+  var currentSentenceIndex = 0;
+  var hiddenWordIndices = [];
+  // Other JavaScript code...
+
+  // Function to save the user's progress using AJAX
+  function saveUserProgress() {
+    var currentSentence = sentences[currentSentenceIndex];
+    var sentenceText = currentSentence.textContent;
+    var data = {
+      current_sentence_index: currentSentenceIndex,
+      hidden_word_indices: hiddenWordIndices.join(","),
+    };
+
+    $.ajax({
+      type: "POST",
+      url: "{% url 'save_progress' %}",
+      data: data,
+      dataType: "json",
+      success: function (response) {
+        // Handle success if needed
+        console.log("User progress saved successfully!");
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        // Handle error if needed
+        console.error("Error saving user progress:", errorThrown);
+      }
+    });
+  }
+
+  // Function to retrieve the user's progress using AJAX
+  function loadUserProgress() {
+    $.ajax({
+      type: "GET",
+      url: "{% url 'get_progress' %}",
+      dataType: "json",
+      success: function (data) {
+        if (data) {
+          currentSentenceIndex = data.current_sentence_index;
+          hiddenWordIndices = data.hidden_word_indices.split(",").map(Number);
+
+          // Restore the progress on the page
+          // Update the display and enable/disable buttons as needed
+          // ...
+        }
+      },
+      error: function (xhr, textStatus, errorThrown) {
+        // Handle error if needed
+        console.error("Error loading user progress:", errorThrown);
+      }
+    });
+  }
+
+  // Other JavaScript code...
+
+  // Call this function when the page loads
+  $(document).ready(function() {
+    loadUserProgress();
+  });
+
+  // Call this function when the user makes progress and you want to save it
+  function handleProgressChange() {
+    saveUserProgress();
+    // Update the display and enable/disable buttons as needed
+    // ...
+  }
 var sentences = document.querySelectorAll("p[id^='sentence']");
 var currentSentenceIndex = 0;
 var hiddenWordIndices = [];
@@ -175,12 +247,31 @@ function moveToNextSentence() {
     console.log("You have finished all the sentences.");
     hideButton.disabled = true;
     nextButton.disabled = true;
-    swal({
-  title: "Good job!",
-  text: "You Finished this road!",
-  icon: "success",
-});
-    finishButton.disabled = true;
+    swal("You Finished this road!", {
+    title:"Good job!",
+    icon:"success",
+    buttons: {
+    catch: {
+      text: "Back to dashboard",
+      value: "catch",
+    },
+      text : "try again",
+  },
+})
+.then((value) => {
+  switch (value) {
+ 
+    
+ 
+    case "catch":
+      window.location.href = "{% url 'dashboard' %}";
+      break;
+ 
+    default:
+
+    location.reload();
+  }
+});    finishButton.disabled = true;
     return;
   }
    
@@ -198,7 +289,7 @@ function moveToNextSentence() {
   // Show the next sentence
   var nextSentence = sentences[currentSentenceIndex];
   nextSentence.style.display = "block";
-
+  
   // Update the progress bar
   var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
   progressBar.style.width = progressWidth + "%";
@@ -209,11 +300,36 @@ function moveToNextSentence() {
 // Hide all sentences except the first one
 for (var i = 1; i < sentences.length; i++) {
   sentences[i].style.display = "none";
-}</script>
-{% endblock %}
+}</script>{% endblock %}
 '''
 #getting input
+
+from PIL import Image, ImageDraw, ImageFont
+
+
 rawname = input('template name: ')
+img = Image.open('gradient.jpg')
+
+msg = rawname
+font = ImageFont.truetype('NotoSansNerdFontPropo-SemiCondensedBold.ttf', 170)
+
+# Get text dimensions using ImageFont.getsize
+text_width, text_height = font.getsize(msg)
+
+# Get image dimensions
+image_width, image_height = img.size
+
+# Create a drawing object
+draw = ImageDraw.Draw(img)
+
+# Calculate the starting point for the centered text
+x = (image_width - text_width) // 2
+y = (image_height - text_height) // 2
+
+# Draw the text at the centered position
+draw.text((x, y), msg, font=font, fill=(255, 255, 255))
+
+img.save(rawname+".png")
 print('Press Control-d to exit.')
 print('-------> Verse 1')
 content1 = sys.stdin.read() 

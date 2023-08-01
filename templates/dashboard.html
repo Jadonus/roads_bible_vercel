@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+{% load static %}
  <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -41,7 +43,7 @@
 <ul style="list-style: none;"class="text-center fs-3" id="searchResults"></ul>
    <h1 class="animate__animated animate__shakeY text-center animate__infinite animate__slower animate__delay-5s"><i class="bi bi-arrow-bar-down"></i></h1>
 <div id="romans-road" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
-     <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
+     <img src="{% static 'RomansRoad.png' %}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">The Romans Road</h5>
     <p class="card-text">The Romans Road is a short collection of verses in the book of Romans that explain the basics of salvation. </p>
@@ -50,16 +52,16 @@
   </div>
 </div>
 <div id="vacation-verses" data-aos="fade-left" class="card mx-auto m-5" style="width: 18rem;">
-  <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
+  <img src="{% static 'Psalm100.png' %}" class="card-img-top" alt="...">
   <div class="card-body">
-    <h5 class="card-title">Vacation verses</h5>
-       <p class="card-text"> Temporary road for vacation.</p>
+    <h5 class="card-title">Psalm 100</h5>
+       <p class="card-text">Psalm 100 is a Psalm of David worshipping and praising the lord for all the things he has done for him.</p>
     
-  <a class=" btn btn-primary" href="{% url 'vacation' %}">Start memorizing</a>
+  <a class=" btn btn-primary" href="{% url 'Psalm100' %}">Start memorizing</a>
   </div>
 </div>
 <div id="Psalm23" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
-     <img src="https://picsum.photos/640/360" class="card-img-top" alt="...">
+     <img src="{% static 'Psalm23.png' %}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">Psalm 23</h5>
     <p class="card-text">Psalm 23 is one of the most commonly memorized verses. It talks about God being with, and comforting someone wherever they go.</p>
@@ -126,6 +128,7 @@ const arrayOfStrings = [
         const link = document.createElement("a");
         link.href = "#" + searchResults[i];
         link.textContent = searchResults[i];
+    'whitenoise.middleware.WhiteNoiseMiddleware',
         listItem.appendChild(link);
         resultContainer.appendChild(listItem);
       }
