@@ -32,6 +32,8 @@ urlpatterns = [
         "favicon.ico",
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
+
+    path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
     path("save_progress/", views.save_user_progress, name="save_progress"),
     path("get_progress/", views.get_user_progress, name="get_progress"), 
     path('', include('pwa.urls')),
@@ -42,5 +44,3 @@ urlpatterns = [
     path("dashboard/vacation", TemplateView.as_view(template_name="vacation.html"), name="vacation"),
     path("dashboard/romans", TemplateView.as_view(template_name="romansroad.html"), name="romans"),
 ]
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-urlpatterns += staticfiles_urlpatterns()
