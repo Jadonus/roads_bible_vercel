@@ -13,7 +13,7 @@
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
   </script>
 <!-- Image and text -->
-<div class="alert alert-info alert-dismissible fade hide" role="alert" id="toast">
+<div class="alert alert-info alert-dismissible fade byebye" role="alert" id="toast">
 
 <i class="bi bi-app-indicator"></i>
    <strong>Install as app.</strong> If you are on safari, press the share button, and then click "Add to home screen"
@@ -99,6 +99,12 @@ hr.rounded {
 * Gradient link: https://www.css-gradient.com/?c1=f312a1&c2=95a759&gt=r&gd=dtl
 */
       background-image: linear-gradient(to bottom, #ff0000, #00ff00)
+}
+.byebye {
+  display: none
+}
+.hihi {
+  display: block
 }
 </style>
 <script>
@@ -248,24 +254,24 @@ function isIOS() {
   function showToast() {
       // Get the toast element.
       var toast = document.getElementById('toast');
-
+      
+      
+      toast.classList.replace('byebye','show');
       // Show the toast.
-      toast.classList.add('show');
     }
 function isPWA() {
   // Get the user agent string.
-  var userAgent = navigator.userAgent;
 
-  // Check if the user agent contains the "PWA" string.
-  var isPWA = /PWA/.test(userAgent);
+  if (window.matchMedia('(display-mode: standalone)').matches) {  
 
-  // Return true if the user is on a PWA, false otherwise.
-  return isPWA;
+     return isPWA;
+  }
 }
 // Check if the user is on iOS and not on the PWA.
-if (!isPWA()) {
+if (isIOS() && !isPWA()) {
   showToast();
-}</script>
+}
+</script>
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init();
