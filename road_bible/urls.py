@@ -16,6 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from django.views import View
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 from django.urls import path, include
@@ -32,7 +33,7 @@ urlpatterns = [
         "favicon.ico",
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
-
+    
     path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
     path("save_progress/", views.save_user_progress, name="save_progress"),
     path("get_progress/", views.get_user_progress, name="get_progress"), 

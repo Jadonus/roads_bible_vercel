@@ -90,66 +90,6 @@ hr.rounded {
   // Other JavaScript code...
 
   // Function to save the user's progress using AJAX
-  function saveUserProgress() {
-    var currentSentence = sentences[currentSentenceIndex];
-    var sentenceText = currentSentence.textContent;
-    var data = {
-      current_sentence_index: currentSentenceIndex,
-      hidden_word_indices: hiddenWordIndices.join(","),
-    };
-
-    $.ajax({
-      type: "POST",
-      url: "{% url 'save_progress' %}",
-      data: data,
-      dataType: "json",
-      success: function (response) {
-        // Handle success if needed
-        console.log("User progress saved successfully!");
-      },
-      error: function (xhr, textStatus, errorThrown) {
-        // Handle error if needed
-        console.error("Error saving user progress:", errorThrown);
-      }
-    });
-  }
-
-  // Function to retrieve the user's progress using AJAX
-  function loadUserProgress() {
-    $.ajax({
-      type: "GET",
-      url: "{% url 'get_progress' %}",
-      dataType: "json",
-      success: function (data) {
-        if (data) {
-          currentSentenceIndex = data.current_sentence_index;
-          hiddenWordIndices = data.hidden_word_indices.split(",").map(Number);
-
-          // Restore the progress on the page
-          // Update the display and enable/disable buttons as needed
-          // ...
-        }
-      },
-      error: function (xhr, textStatus, errorThrown) {
-        // Handle error if needed
-        console.error("Error loading user progress:", errorThrown);
-      }
-    });
-  }
-
-  // Other JavaScript code...
-
-  // Call this function when the page loads
-  $(document).ready(function() {
-    loadUserProgress();
-  });
-
-  // Call this function when the user makes progress and you want to save it
-  function handleProgressChange() {
-    saveUserProgress();
-    // Update the display and enable/disable buttons as needed
-    // ...
-  }
 var sentences = document.querySelectorAll("p[id^='sentence']");
 var currentSentenceIndex = 0;
 var hiddenWordIndices = [];

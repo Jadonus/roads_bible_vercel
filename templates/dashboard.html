@@ -23,10 +23,7 @@
 
 <hr class="rounded">
 <h1>Verse of The day</h1>
-<p id="sentence" class="lead">The earth is the Lord’s, and everything in it,
-    the world, and all who live in it;
- for he founded it on the seas
-    and established it on the waters.</p>
+<p id="sentence" class="lead"></p>
 
 <button id="incrementButton" class="btn btn-primary">Hide</button>
 <button id="finishButton" class="btn btn-primary">Finish</button>
@@ -108,6 +105,24 @@ hr.rounded {
 }
 </style>
 <script>
+const url = "https://beta.ourmanna.com/api/v1/get";
+
+const xhr = new XMLHttpRequest();
+xhr.open("GET", url);
+xhr.responseType = "text";
+
+xhr.onload = function() {
+  if (xhr.status === 200) {
+    const text = xhr.responseText;
+    document.getElementById("sentence").innerHTML = text;
+
+  } else {
+    console.log("Error: " + xhr.status);
+  }
+};
+
+xhr.send();
+
 const arrayOfStrings = [
     "Psalm100",
     "romans-road",
@@ -115,6 +130,16 @@ const arrayOfStrings = [
     
   ];
 
+function revealAllWords() {
+  var currentSentence = sentence;
+  var words = currentSentence.getElementsByTagName("span");
+
+  for (var i = 0; i < words.length; i++) {
+    words[i].classList.remove("hide-word");
+  }
+
+  incrementButton.disabled = false;
+}
   function searchArray() {
     const searchInput = document.getElementById("searchInput").value.toLowerCase();
     const searchResults = [];
@@ -232,7 +257,7 @@ finishButton.addEventListener('click', function () {
       closeOnClickOutside: false,
     }).then(function (result) {
       if (result) {
-        revealHiddenWords();
+        revealAllWords();
         hiddenWordIndices = []; // Clear the index cache
         isHidden = false;
         hideButton.disabled = false;
