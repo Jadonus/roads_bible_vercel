@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
+    'clearcache',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "accounts",
