@@ -37,7 +37,6 @@ urlpatterns = [
     ),
     
     path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
-    path("dashboard/Versestoliveby", TemplateView.as_view(template_name="Verses to live by.html"), name="Verses to live by"),
     path("get_progress/", views.get_user_progress, name="get_progress"), 
     path('', include('pwa.urls')),
     path('dashboard/', views.my_view, name='dashboard'),
@@ -45,5 +44,7 @@ urlpatterns = [
     path("dashboard/Psalm100", TemplateView.as_view(template_name="Psalm100.html"), name="Psalm100"),
     path("dashboard/Psalm23", TemplateView.as_view(template_name="Psalm23.html"), name="Psalm23"),
     path("dashboard/vacation", TemplateView.as_view(template_name="vacation.html"), name="vacation"),
+
+    path("dashboard/Versestoliveby", TemplateView.as_view(template_name="Versestoliveby.html"), name="Versestoliveby"),
     path("dashboard/romans", TemplateView.as_view(template_name="romansroad.html"), name="romans"),
 ]
