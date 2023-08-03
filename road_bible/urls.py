@@ -37,7 +37,7 @@ urlpatterns = [
     ),
     
     path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
-    path("save_progress/", views.save_user_progress, name="save_progress"),
+    path("dashboard/Versestoliveby", TemplateView.as_view(template_name="Verses to live by.html"), name="Verses to live by"),
     path("get_progress/", views.get_user_progress, name="get_progress"), 
     path('', include('pwa.urls')),
     path('dashboard/', views.my_view, name='dashboard'),

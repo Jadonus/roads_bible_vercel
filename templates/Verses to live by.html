@@ -1,9 +1,4 @@
-import sys
-import shutil
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
-default='''
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -21,9 +16,13 @@ default='''
 </nav>
 <div class="text-center card mx-auto p-1 " style="width:80vw; background-color: #343A40; border-color:  #343A40; font-size: 24px">
 <div class="card-body">
-'''
-
-defaultend='''
+<p id="sentence">I have stored up your word in my heart, that I might not sin against you. (Psalm 119:11)
+</p><p id="sentence2">Rejoice always, pray without ceasing, give thanks in all circumstances; for this is the will of God in Christ Jesus for you. (1 Thessalonians 5:16-18)
+</p><p id="sentence3">What then shall we say to these things? If God is for us, who can be against us? He who did not spare his own Son but gave him up for us all, how will he not also with him graciously give us all things? (Romans 8:31-32)
+</p><p id="sentence4">And I will give you a new heart, and a new spirit I will put within you. And I will remove the heart of stone from your flesh and give you a heart of flesh. (Ezekiel 36:26)
+</p><p id="sentence5">In the beginning was the Word, and the Word was with God, and the Word was God. He was in the beginning with God. (John 1:1-2
+)
+</p>
 </div>
 </div>
 <div class="mx-auto text-center p-5">
@@ -240,94 +239,7 @@ function moveToNextSentence() {
 // Hide all sentences except the first one
 for (var i = 1; i < sentences.length; i++) {
   sentences[i].style.display = "none";
-}</script>{% endblock %}
-'''
-#getting input
-
-from PIL import Image, ImageDraw, ImageFont
+}</script>
+{% endblock %}
 
 
-rawname = input('template name: ')
-img = Image.open('gradient.jpg')
-
-msg = rawname
-font = ImageFont.truetype('Arial.ttf', 170)
-
-# Get text dimensions using ImageFont.getsize
-text_width, text_height = font.getsize(msg)
-
-# Get image dimensions
-image_width, image_height = img.size
-
-# Create a drawing object
-draw = ImageDraw.Draw(img)
-
-# Calculate the starting point for the centered text
-x = (image_width - text_width) // 2
-y = (image_height - text_height) // 2
-
-# Draw the text at the centered position
-draw.text((x, y), msg, font=font, fill=(255, 255, 255))
-
-img.save(rawname+".png")
-print('Press Control-d to exit.')
-print('-------> Verse 1')
-content1 = sys.stdin.read() 
-
-print('-------> Verse 2')
-
-
-content2 = sys.stdin.read()
-
-print('-------> Verse 3')
-content3= sys.stdin.read()
-
-print('-------> Verse 4')
-content4= sys.stdin.read()
-
-print('-------> Verse 5')
-content5= sys.stdin.read()
-print('DONE!!')
-name= rawname + ".html"
-#adding stuff.
-verse1= '<p id="sentence">' + content1 + '</p>'
-
-verse2= '<p id="sentence2">' + content2 + '</p>'
-
-verse3= '<p id="sentence3">' + content3 + '</p>'
-
-verse4= '<p id="sentence4">' + content4 + '</p>'
-
-verse5= '<p id="sentence5">' + content5 + '</p>'
-stuff_to_cat =  default + verse1 + verse2 + verse3 +verse4 +verse5 + defaultend 
-
-file1 = open(name, "a")
-file1.write(stuff_to_cat)
-file1.close()
-############################################3
-
-def write_string_to_line(file_path, target_string, line_number):
-    
-        with open(file_path, 'r') as file:
-            lines = file.readlines()
-
-        if 1 <= line_number <= len(lines):
-            lines[line_number - 1] = target_string + '\n'
-        else:
-            print(f'Error: Line number {line_number} is out of range.')
-            return
-
-        # Use a temporary file to store the modified content
-        temp_file_path = file_path + '.tmp'
-        with open(temp_file_path, 'w') as temp_file:
-            temp_file.writelines(lines)
-
-        # Replace the original file with the temporary one
-        shutil.move(temp_file_path, file_path)
-
-
-urls = '    path("dashboard/' + rawname +'", TemplateView.as_view(template_name="'+name +'"), name=' '"' + rawname+ '"'+'),'
-file_path = '/Users/jadong/roads_bible_vercel/road_bible/urls.py'
-target_string = urls
-line_number = 40
-write_string_to_line(file_path, target_string, line_number)
