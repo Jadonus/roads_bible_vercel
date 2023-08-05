@@ -35,7 +35,8 @@ urlpatterns = [
         "favicon.ico",
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
-    
+     
+    path('serviceworker.js', TemplateView.as_view(template_name='serviceworker.js', content_type='application/javascript'), name='service-worker'),
     path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
     path("get_progress/", views.get_user_progress, name="get_progress"), 
     path('', include('pwa.urls')),
