@@ -12,13 +12,31 @@
 <script src=
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
   </script>
+<script src=
+https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
+">
+  </script>
 <!-- Image and text -->
 <div class="alert alert-info alert-dismissible fade byebye" role="alert" id="toast">
 
 <i class="bi bi-app-indicator"></i>
    <strong>Install as app.</strong> If you are on safari, press the share button, and then click "Add to home screen"
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-</div></div></nav><h2 class="text-center pt-5 fw-bold display-4">Hello {{user.username}}, Start memorizing bible verses</h2>
+
+</div>
+<div class="dropdown">
+  <a class=" text-secondary display-6" id="settings" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+   
+<i class="bi bi-list"></i>
+
+  </a>
+  <ul class="dropdown-menu">
+    <li><a class="dropdown-item" onclick="clearCacheAndReload()"id="update">Update</a></li>
+    <li><a class="dropdown-item" href="#">Another action</a></li>
+    <li><a class="dropdown-item" href="#">Something else here</a></li>
+  </ul>
+</div>
+<h2 class="text-center pt-5 fw-bold display-4">Hello {{user.username}}, Start memorizing bible verses</h2>
 <div class=" text-center container-fluid  p-5 ">
 
 <hr class="rounded">
@@ -137,8 +155,23 @@ const arrayOfStrings = [
     "Psalm100",
     "romans-road",
     "Psalm23",
+    "Verses to live by",
     
   ];
+function clearCacheAndReload() {
+    
+    console.log('Clicked on "Update" link');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (registrations) {
+        for (let registration of registrations) {
+          registration.unregister();
+        }
+        window.location.reload();
+      }).catch(function (error) {
+        console.error('Error clearing service worker cache:', error);
+      });
+    }
+  }
 
 function revealAllWords() {
   var currentSentence = sentence;
