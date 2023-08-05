@@ -44,7 +44,8 @@ urlpatterns = [
     path("dashboard/Psalm100", TemplateView.as_view(template_name="Psalm100.html"), name="Psalm100"),
     path("dashboard/Psalm23", TemplateView.as_view(template_name="Psalm23.html"), name="Psalm23"),
     path("dashboard/vacation", TemplateView.as_view(template_name="vacation.html"), name="vacation"),
-
+    path('save_progress/', views.save_progress, name='save_progress'),
+    path('restore_progress/', views.restore_progress, name='restore_progress'),
     path("dashboard/Versestoliveby", TemplateView.as_view(template_name="Versestoliveby.html"), name="Versestoliveby"),
     path("dashboard/romans", TemplateView.as_view(template_name="romansroad.html"), name="romans"),
 ]

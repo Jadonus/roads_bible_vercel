@@ -61,4 +61,20 @@ def get_user_progress(request):
     return JsonResponse({}, status=401)
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
-
+def save_progress(request):
+    if request.method == 'POST' and request.user.is_authenticated:
+        username = request.user.username
+        sentence_index = int(request.POST.get('sentence_index', 0))
+        # Save the user's progress in the database or any other data store
+        # For example, you could use Django models to save the progress in the database.
+        # Your implementation may vary based on your project's structure.
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False})
+def restore_progress(request):
+    if request.method == 'GET' and request.user.is_authenticated:
+        # Retrieve the user's progress from the database or data store
+        # For example, you could use Django models to fetch the progress from the database.
+        # Your implementation may vary based on your project's structure.
+        sentence_index = 0  # Replace this with the actual sentence index retrieved from the database.
+        return JsonResponse({'sentence_index': sentence_index})
+    return JsonResponse({'sentence_index': 0})

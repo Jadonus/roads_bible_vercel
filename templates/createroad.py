@@ -11,7 +11,7 @@ default='''
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <script src=
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
-</script>
+  </script>
 <nav class="navbar navbar-expand-sm">
   <div class="container-fluid">
     <a class=" link-text display-5" style="color: #adb5b1" href ="{% url "dashboard" %}"><i class="bi bi-caret-left-fill "></i></a>
@@ -19,7 +19,8 @@ default='''
     <span class="navbar-text"><i class="bi bi-book-fill display-6" style="color: #adb5b1"></i></span>
   </div>
 </nav>
-<div class="text-center card mx-auto p-1 " style="width:80vw; background-color: #343A40; border-color:  #343A40; font-size: 24px">
+
+<div class="text-center card mx-auto p-1 bg-body-secondary " style="width:80vw; border-width: 0px; font-size: 24px">
 <div class="card-body">
 '''
 
@@ -31,13 +32,11 @@ defaultend='''
 <button id="finishButton" class="btn btn-primary mb-2">Finish Verse</button>
 
 <button id="nextButton" class="btn btn-primary mb-2">Next Verse</button>
-
+  <button class="btn btn-primary mb-2" id="backButton">Previous</button>
 </div>
 <div class="progress-container">
 <div class="progress">
   <div id="progressBar" class="progress-bar lrm-5" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-</div>
-</div>
 </div>
 <style>
 nav{
@@ -67,10 +66,16 @@ hr.rounded {
   max-width: 600vw; /* Set a maximum width for the progress bar container */
   margin: 0 auto; /* Center the container on the screen */
 }
-</style>
-<script>
+bb {
+  background-color: #343A40;
+}
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</style>
+
+<script src="
+https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
+"></script>
 <script>
 
   var sentences = document.querySelectorAll("p[id^='sentence']");
@@ -93,6 +98,8 @@ hideButton.addEventListener('click', function () {
 
 nextButton.addEventListener('click', function () {
   moveToNextSentence();
+  var username = "Anonymous"; // You should get the actual username from your Django backend if the user is authenticated.
+  saveUserProgress(username, currentSentenceIndex);
 }, true);
 
 var finishButtonClicks = 0; // Variable to track the number of finish button clicks
@@ -103,6 +110,11 @@ finishButton.addEventListener('click', function () {
     hideAllWords();
   } else if (finishButtonClicks === 2) {
     revealAllWords();
+
+    var randomIndices = [];
+
+    isHidden = false;
+      
     finishButtonClicks = 0; // Reset the click counter
   }
 }, true);
@@ -178,6 +190,7 @@ function revealAllWords() {
   }
 
   hideButton.disabled = false;
+
 }
 
 function moveToNextSentence() {
@@ -240,17 +253,163 @@ function moveToNextSentence() {
 // Hide all sentences except the first one
 for (var i = 1; i < sentences.length; i++) {
   sentences[i].style.display = "none";
-}</script>{% endblock %}
-'''
+}
+
+var USERNAME_COOKIE_NAME = "user_progress_username";
+var SENTENCE_COOKIE_NAME = "user_progress_sentence";
+
+function saveUserProgress(username, sentenceIndex) {
+  Cookies.set(USERNAME_COOKIE_NAME, username, { expires: 7 }); // Set the username cookie to expire in 7 days
+  Cookies.set(SENTENCE_COOKIE_NAME, sentenceIndex);
+}
+
+function restoreUserProgress() {
+  var username = Cookies.get(USERNAME_COOKIE_NAME);
+  var sentenceIndex = Cookies.get(SENTENCE_COOKIE_NAME);
+  
+  if (username && sentenceIndex) {
+    // Restore the user's progress
+    currentSentenceIndex = parseInt(sentenceIndex);
+    
+    // Find the sentence element and hide all sentences except the current one
+    for (var i = 0; i < sentences.length; i++) {
+      if (i === currentSentenceIndex) {
+        sentences[i].style.display = "block";
+      } else {
+        sentences[i].style.display = "none";
+      }
+    }
+    
+    // Update the progress bar
+    var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
+    progressBar.style.width = progressWidth + "%";
+    progressBar.setAttribute("aria-valuenow", progressWidth);
+  }
+}
+
+var backButton = document.getElementById("backButton"); // Get the back button element
+
+backButton.addEventListener('click', function () {
+  moveToPreviousSentence();
+}, true);
+
+function moveToPreviousSentence() {
+  currentSentenceIndex--;
+
+  if (currentSentenceIndex < 0) {
+    console.log("You are already at the beginning.");
+    currentSentenceIndex = 0; // Make sure the index doesn't go below 0
+    backButton.disabled = true;
+    return;
+  }
+
+  // Reset hiddenWordIndices array and enable the buttons
+  hiddenWordIndices = [];
+  hideButton.disabled = false;
+  nextButton.disabled = false;
+  finishButton.disabled = false;
+
+  // Hide the current sentence if it exists
+  if (currentSentenceIndex + 1 < sentences.length) {
+    var currentSentence = sentences[currentSentenceIndex + 1];
+    currentSentence.style.display = "none";
+  }
+
+  // Show the previous sentence
+  var previousSentence = sentences[currentSentenceIndex];
+  previousSentence.style.display = "block";
+
+  // Update the progress bar
+  var progressWidth = (currentSentenceIndex / (sentences.length - 1)) * 100;
+  progressBar.style.width = progressWidth + "%";
+  progressBar.setAttribute("aria-valuenow", progressWidth);
+
+  // Enable/disable the back button based on the current sentence index
+  backButton.disabled = (currentSentenceIndex === 0);
+}
+function moveToNextSentence() {
+  currentSentenceIndex++;
+
+  if (currentSentenceIndex >= sentences.length) {
+    console.log("You have finished all the sentences.");
+    currentSentenceIndex = sentences.length - 1; // Make sure the index doesn't go beyond the last sentence
+    hideButton.disabled = true;
+    nextButton.disabled = true;
+    finishButton.disabled = true;
+     swal("You Finished this road!", {
+
+    title:"Good job!",
+    icon:"success",
+
+    buttons: {
+    catch: {
+      text: "Back to dashboard",
+      value: "catch",
+    },
+      text : "try again",
+  },
+
+allowOutsideClick: false
+})
+.then((value) => {
+  switch (value) {
+ 
+    
+ 
+    case "catch":
+      window.location.href = "{% url 'dashboard' %}";
+      break;
+ 
+    default:
+
+    location.reload();
+  }
+});  
+    return;
+  }
+
+  // Reset hiddenWordIndices array and enable the buttons
+  hiddenWordIndices = [];
+  hideButton.disabled = false;
+  nextButton.disabled = false;
+  finishButton.disabled = false;
+
+  // Hide the current sentence if it exists
+  if (currentSentenceIndex - 1 >= 0) {
+    var currentSentence = sentences[currentSentenceIndex - 1];
+    currentSentence.style.display = "none";
+  }
+
+  // Show the next sentence
+  var nextSentence = sentences[currentSentenceIndex];
+  nextSentence.style.display = "block";
+
+  // Update the progress bar
+  var progressWidth = (currentSentenceIndex / (sentences.length - 1)) * 100;
+  progressBar.style.width = progressWidth + "%";
+  progressBar.setAttribute("aria-valuenow", progressWidth);
+
+  // Enable/disable the back button based on the current sentence index
+  backButton.disabled = (currentSentenceIndex === 0);
+}
+
+// Hide all sentences except the first one
+for (var i = 1; i < sentences.length; i++) {
+  sentences[i].style.display = "none";
+}
+
+// Check for an existing localStorage entry and restore the user's progress
+restoreUserProgress();'''
 #getting input
 
 from PIL import Image, ImageDraw, ImageFont
 
 
-rawname = input('template name: ')
+rawname = input('template name(no spaces): ')
+imgname = input('Image title(spaces):')
 img = Image.open('gradient.jpg')
 
-msg = rawname
+msg = imgname
 font = ImageFont.truetype('Arial.ttf', 170)
 
 # Get text dimensions using ImageFont.getsize
