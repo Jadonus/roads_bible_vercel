@@ -126,7 +126,7 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "/dashboard"
 
-PWA_SERVICE_WORKER_PATH = '/static/service-worke.js'
+PWA_SERVICE_WORKER_PATH = '/static/serviceworker.js'
 LOGOUT_REDIRECT_URL = "home"
 PWA_APP_NAME = 'Roads'
 PWA_APP_DESCRIPTION = "My app description"
