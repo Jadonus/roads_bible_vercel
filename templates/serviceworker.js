@@ -1,55 +1,37 @@
-const PRECACHE = 'precache-v1';
-const RUNTIME = 'runtime';
+const cacheName = 'visited-pages';
 
-// A list of local resources we always want to be cached.
-const PRECACHE_URLS = [
-"/dashboard"
-];
-
-// The install handler takes care of precaching the resources we always need.
-self.addEventListener('install', event => {
+self.addEventListener('install', async (event) => {
   event.waitUntil(
-    caches.open(PRECACHE)
-      .then(cache => cache.addAll(PRECACHE_URLS))
-      .then(self.skipWaiting())
+    caches.open(cacheName).then((cache) => {
+      // Cache all of the pages that the user has visited so far.
+      const visitedPages = await fetch('/api/visited_pages');
+      const visitedPagesData = await visitedPages.json();
+      for (const page of visitedPagesData) {
+        cache.add(page);
+      }
+    })
   );
 });
 
-// The activate handler takes care of cleaning up old caches.
-self.addEventListener('activate', event => {
-  const currentCaches = [PRECACHE, RUNTIME];
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return cacheNames.filter(cacheName => !currentCaches.includes(cacheName));
-    }).then(cachesToDelete => {
-      return Promise.all(cachesToDelete.map(cacheToDelete => {
-        return caches.delete(cacheToDelete);
-      }));
-    }).then(() => self.clients.claim())
-  );
-});
+self.addEventListener('fetch', async (event) => {
+  const request = event.request;
 
-// The fetch handler serves responses for same-origin resources from a cache.
-// If no response is found, it populates the runtime cache with the response
-// from the network before returning it to the page.
-self.addEventListener('fetch', event => {
-  // Skip cross-origin requests, like those for Google Analytics.
-  if (event.request.url.startsWith(self.location.origin)) {
-    event.respondWith(
-      caches.match(event.request).then(cachedResponse => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return caches.open(RUNTIME).then(cache => {
-          return fetch(event.request).then(response => {
-            // Put a copy of the response in the runtime cache.
-            return cache.put(event.request, response.clone()).then(() => {
-              return response;
-            });
-          });
-        });
-      })
-    );
+  // If the request is for a page that has already been visited, serve it from the cache.
+  if (request.url.startsWith('/')) {
+    const cachedResponse = await caches.match(request);
+    if (cachedResponse) {
+      event.respondWith(cachedResponse);
+      return;
+    }
   }
+
+  // Otherwise, fetch the resource from the network and cache it.
+  event.respondWith(
+    fetch(request).then((response) => {
+      caches.open(cacheName).then((cache) => {
+        cache.put(request, response);
+      });
+      return response;
+    })
+  );
 });
