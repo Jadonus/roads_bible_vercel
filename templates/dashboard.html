@@ -41,8 +41,10 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
 
 <hr class="rounded">
 <h1>Verse of The day</h1>
+
 <p id="sentence" class="lead"></p>
 
+<span class="ml-2 spinner-border spinner-grow mx-auto m-5" style="width: 3rem; height: 3rem;"role="status" id="mySpinner"></span>
 <button id="incrementButton" class="btn btn-primary">Hide</button>
 <button id="finishButton" class="btn btn-primary">Finish</button>
 </div>
@@ -135,22 +137,27 @@ hr.rounded {
 <script>
 const url = "https://beta.ourmanna.com/api/v1/get";
 
-const xhr = new XMLHttpRequest();
-xhr.open("GET", url);
-xhr.responseType = "text";
+  const xhr = new XMLHttpRequest();
+  xhr.open("GET", url);
+  xhr.responseType = "text";
 
-xhr.onload = function() {
-  if (xhr.status === 200) {
-    const text = xhr.responseText;
-    document.getElementById("sentence").innerHTML = text;
+  // Show the spinner before making the request
+  document.getElementById("mySpinner").style.display = "block";
 
-  } else {
-    console.log("Error: " + xhr.status);
-  }
-};
+  xhr.onload = function() {
+    if (xhr.status === 200) {
+      const text = xhr.responseText;
+      document.getElementById("sentence").innerHTML = text;
 
-xhr.send();
+      // Hide the spinner and show the content once it is loaded
+      document.getElementById("mySpinner").style.display = "none";
+      document.getElementById("sentence").style.display = "block";
+    } else {
+      console.log("Error: " + xhr.status);
+    }
+  };
 
+  xhr.send();
 const arrayOfStrings = [
     "Psalm100",
     "romans-road",

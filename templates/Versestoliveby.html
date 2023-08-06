@@ -7,10 +7,14 @@
 <script src=
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
 </script>
+
 <nav class="navbar navbar-expand-sm">
   <div class="container-fluid">
-    <a class=" fs-4 mb-4 link-underline link-underline-opacity-0"  href ="{% url "dashboard" %}"><i class="bi bi-chevron-left "></i>Back</a>
-  
+    <a class="d-flex align-items-center fs-4 ml-4 mb-4 link-underline link-underline-opacity-0" id="myLink" href="{% url 'dashboard' %}">
+      <i class="bi bi-chevron-left"></i>
+      Back
+      <span class="mx-3 spinner-border spinner-border-sm" role="status" id="mySpinner" style="display: none;"></span>
+    </a>
   </div>
 </nav>
 <div class="text-center card mx-auto p-1 bg-body-secondary " style="width:80vw; border-width: 0px; font-size: 24px">
@@ -74,7 +78,23 @@ bb {
 https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
 "></script>
 <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get references to the link and spinner elements
+    const link = document.getElementById('myLink');
+    const spinner = document.getElementById('mySpinner');
 
+    // Attach click event listener to the link
+    link.addEventListener('click', function() {
+      // Show the spinner
+      spinner.style.display = 'block';
+
+      // Simulate some asynchronous task
+      setTimeout(function() {
+        // Hide the spinner after the task is completed
+        spinner.style.display = 'none';
+      }, 2000); // Replace this with your actual task
+    });
+  });
   var sentences = document.querySelectorAll("p[id^='sentence']");
   var currentSentenceIndex = 0;
   var hiddenWordIndices = [];
