@@ -1,10 +1,4 @@
-import sys
-import subprocess
-import shutil
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
-default='''
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -27,9 +21,33 @@ default='''
 
 <div class="text-center card mx-auto p-1 bg-body-secondary " style="width:80vw; border-width: 0px; font-size: 24px">
 <div class="card-body">
-'''
+<p id="sentence">1 Come, let us sing for joy to the Lord;
+    let us shout aloud to the Rock of our salvation.
+2 Let us come before him with thanksgiving
+    and extol him with music and song.
+</p><p id="sentence2">3 For the Lord is the great God,
+    the great King above all gods.
+4 In his hand are the depths of the earth,
+    and the mountain peaks belong to him.
+</p><p id="sentence3">The sea is his, for he made it,
+    and his hands formed the dry land.
 
-defaultend='''
+6 Come, let us bow down in worship,
+    let us kneel before the Lord our Maker;
+</p><p id="sentence4">7 for he is our God
+    and we are the people of his pasture,
+    the flock under his care.
+</p><p id="sentence5">Today, if only you would hear his voice,
+8 “Do not harden your hearts as you did at Meribah,[a]
+    as you did that day at Massah[b] in the wilderness,
+9 where your ancestors tested me;
+    they tried me, though they had seen what I did.
+</p><p id="sentence6">For forty years I was angry with that generation;
+    I said, ‘They are a people whose hearts go astray,
+    and they have not known my ways.’
+</p><p id="sentence7">So I declared on oath in my anger,
+    ‘They shall never enter my rest.’”
+</p>
 
 </div>
 </div>
@@ -85,8 +103,7 @@ hr.rounded {
 .progress-container {
   padding: 0 15vw; /* Adjust the padding as needed */
   max-width: 600vw; /* Set a maximum width for the progress bar container */
-  margin: 0 auto; /* Center the container on the screen  </script>
-  {% endblock %}*/
+  margin: 0 auto; /* Center the container on the screen */
 }
 bb {
   background-color: #343A40;
@@ -438,108 +455,5 @@ for (var i = 1; i < sentences.length; i++) {
 
 // Check for an existing localStorage entry and restore the user's progress
 restoreUserProgress();
- </script>
-  {% endblock %}'''
-#getting input
-
-from PIL import Image, ImageDraw, ImageFont
-
-
-rawname = input('template name(no spaces): ')
-imgname = input('Image title(spaces):')
-img = Image.open('gradient.jpg')
-
-msg = imgname
-font = ImageFont.truetype('Arial.ttf', 170)
-
-# Get text dimensions using ImageFont.getsize
-text_width, text_height = font.getsize(msg)
-
-# Get image dimensions
-image_width, image_height = img.size
-
-# Create a drawing object
-draw = ImageDraw.Draw(img)
-
-# Calculate the starting point for the centered text
-x = (image_width - text_width) // 2
-y = (image_height - text_height) // 2
-
-# Draw the text at the centered position
-draw.text((x, y), msg, font=font, fill=(255, 255, 255))
-imgfilename = rawname +'.png'
-img.save(imgfilename)
-subprocess.run(['cp', imgfilename, '/Users/jadong/roads_bible_vercel/static/'])
-print('Press Control-d to exit.')
-print('-------> Verse 1')
-content1 = sys.stdin.read() 
-
-print('-------> Verse 2')
-
-
-content2 = sys.stdin.read()
-
-print('-------> Verse 3')
-content3= sys.stdin.read()
-
-print('-------> Verse 4')
-content4= sys.stdin.read()
-
-print('-------> Verse 5')
-content5= sys.stdin.read()
-
-print('-------> Verse 6')
-
-content6= sys.stdin.read()
-
-print('-------> Verse 7')
-
-content7= sys.stdin.read()
-print('DONE!!')
-name= rawname + ".html"
-#adding stuff.
-verse1= '<p id="sentence">' + content1 + '</p>'
-
-verse2= '<p id="sentence2">' + content2 + '</p>'
-
-verse3= '<p id="sentence3">' + content3 + '</p>'
-
-verse4= '<p id="sentence4">' + content4 + '</p>'
-
-verse5= '<p id="sentence5">' + content5 + '</p>'
-
-verse6= '<p id="sentence6">' + content6 + '</p>'
-
-verse7= '<p id="sentence7">' + content7 + '</p>'
-stuff_to_cat =  default + verse1 + verse2 + verse3 +verse4 +verse5 + verse6 + verse7 +defaultend 
-
-file1 = open(name, "a")
-file1.write(stuff_to_cat)
-file1.close()
-############################################3
-
-def write_string_to_line(file_path, target_string, line_number):
-    
-        with open(file_path, 'r') as file:
-            lines = file.readlines()
-
-        if 1 <= line_number <= len(lines):
-            lines[line_number - 1] = target_string + '\n'
-        else:
-            print(f'Error: Line number {line_number} is out of range.')
-            return
-
-        # Use a temporary file to store the modified content
-        temp_file_path = file_path + '.tmp'
-        with open(temp_file_path, 'w') as temp_file:
-            temp_file.writelines(lines)
-
-        # Replace the original file with the temporary one
-        shutil.move(temp_file_path, file_path)
-
-
-urls = '    path("dashboard/' + rawname +'", TemplateView.as_view(template_name="'+name +'"), name=' '"' + rawname+ '"'+'),'
-file_path = '/Users/jadong/roads_bible_vercel/road_bible/urls.py'
-target_string = urls
-line_number = 40
-write_string_to_line(file_path, target_string, line_number)
+  </script>
+  {% endblock %}

@@ -36,7 +36,7 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
     <li><a class="dropdown-item" href="#">Something else here</a></li>
   </ul>
 </div>
-<h2 class="text-center pt-5 fw-bold display-4">Hello {{user.username}}, Start memorizing bible verses</h2>
+ <h2 class="text-center pt-5 fw-bold display-4">Hello <strong>{{user.username}}</strong>, Start memorizing bible verses</h2>
 <div class=" text-center container-fluid  p-5 ">
 
 <hr class="rounded">
@@ -93,6 +93,15 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
     <p class="card-text">A small collection of verses that anyone can memorize.</p>
     
   <a class=" btn btn-primary" href="{% url 'Versestoliveby' %}">Start memorizing</a>
+  </div>
+</div>
+   <div id="Psalm 95" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+     <img src="{% static 'psalm95.png' %}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">Psalm 95</h5>
+    <p class="card-text">A worshipful psalm praising the lords power. </p>
+    
+  <a class=" btn btn-primary" href="{% url 'Psalm95' %}">Start memorizing</a>
   </div>
 </div>
 
@@ -162,6 +171,7 @@ const arrayOfStrings = [
     "Psalm100",
     "romans-road",
     "Psalm23",
+    "Psalm95",
     "Verses to live by",
     
   ];
