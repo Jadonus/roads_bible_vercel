@@ -28,12 +28,24 @@
 <p id="sentence5">The heart that believes in him receives the gift of the righteousness of God—and then the mouth confesses, resulting in salvation.  Romans 10:10</p>
 </div>
 </div>
-<div class="mx-auto text-center p-5">
-<button id="incrementButton" class="btn btn-primary mb-2">Hide More</button>
-<button id="finishButton" class="btn btn-primary mb-2">Finish Verse</button>
+<div class="d-flex justify-content-center">
+<div class="text-center rounded-pill bg-body-secondary btn-group m-5 p-2 ">
+<button id="incrementButton" class="btn tiny  mb-1">
+    <i class="ph ph-x-square h4"></i><br>Hide More</button>
 
-<button id="nextButton" class="btn btn-primary mb-2">Next Verse</button>
-  <button class="btn btn-primary mb-2" id="backButton">Previous</button>
+<button id="finishButton" class="btn tiny h6 mb-1">
+    <i class="ph ph-flag-checkered h4"></i><br>Finish verse</button>
+
+<button id="nextButton" class="btn tiny mb-1">
+    <i class="ph ph-arrow-square-right h4"></i><br>Next Verse</button>
+
+
+  <button 
+    class="btn tiny mb-1" id="backButton">
+    <i class="ph ph-arrow-square-left h4"></i><br>Previous
+
+  </button>
+  </div>
 </div>
 <div class="progress-container">
 <div class="progress">
@@ -67,10 +79,10 @@ hr.rounded {
   max-width: 600vw; /* Set a maximum width for the progress bar container */
   margin: 0 auto; /* Center the container on the screen */
 }
-bb {
-  background-color: #343A40;
-}
 
+.tiny {
+  font-size: 0.8rem;
+}
 
 </style>
 
@@ -317,6 +329,8 @@ function moveToPreviousSentence() {
     backButton.disabled = true;
     return;
   }
+var username = "Anonymous"; // You should get the actual username from your Django backend if the user is authenticated.
+    saveUserProgress(username, currentSentenceIndex);
 
   // Reset hiddenWordIndices array and enable the buttons
   hiddenWordIndices = [];
@@ -407,7 +421,25 @@ allowOutsideClick: false
   // Enable/disable the back button based on the current sentence index
   backButton.disabled = (currentSentenceIndex === 0);
 }
-
+function updateContent() {
+    var currentSentence = sentences[currentSentenceIndex];
+    var words = currentSentence.textContent.split(" ");
+    
+    switch (mode) {
+      case MODE_NORMAL:
+        // Show the entire verse as normal
+        currentSentence.innerHTML = words.join(" ");
+        break;
+      case MODE_FIRST_LETTER:
+        // Show the first letter of every word below the verse
+        currentSentence.innerHTML = words.map(word => {
+          var firstLetter = word.charAt(0);
+          return '<span class="hide-word">' + firstLetter + '</span>';
+        }).join(" ");
+        break;
+      // Add more cases for other modes if needed
+    }
+  }
 // Hide all sentences except the first one
 for (var i = 1; i < sentences.length; i++) {
   sentences[i].style.display = "none";
