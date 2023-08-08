@@ -1,0 +1,25 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Password reset on 192.168.207.164:8000
+From: webmaster@localhost
+To: jadongearhart@gmail.com
+Date: Mon, 07 Aug 2023 12:26:00 -0000
+Message-ID: <169141116076.60069.3910847620153022661@jadons-macbook-air.local>
+
+
+You're receiving this email because you requested a password reset for your user account at 192.168.207.164:8000.
+
+Please go to the following page and choose a new password:
+
+http://192.168.207.164:8000/accounts/reset/MQ/bskajc-8af110c6dc636942c43c387ac9ba5296/
+
+Your username, in case you’ve forgotten: jadong
+
+Thanks for using our site!
+
+The 192.168.207.164:8000 team
+
+
+
+-------------------------------------------------------------------------------

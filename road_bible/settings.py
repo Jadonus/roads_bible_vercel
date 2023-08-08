@@ -25,7 +25,12 @@ SECRET_KEY = 'django-insecure-&x$2rzcqf5w_jkx(zzz+u=99$(f^l^l*hw7f^wgi5cajc$92jp
 DEBUG = False
 
 ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "192.168.207.164"]
-
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'jadongearhart@gmail.com' 
+EMAIL_HOST_PASSWORD = 'kmolelwgnxvxwiqr'
 
 # Application definition
 

@@ -16,6 +16,8 @@
     <p class="mt-5 mb-3 text-muted">© 2023</p>
 
     <a class="text-muted" href="{% url 'signup' %}">Not a Member? Sign up!<a>
+    
+      <a class="text-muted" href="{% url 'password_reset' %}"><br>Forgot your password? Reset it here.<a>
        {% if form.errors %}
       <div class="alert alert-danger">
         {% for field, errors in form.errors.items %}

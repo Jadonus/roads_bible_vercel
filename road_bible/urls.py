@@ -26,6 +26,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from . import views
 
+from django.contrib.auth import views as auth_views
+from accounts.views import ResetPasswordView
 urlpatterns = [
 
     path('admin/clearcache/', include('clearcache.urls')),
@@ -36,8 +38,15 @@ urlpatterns = [
         RedirectView.as_view(url=staticfiles_storage.url("favicon.ico")),
     ),
     
-    path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
     
+
+
+
+    path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
+    path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
+    path('password-reset-complete/',
+         auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
+         name='password_reset_complete'),
     path('serviceworker.js', TemplateView.as_view(template_name='serviceworker.js', content_type='application/javascript'), name='service-worker'),
     path("dashboard/Psalm95", TemplateView.as_view(template_name="Psalm95.html"), name="Psalm95"),
     path("get_progress/", views.get_user_progress, name="get_progress"), 
@@ -50,5 +59,7 @@ urlpatterns = [
     path('save_progress/', views.save_progress, name='save_progress'),
     path('restore_progress/', views.restore_progress, name='restore_progress'),
     path("dashboard/Versestoliveby", TemplateView.as_view(template_name="Versestoliveby.html"), name="Versestoliveby"),
+
+    path("requestroad", TemplateView.as_view(template_name="requestroad.html"), name="requestroad"),
     path("dashboard/romans", TemplateView.as_view(template_name="romansroad.html"), name="romans"),
 ]

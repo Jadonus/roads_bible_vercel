@@ -24,7 +24,7 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
 </div>
-<div class="dropdown">
+<div class="dropdown m-4">
   <a class=" text-secondary display-6" id="settings" type="button" data-bs-toggle="dropdown" aria-expanded="false">
    
 <i class="bi bi-list"></i>
@@ -32,11 +32,11 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
   </a>
   <ul class="dropdown-menu">
     <li><a class="dropdown-item" onclick="clearCacheAndReload()"id="update">Update</a></li>
-    <li><a class="dropdown-item" href="#">Another action</a></li>
-    <li><a class="dropdown-item" href="#">Something else here</a></li>
+     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
+    <li><a class="dropdown-item" href="">Request new road.</a></li>
   </ul>
 </div>
- <h2 class="text-center pt-5 fw-bold display-4">Hello <strong>{{user.username}}</strong>, Start memorizing bible verses</h2>
+ <h2 class="text-center pt-5 fw-bold display-4">Hello <span class="">{{user.username}}</span>, Start memorizing bible verses</h2>
 <div class=" text-center container-fluid  p-5 ">
 
 <hr class="rounded">

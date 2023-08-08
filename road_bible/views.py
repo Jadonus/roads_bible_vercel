@@ -6,6 +6,9 @@ from django.http import FileResponse, HttpRequest, HttpResponse
 from django.views.decorators.cache import cache_control
 from django.views.decorators.http import require_GET
 from django.http import JsonResponse
+from django.urls import reverse_lazy
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.messages.views import SuccessMessageMixin
 @require_GET
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # one day
 def favicon(request: HttpRequest) -> HttpResponse:
@@ -78,3 +81,5 @@ def restore_progress(request):
         sentence_index = 0  # Replace this with the actual sentence index retrieved from the database.
         return JsonResponse({'sentence_index': sentence_index})
     return JsonResponse({'sentence_index': 0})
+
+
