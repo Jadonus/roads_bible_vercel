@@ -13,7 +13,7 @@
 "https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js">
   </script>
 <script src=
-https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
+"https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
 ">
   </script>
 <!-- Image and text -->
@@ -24,7 +24,7 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
 </div>
-<div class="dropdown m-4">
+<div class="dropdown mt-4 mr-4">
   <a class=" text-secondary display-6" id="settings" type="button" data-bs-toggle="dropdown" aria-expanded="false">
    
 <i class="bi bi-list"></i>
@@ -34,6 +34,7 @@ https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
     <li><a class="dropdown-item" onclick="clearCacheAndReload()"id="update">Update</a></li>
      <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
     <li><a class="dropdown-item" href="">Request new road.</a></li>
+    <li><a class="dropdown-item" onclick="welcome()" href="">Show welcome tour</a></li>
   </ul>
 </div>
  <h2 class="text-center pt-5 fw-bold display-4">Hello <span class="">{{user.username}}</span>, Start memorizing bible verses</h2>
@@ -144,6 +145,50 @@ hr.rounded {
 }
 </style>
 <script>
+function welcome() {
+ swal({
+        title: "Hey!",
+        text: " Here is a quick tour.",
+        buttons: ["Cancel", "Start tour"]
+    }).then((willDelete) => {
+        if (willDelete) {
+            swal({
+                title: "Overview",
+                text: "The main place to be is here, the dashboard. Here you can memorize the verse of the day or pick a road to memorize further. Roads are groups of at least five verses. Roads currently have 1 mode, the random hidden words mode. When you click the hide more button, Some words will be hidden.",
+                buttons: ["Cancel", "Next"]
+            }).then((next) => {
+                if (next) {
+              swal({ title: "Almost done!", button: "Start memorizing!", text: "Pressing the 'finish' button, will hide all words. (Pressing it again will reveal them) You can navigate between roads using the Previous and next buttons. You should be ready to start memorizing. After closing this, Scroll down and pick a road of your choosing." })
+                }
+            });
+        }
+    });
+}
+
+var ls = localStorage.getItem('namespace.visited');
+if (ls == null) {
+     swal({
+        title: "Hey!",
+        text: "Looks like it's your first visit! Here is a quick tour.",
+        buttons: ["Cancel", "Start tour"]
+    }).then((willDelete) => {
+        if (willDelete) {
+            swal({
+                title: "Overview",
+                text: "The main place to be is here, the dashboard. Here you can memorize the verse of the day or pick a road to memorize further. Roads are groups of at least five verses. Roads currently have 1 mode, the random hidden words mode. When you click the hide more button, Some words will be hidden.",
+                buttons: ["Cancel", "Next"]
+            }).then((next) => {
+                if (next) {
+              swal({ title: "Almost done!", button: "Start memorizing!", text: "Pressing the 'finish' button, will hide all words. (Pressing it again will reveal them) You can navigate between roads using the Previous and next buttons. You should be ready to start memorizing. After closing this, Scroll down and pick a road of your choosing." })
+                }
+            });
+        }
+    });
+    localStorage.setItem('namespace.visited', 1);
+} else {
+  console.log("Not noob.")
+   
+}
 const url = "https://beta.ourmanna.com/api/v1/get";
 
   const xhr = new XMLHttpRequest();

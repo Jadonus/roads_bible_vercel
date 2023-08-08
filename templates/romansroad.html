@@ -15,42 +15,57 @@
       Back
       <span class="mx-3 spinner-border spinner-border-sm" role="status" id="mySpinner" style="display: none;"></span>
     </a>
+<div class="d-flex justify-content-center"
+<button class="btn mx-auto"data-bs-toggle="collapse" data-bs-target="#demo"><i class="bi  h5 bi-info-circle"></i>
+</button>
+
+  </div>
+<div id="demo" class="collapse text-center">
+Verse info:
+Scripture quotations marked (NIV) are taken from the Holy Bible, New International Version®, NIV®. Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™ Used by permission of Zondervan. All rights reserved worldwide. www.zondervan.comThe “NIV” and “New International Version” are trademarks registered in the United States Patent and Trademark Office by Biblica, Inc.™
+Scripture quotations marked TPT are from The Passion Translation®. Copyright © 2017, 2018, 2020 by Passion & Fire Ministries, Inc. Used by permission. All rights reserved. ThePassionTranslation.com.
+</div>
+
   </div>
 </nav>
 <div class="text-center card mx-auto p-1 bg-body-secondary " style="width:80vw; border-width: 0px; font-size: 24px">
 <div class="card-body">
 
-<p id="sentence">For we all have sinned and are in need of the glory of God. Romans 3:23</p>
-<p id="sentence2">For sin’s meager wages is death,  but God’s lavish gift is life eternal, found in your union with our Lord Jesus, the Anointed One. Romans 6:23</p>
-<p id="sentence3">But Christ proved God’s passionate love for us by dying in our place while we were still lost and ungodly! Romans 5:8</p>
-<p id="sentence4">And what is God’s “living message”? It is the revelation of faith for salvation,  which is the message that we preach. For if you publicly declare with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will experience salvation.  Romans 10:9</p>
+<p id="sentence">For we all have sinned and are in need of the glory of God. Romans 3:23 (NIV)</p>
+<p id="sentence2">For sin’s meager wages is death,  but God’s lavish gift is life eternal, found in your union with our Lord Jesus, the Anointed One. Romans 6:23(NIV)</p>
+<p id="sentence3">But Christ proved God’s passionate love for us by dying in our place while we were still lost and ungodly! Romans 5:8(NIV)</p>
+<p id="sentence4">And what is God’s “living message”? It is the revelation of faith for salvation,  which is the message that we preach. For if you publicly declare with your mouth that Jesus is Lord and believe in your heart that God raised him from the dead, you will experience salvation.  Romans 10:9(NIV)</p>
 
-<p id="sentence5">The heart that believes in him receives the gift of the righteousness of God—and then the mouth confesses, resulting in salvation.  Romans 10:10</p>
+<p id="sentence5">The heart that believes in him receives the gift of the righteousness of God—and then the mouth confesses, resulting in salvation.  Romans 10:10(NIV)</p>
 </div>
 </div>
-<div class="d-flex justify-content-center">
-<div class="text-center rounded-pill bg-body-secondary btn-group m-5 p-2 ">
+<div class="d-flex justify-content-center bg-opacity-50  bg-body-tertiary fixed-bottom" style="">
+<div class="text-center  btn-group p-2 pb-5 rounded-top-5 ">
 <button id="incrementButton" class="btn tiny  mb-1">
-    <i class="ph ph-x-square h4"></i><br>Hide More</button>
+    <i class="ph ph-x-square h1"></i><br>Hide More</button>
 
 <button id="finishButton" class="btn tiny h6 mb-1">
-    <i class="ph ph-flag-checkered h4"></i><br>Finish verse</button>
+    <i class="ph ph-flag-checkered h1"></i><br>Finish verse</button>
 
 <button id="nextButton" class="btn tiny mb-1">
-    <i class="ph ph-arrow-square-right h4"></i><br>Next Verse</button>
+    <i class="ph ph-arrow-square-right h1"></i><br>Next Verse</button>
 
 
   <button 
     class="btn tiny mb-1" id="backButton">
-    <i class="ph ph-arrow-square-left h4"></i><br>Previous
+    <i class="ph ph-arrow-square-left h1"></i><br>Previous
 
   </button>
   </div>
 </div>
 <div class="progress-container">
-<div class="progress">
-  <div id="progressBar" class="progress-bar lrm-5" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+<div class="progress m-5 ">
+  <div id="progressBar" class="progress-bar lrm-5  " role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+
 </div>
+
+
+   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <style>
 nav{
   margin:0;
