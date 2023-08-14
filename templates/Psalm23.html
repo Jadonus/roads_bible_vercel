@@ -137,33 +137,11 @@
       font-size: 0.8rem;
     }
   </style>
-<script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1"></script>
 
   <script src="
 https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
 "></script>
   <script>
-if (typeof chrome !== 'undefined' && typeof chrome.cast !== 'undefined') {
-
-    const castButton = document.getElementById('cast-button');
-
-    castButton.addEventListener('click', () => {
-      const request = new chrome.cast.media.LoadRequest(
-        new chrome.cast.media.MediaInfo('{{ chromecast }}', 'text/html')
-      );
-      chrome.cast.requestSession(
-        session => {
-          session.loadMedia(request);
-        },
-        error => {
-          console.error('Error while requesting session:', error);
-        }
-      );
-    });
-} else {
-  console.error('Chrome Cast API is not available');
-}
-
     document.addEventListener('DOMContentLoaded', function () {
       // Get references to the link and spinner elements
       const link = document.getElementById('myLink');

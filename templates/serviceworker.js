@@ -1,37 +1,72 @@
-const cacheName = 'visited-pages';
+// Name of the cache
+const CACHE_NAME = 'my-app-cache-v1';
 
-self.addEventListener('install', async (event) => {
+// Files to cache
+const urlsToCache = [
+  '/',
+  '/dashboard',
+  '/login',
+  // Add more files and routes as needed
+];
+
+self.addEventListener('install', function(event) {
+  // Perform install steps
   event.waitUntil(
-    caches.open(cacheName).then((cache) => {
-      // Cache all of the pages that the user has visited so far.
-      const visitedPages = await fetch('/api/visited_pages');
-      const visitedPagesData = await visitedPages.json();
-      for (const page of visitedPagesData) {
-        cache.add(page);
-      }
-    })
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        console.log('Opened cache');
+        return cache.addAll(urlsToCache);
+      })
   );
 });
 
-self.addEventListener('fetch', async (event) => {
-  const request = event.request;
-
-  // If the request is for a page that has already been visited, serve it from the cache.
-  if (request.url.startsWith('/')) {
-    const cachedResponse = await caches.match(request);
-    if (cachedResponse) {
-      event.respondWith(cachedResponse);
-      return;
-    }
-  }
-
-  // Otherwise, fetch the resource from the network and cache it.
+self.addEventListener('fetch', function(event) {
   event.respondWith(
-    fetch(request).then((response) => {
-      caches.open(cacheName).then((cache) => {
-        cache.put(request, response);
-      });
-      return response;
+    caches.match(event.request)
+      .then(function(response) {
+        // Cache hit - return response
+        if (response) {
+          return response;
+        }
+        return fetch(event.request).then(
+          function(response) {
+            // Check if we received a valid response
+            if(!response || response.status !== 200 || response.type !== 'basic') {
+              return response;
+            }
+
+            // IMPORTANT: Clone the response. A response is a stream
+            // and because we want the browser to consume the response
+            // as well as the cache consuming the response, we need
+            // to clone it so we have two streams.
+            var responseToCache = response.clone();
+
+            caches.open(CACHE_NAME)
+              .then(function(cache) {
+                cache.put(event.request, responseToCache);
+              });
+
+            return response;
+          }
+        );
+      })
+    );
+});
+
+self.addEventListener('activate', function(event) {
+
+  var cacheWhitelist = [CACHE_NAME];
+
+  event.waitUntil(
+    caches.keys().then(function(cacheNames) {
+      return Promise.all(
+        cacheNames.map(function(cacheName) {
+          if (cacheWhitelist.indexOf(cacheName) === -1) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
     })
   );
 });
+
