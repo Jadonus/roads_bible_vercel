@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+<head>
+
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+{% load static %}
+
+<div class=" d-flex align-items-center justify-content-center vh-100">
+<div class="container blur rounded">
+
+<h1 class="text-center text-dark-emphasis">Give thanks to the lord for he is good; For his love endures forever. </h1>
+</div>
+</div>
+<style>
+    .blur {
+        backdrop-filter: blur(16px);
+        padding-bottom: 5vw;
+        padding-top: 5vw;
+
+    }
+    body {
+        background-size: cover;
+        background-image: url('{% static 'river.png' %}');
+    }
+</style>
+{% endblock %}
