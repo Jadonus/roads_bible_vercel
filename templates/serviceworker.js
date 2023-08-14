@@ -3,9 +3,6 @@ const CACHE_NAME = 'my-app-cache-v1';
 
 // Files to cache
 const urlsToCache = [
-  '/',
-  '/dashboard',
-  '/login',
   // Add more files and routes as needed
 ];
 
