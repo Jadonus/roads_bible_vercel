@@ -3,6 +3,7 @@
 {% block content %}
 
 {% load static %}
+<meta charset="utf-8">
  <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -16,6 +17,8 @@
 "https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js
 ">
   </script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
 <!-- Image and text -->
 <div class="alert alert-info alert-dismissible fade byebye" role="alert" id="toast">
 
@@ -31,10 +34,19 @@
 
   </a>
   <ul class="dropdown-menu">
-    <li><a class="dropdown-item" onclick="clearCacheAndReload()"id="update">Update</a></li>
-     <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
-    <li><a class="dropdown-item" href="">Request new road.</a></li>
-    <li><a class="dropdown-item" id="tourlink"onclick="welcome()" href="">Show welcome tour</a></li>
+    <li><a class="dropdown-item" onclick="clearCacheAndReload()"id="update"><i class="ph ph-clock-clockwise text-dark-emphasis"></i>
+
+Update</a></li>
+     <li><a class="dropdown-item" href="{% url 'logout' %}"> <i class="ph ph-sign-out text-dark-emphasis"></i>
+
+Logout</a></li>
+    <li> <a class="dropdown-item" onclick="request()"><i class="ph ph-pen-nib text-dark-emphasis"></i> Request new road.</a></li>
+    <li><a class="dropdown-item" id="tourlink"onclick="welcome()" href=""><i class="ph ph-hand-waving text-dark-emphasis"></i>
+
+Show welcome tour</a></li>
+<li> <a class="dropdown-item" href="https://buymeacoffee.com/jadonus"><i class="ph ph-hand-coins"></i>
+
+Donate</a></li>
   </ul>
 </div>
  
@@ -146,13 +158,17 @@ hr.rounded {
 }
 </style>
 <script>
+function request() {
+  window.location.href = "mailto:jadongearhart@gmail.com?subject=Roads feature request.";
+
+}
 document.getElementById('tourlink').addEventListener('click', function(event) {
     event.preventDefault(); // Prevent the default behavior (page refresh)
     welcome()
     })
 function welcome() {
 swal({
-        title: "Hey!",
+        title: "Hey! 👋",
         text: "Looks like it's your first visit! Here is a quick tour.",
         buttons: ["Cancel", "Start tour"]
     }).then((willDelete) => {
@@ -175,7 +191,7 @@ swal({
 var ls = localStorage.getItem('namespace.visited');
 if (ls == null) {
      swal({
-        title: "Hey!",
+        title: "Hey! &#128075",
         text: "Looks like it's your first visit! Here is a quick tour.",
         buttons: ["Cancel", "Start tour"]
     }).then((willDelete) => {
