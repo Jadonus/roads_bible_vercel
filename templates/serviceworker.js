@@ -4,7 +4,7 @@ const CACHE_NAME = 'my-app-cache-v2';
 
 // URLs to exclude from caching
 const excludedUrls = [
-  '/',
+  '{% url "/" %}',
   '/dashboard/',
   '/accounts/login/',
   '/accounts/logout/',
