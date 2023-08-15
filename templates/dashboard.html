@@ -37,7 +37,7 @@
     <li><a class="dropdown-item" onclick="clearCacheAndReload()"id="update"><i class="ph ph-clock-clockwise text-dark-emphasis"></i>
 
 Update</a></li>
-     <li><a class="dropdown-item" href="{% url 'logout' %}"> <i class="ph ph-sign-out text-dark-emphasis"></i>
+     <li><a class="dropdown-item" onclick="logout()"> <i class="ph ph-sign-out text-dark-emphasis"></i>
 
 Logout</a></li>
     <li> <a class="dropdown-item" onclick="request()"><i class="ph ph-pen-nib text-dark-emphasis"></i> Request new road.</a></li>
@@ -158,6 +158,7 @@ hr.rounded {
 }
 </style>
 <script>
+
 function request() {
   window.location.href = "mailto:jadongearhart@gmail.com?subject=Roads feature request.";
 
@@ -243,6 +244,13 @@ const arrayOfStrings = [
     "Verses to live by",
     
   ];
+
+ 
+
+function logout() {
+  clearCacheAndReload()
+  window.location = "{% url 'logout' %}"
+}
 function clearCacheAndReload() {
     
     console.log('Clicked on "Update" link');
