@@ -248,8 +248,9 @@ const arrayOfStrings = [
  
 
 function logout() {
+  console.log("update clicked")
   clearCacheAndReload()
-  window.location = "{% url 'logout' %}"
+  window.location = "{% url 'accounts/logout' %}"
 }
 function clearCacheAndReload() {
     
