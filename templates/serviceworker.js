@@ -4,6 +4,7 @@ const CACHE_NAME = 'my-app-cache-v2';
 
 // URLs to exclude from caching
 const excludedUrls = [
+  '/',
   '/dashboard/',
   '/accounts/login/',
   '/accounts/logout/',
@@ -25,9 +26,8 @@ workbox.routing.registerRoute(
   new workbox.strategies.StaleWhileRevalidate()
 );
 
-// Utility function to check if a URL is in the excluded URLs list
 function isExcludedUrl(url) {
   return excludedUrls.some(function (excludedUrl) {
-    return url.startsWith(excludedUrl);
+    return url === excludedUrl;
   });
 }
