@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&x$2rzcqf5w_jkx(zzz+u=99$(f^l^l*hw7f^wgi5cajc$92jp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "192.168.207.164", "www.roadsbible.com"]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
+EMAIL_USE_TLS = False 
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'jadongearhart@gmail.com' 
 EMAIL_HOST_PASSWORD = 'kmolelwgnxvxwiqr'
