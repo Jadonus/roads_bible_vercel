@@ -152,13 +152,13 @@ PWA_APP_ICONS = [
 ]
 PWA_APP_ICONS_APPLE = [
     {
-        'src': 'https://i.postimg.cc/SxpphzRp/road.png',
+        'src': '/static/roadspwa.png',
         'sizes': '160x160'
     }
 ]
 PWA_APP_SPLASH_SCREEN = [
     {
-        'src': 'https://i.postimg.cc/SxpphzRp/road.png',
+        'src': '/static/roadspwa.png',
         'media': '(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)'
     }
 ]
