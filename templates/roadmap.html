@@ -1,26 +1,76 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <body>
-    <h1 class="display-2 text-center m-5">Developement Road Map.</h1>
-   <h1 class="text-center"> <span class="badge bg-success rounded-circle p-4 m-5">Now</span></h1>
+<nav class="navbar navbar-expand-sm">
+  <div class="container-fluid">
+    <a class="d-flex align-items-center fs-4 ml-4  link-underline link-underline-opacity-0" id="myLink"
+      onclick="history.back()">
+      <i class="bi bi-chevron-left"></i>
+      Back
+      <span class="mx-3 spinner-border spinner-border-sm" role="status" id="mySpinner" style="display: none;"></span>
+    </a>
+    </div>
+</nav>
+<h1 class="display-2 text-center m-5">Developement Road Map.</h1>
 
-   <h1 class="text-center"> <span class="badge bg-success rounded-circle p-4 m-5">Now</span></h1>
+<div class="container text-center">
+  <div class="row mb-5">
+    <div class="col">
 
-   <h1 class="text-center"> <span class="badge bg-warning rounded-circle m-5 p-4">Upcoming</span></h1>
-   
-   <h1 class="text-center"> <span class="badge bg-warning rounded-circle m-5 p-4">Upcoming</span></h1>
-
-   <h1 class="text-center"> <span class="badge bg-warning rounded-circle m-5 p-4">Upcoming</span></h1>
-
-   <h1 class="text-center"> <span class="badge bg-secondary rounded-circle m-5 p-4">Not started</span></h1>
-
-   <h1 class="text-center"> <span class="badge bg-secondary rounded-circle m-5 p-4">Not started</span></h1>
-   <p></p>
-
+      <h1 class="btn bg-body-secondary fs-5 p-4 mb-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Phase 1</h1>
+    </div>
+    <div class="col">
+      
+      <h1 class="btn bg-body-secondary fs-5 p-4 mb-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">Phase 2</h1>
 
     </div>
+    <div class="col">
+      
+      <h1 class="btn bg-body-secondary fs-5 p-4 mb-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">Phase 3</h1>
+
+
+      
+    </div>
+    <div class="collapse"id="collapseExample2">
+    <p class="text-center" >Phase 2 is adding more advanced features mainly, and still destroying the bugs from the previous phase. Features planned for Phase 2:</p>
+    
+    <ul class="">
+        <li>More memorization modes, including printable flashcards!<br> Status: Not started ❌</li>
+
+        <li>User created roads <br> Status: Not started ❌</li>
+
+        <li>Continuing to make more roads, and making longer and more challenging ones <br> Status: In progress 🚧</li>
+    </ul>
 </div>
+ <div class="collapse"id="collapseExample">
+    <p class="text-center" >Phase 1 is the phase of getting everything out of beta. It is getting features made and bugs squashed. This is currently the phase Roads is in.<br>Features planned/already made in phase 1:</p>
+    
+    <ul class="">
+        <li>Basic functionality, signin, progress saving, and the basic memorization features.<br> Status: Done! ✅</li>
+
+        <li>Navigation and design of various pages: the dashboard, the homepage, and others.<br> Status: Done! ✅</li>
+
+        <li>Making at least 15 different roads, and making the experience of developing as streamlined as possible.<br> Status: In progress 🚧</li>
+    </ul>
+</div>
+<div class="collapse"id="collapseExample3">
+    <p class="text-center" >Phase 3 is what i call the endemic stage, where Phases end, and feature updates happen. This is when roads is mostly 'complete' as an app. The updates in this phase will fix issues and add many helpful features. Features planned for Phase 3:</p>
+    
+    <ul class="">
+        <li>Mobile app? <br> Status: Not started ❌</li>
+
+        <li>Who knows? <br> Status: Not started ❌</li>
+
+        <li>Who knows? <br> Status: Not started ❌</li>
+    </ul>
+</div>
+
+
+      <p class="text-center text-muted bg-indigo">Click on the buttons for more info</p>
+
 
 </body>
 <style>

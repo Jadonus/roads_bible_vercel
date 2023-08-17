@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<html>
+<head>
+
+<script src="https://unpkg.com/@phosphor-icons/web"></script>
+{% load static %}
+<body>
+<div class="d-flex justify-content-md-center align-items-center ">
+<h1 class=" bafs">🫖</h1>
+</div>
+
+<div class="d-flex justify-content-md-center align-items-center ">
+<h1 class="display-1">Whoops!</h1>
+</div>
+
+<div class="d-flex justify-content-md-center align-items-center ">
+<h2>Thats a 418. I am a teapot, sorry</h2>
+</div>
+<div>
+<div class="d-flex justify-content-md-center align-items-center ">
+<a class=" lead m-4 p-3" href="{% url 'home' %}">Go Home</a>
+
+</div>
+<body>
+<style>
+.bafs {
+font-size: 20em;
+}
+{% endblock %}
