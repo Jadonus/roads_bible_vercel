@@ -1,1 +1,23 @@
-self.importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js'); workbox.routing.registerRoute(({ url }) => url.origin === 'https://www.roadsbible.com/roads/', new workbox.strategies.StaleWhileRevalidate({ cacheName: 'roadscache1.0', plugins: [new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [200], }),], })); workbox.routing.registerRoute(({ url }) => url.origin === self.location.origin && url.pathname.startsWith('/static/'), new workbox.strategies.StaleWhileRevalidate({ cacheName: 'staticcache1.0', plugins: [new workbox.cacheableResponse.CacheableResponsePlugin({ statuses: [200], }),], }));
+// Import Workbox from CDN
+importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
+
+// Set up Workbox
+workbox.setConfig({
+  debug: true, // Enable logging
+});
+
+// Precache your assets (optional)
+workbox.precaching.precacheAndRoute([]);
+
+// Cache routes starting with /roads and /static
+workbox.routing.registerRoute(
+  new RegExp('/(roads|static)/'),
+  new workbox.strategies.CacheFirst({
+    cacheName: 'my-cache', // Change this to a unique name
+    plugins: [
+      new workbox.cacheableResponse.CacheableResponsePlugin({
+        statuses: [0, 200], // Cache responses with these status codes
+      }),
+    ],
+  })
+);

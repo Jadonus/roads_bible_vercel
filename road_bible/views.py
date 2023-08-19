@@ -1,6 +1,12 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import random
+import json
+import requests
+from django.template.defaultfilters import slugify
+import os
+
+from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
 from django.http import FileResponse, HttpRequest, HttpResponse
 from django.views.decorators.cache import cache_control
@@ -18,22 +24,33 @@ from .forms import ReplaceWordsForm
 import re
 @login_required
 def my_view(request):
-    output = new_paragraph
-    context = {'output': output}
+    json_directory = 'static/roads'  # Update this to the directory containing JSON files
+
+    # Get a list of all JSON files in the directory
+    json_files = [file for file in os.listdir(json_directory) if file.endswith('.json')]
+
+    # Initialize a list to store parsed data for all files
+    parsed_data = []
+
+    for json_file in json_files:
+        with open(os.path.join(json_directory, json_file), 'r') as file:
+            data = json.load(file)
+            parsed_data.extend(data)  # Extend the list with data from the current file
+
+    context = {
+        'parsed_data': parsed_data,
+    }
+
     return render(request, 'dashboard.html', context)
 
 
-def replace_random_words(paragraph, replacement, num_words):
-    words = re.findall(r'\w+', paragraph)
-    random_words = random.sample(words, num_words)
-    for word in random_words:
-        paragraph = re.sub(r'\b{}\b'.format(word), replacement, paragraph)
-    return paragraph
 
-paragraph = "For God So Loved The world, he gave his only son, so that whoever beleives in him should not parish, but have eternal life."
-replacement_word = "___"
-num_words_to_replace=3
-new_paragraph = replace_random_words(paragraph, replacement_word, num_words_to_replace)
+
+
+
+
+
+
 @require_GET
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # one day
 def favicon(request: HttpRequest) -> HttpResponse:
@@ -73,6 +90,9 @@ def save_progress(request):
         # Your implementation may vary based on your project's structure.
         return JsonResponse({'success': True})
     return JsonResponse({'success': False})
+
+
+
 def restore_progress(request):
     if request.method == 'GET' and request.user.is_authenticated:
         # Retrieve the user's progress from the database or data store
@@ -82,4 +102,92 @@ def restore_progress(request):
         return JsonResponse({'sentence_index': sentence_index})
     return JsonResponse({'sentence_index': 0})
 
+def adjust_verse_number(book_id, chapter, verse_number):
+    book_id = int(book_id)
+    chapter = int(chapter)
+    verse_number = int(verse_number)
+    print(book_id)
+    print(chapter)
+    print(verse_number)
+    adjusted_number = str(book_id * 1000000 + chapter * 1000 + verse_number)
+    ads = str(adjusted_number)
+    return ads 
+    print(ads)
 
+def verses_view(request, group_name):
+    json_file_path = f'static/roads/{group_name}.json'
+    with open(json_file_path, 'r') as json_file:
+        verses_info = json.load(json_file)
+        print("Parsed JSON:", verses_info)
+
+    title = 'Title not found'
+    img = 'No image found'
+
+    # Loop through each verse info and retrieve the title
+    for verse_info in verses_info:
+        title = verse_info.get('title')
+
+        imgname = verse_info.get('img')
+        if title and img:
+            break
+    # Initialize an empty list to store retrieved verses
+    retrieved_verses = []
+    gradient = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
+    # Logic to make a gradient title image.
+    img = Image.open(gradient)
+
+    msg = title
+    font = ImageFont.truetype('Arial.ttf', 170)
+
+# Get text dimensions using ImageFont.getsize
+    text_width, text_height = font.getsize(msg)
+
+# Get image dimensions
+    image_width, image_height = img.size
+
+# Create a drawing object
+    draw = ImageDraw.Draw(img)
+
+# Calculate the starting point for the centered text
+    x = (image_width - text_width) // 2
+    y = (image_height - text_height) // 2
+
+# Draw the text at the centered position
+    draw.text((x, y), msg, font=font, fill=(255, 255, 255))
+    image_path = os.path.join(settings.STATIC_ROOT, imgname)
+
+    img.save(image_path)
+    #
+    ##
+    #
+    # . API grabbing and such...
+    #
+    #
+
+    # API integration: Loop through each verse info and retrieve the text
+    api_base_url = 'https://bible-go-api.rkeplin.com/v1/books/1/chapters/1/{verse_id}?translation=NIV'
+    for verse_info in verses_info:
+        verse_id = adjust_verse_number(
+            verse_info['book_id'],
+            verse_info['chapter'],
+            verse_info['verse_number']
+        )
+        api_url = api_base_url.format(verse_id=verse_id)
+        print(api_url)
+        api_response = requests.get(api_url)
+        print("API Response:", api_response.text)
+
+        api_data = api_response.json()
+        print("API Data:", api_data)
+
+        verse_text = api_data.get('verse', 'Verse not found')
+        print("Verse Text:", verse_text)
+
+        retrieved_verses.append(verse_text)
+
+    context = {
+        'group_name': group_name,
+        'verses': retrieved_verses,
+    }
+
+    return render(request, 'defaultroadload.html', context)

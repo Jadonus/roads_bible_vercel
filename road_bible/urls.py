@@ -28,6 +28,8 @@ from . import views
 
 from django.contrib.auth import views as auth_views
 from accounts.views import ResetPasswordView
+app_name = 'road_bible'
+
 urlpatterns = [
 
     path('admin/clearcache/', include('clearcache.urls')),
@@ -65,4 +67,8 @@ urlpatterns = [
     path("roads/chromecast", TemplateView.as_view(template_name="chromecast.html"), name="chromecast"),
     path("requestroad", TemplateView.as_view(template_name="requestroad.html"), name="requestroad"),
     path("roads/romans", TemplateView.as_view(template_name="romansroad.html"), name="romans"),
+    path('roads/<str:group_name>/', views.verses_view, name='verses_view'),
+
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

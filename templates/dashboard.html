@@ -121,6 +121,21 @@ Development roadmap</a></li>
   <a class=" btn btn-primary stretched-link" href="{% url 'Psalm95' %}">Start memorizing</a>
   </div>
 </div>
+{% for verse in parsed_data %}
+  {% if verse.url %}
+
+<div id="{{ verse.title }}" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+  <img src="{% static verse.img %}" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{ verse.title }}</h5>
+    <p class="card-text">{{ verse.description }}</p>
+
+    <a class="btn btn-primary stretched-link" href="{{ verse.url }}">Start memorizing</a>
+  </div>
+</div>
+  {% endif %}
+
+{% endfor %}
 
 </div>
 <style>
@@ -160,6 +175,8 @@ hr.rounded {
   display: block
 }
 </style>
+
+{% for verse in parsed_data %}
 <script>
 
 function request() {
@@ -239,12 +256,15 @@ const url = "https://beta.ourmanna.com/api/v1/get";
   };
 
   xhr.send();
+
+
 const arrayOfStrings = [
     "Psalm100",
     "romans-road",
     "Psalm23",
     "Psalm95",
     "Verses to live by",
+    "{{ verse.title }}"
     
   ];
 
@@ -436,6 +456,8 @@ if (isIOS() && !isPWA()) {
   showToast();
 }
 </script>
+
+{% endfor %}
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init();
