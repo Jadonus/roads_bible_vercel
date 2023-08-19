@@ -134,29 +134,29 @@ def verses_view(request, group_name):
     retrieved_verses = []
     gradient = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
     # Logic to make a gradient title image.
-    img = Image.open(gradient)
+   # img = Image.open('gradient.jpg')
 
-    msg = title
-    font = ImageFont.truetype('Arial.ttf', 170)
+   # msg = title
+   # font = ImageFont.truetype('Arial.ttf', 170)
 
 # Get text dimensions using ImageFont.getsize
-    text_width, text_height = font.getsize(msg)
+#    text_width, text_height = font.getsize(msg)
 
 # Get image dimensions
-    image_width, image_height = img.size
+#    image_width, image_height = img.size
 
 # Create a drawing object
-    draw = ImageDraw.Draw(img)
+#    draw = ImageDraw.Draw(img)
 
 # Calculate the starting point for the centered text
-    x = (image_width - text_width) // 2
-    y = (image_height - text_height) // 2
+#    x = (image_width - text_width) // 2
+#    y = (image_height - text_height) // 2
 
 # Draw the text at the centered position
-    draw.text((x, y), msg, font=font, fill=(255, 255, 255))
-    image_path = os.path.join(settings.STATIC_ROOT, imgname)
+#    draw.text((x, y), msg, font=font, fill=(255, 255, 255))
+#    image_path = os.path.join(settings.STATIC_ROOT, imgname)
 
-    img.save(image_path)
+#    img.save(image_path)
     #
     ##
     #
