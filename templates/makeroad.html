@@ -14,15 +14,20 @@
 <div class="lofm"></div>
 <h1 class="ph ph-pen text-center bafs"></h1>
 <p class="text-center m-5 lead">Enter in your verses now, try to keep them short so as not to fill the screen with text</p>
-<div class="align-items-center justify-content-center d-flex " id="form">
+<div class=" " id="form">
 
 <div class="input-group mb-3">
   <span class="input-group-text" id="basic-addon1"><i class="ph ph-feather"></i></span>
 
     <input class="form-control " placeholder="Name of your road." id="nameInput"></input>
 </div>
-</div>
 
+<div class="input-group mb-3">
+  <span class="input-group-text" id="basic-addon1"><i class="ph ph-feather"></i></span>
+
+    <input class="form-control " placeholder="Description of your road." id="descInput"></input>
+
+</div>
     <div id="bookSuggestions" class="suggestions bg-body-secondary rounded ml-5 mb-2" style="width: 7em"></div>
 <div class="input-group flex-nowrap mb-5 ml-1 mr-1">
 
@@ -99,34 +104,51 @@ bookSuggestions.addEventListener('click', function(event) {
 });
 
 const verseData = [];
+let firstVerseAdded = false; // Flag to track if the first verse has been added
+let finalInput = ''; // Define finalInput outside the click event listener
 
 document.getElementById('addVerseBtn').addEventListener('click', () => {
-  const bookInput = document.getElementById('bookInput').value.toLowerCase();
+  const bookInputValue = document.getElementById('bookInput').value.toLowerCase();
   const chapterInput = parseInt(document.getElementById('chapterInput').value);
   const verseNumberInput = parseInt(document.getElementById('verseNumberInput').value);
-  const nameInput = document.getElementById('nameInput').value;
+  const nameInputValue = document.getElementById('nameInput').value;
+  const desc = document.getElementById('descInput').value
 
-  const bookId = bookNumberMapping[bookInput];
-  if (!isNaN(bookId) && chapterInput > 0 && verseNumberInput > 0 && nameInput) {
+  // Assign the value to finalInput
+  finalInput = nameInputValue.replace(/\s/g, "@");
+
+  const bookId = bookNumberMapping[bookInputValue];
+
+  if (!firstVerseAdded) {
+    firstVerseAdded = true; // Mark the first verse as added
+
     verseData.push({
       book_id: bookId,
       chapter: chapterInput,
       verse_number: verseNumberInput,
-      title: nameInput,
-      url: `/roads/${nameInput.replace(/\s+/g, '_')}`,
-      img: `${nameInput.replace(/\s+/g, '_')}.png`
+      title: nameInputValue,
+      url: `/roads/${finalInput}`,
+      img: `${finalInput}.png`,
+      description: `${desc}`
     });
-
-    const verseList = document.getElementById('verseList');
-    const verseListItem = document.createElement('li');
-    verseListItem.textContent = `${bookInput} ${chapterInput}:${verseNumberInput}`;
-    verseList.appendChild(verseListItem);
-
-    // Clear input fields
-    document.getElementById('bookInput').value = '';
-    document.getElementById('chapterInput').value = '';
-    document.getElementById('verseNumberInput').value = '';
+  } else {
+    verseData.push({
+      book_id: bookId,
+      chapter: chapterInput,
+      verse_number: verseNumberInput,
+      title: nameInputValue
+    });
   }
+
+  const verseList = document.getElementById('verseList');
+  const verseListItem = document.createElement('li');
+  verseListItem.textContent = `${bookInputValue} ${chapterInput}:${verseNumberInput}`;
+  verseList.appendChild(verseListItem);
+
+  // Clear input fields
+  document.getElementById('bookInput').value = '';
+  document.getElementById('chapterInput').value = '';
+  document.getElementById('verseNumberInput').value = '';
 });
 
 document.getElementById('downloadJsonBtn').addEventListener('click', () => {
@@ -139,9 +161,7 @@ document.getElementById('downloadJsonBtn').addEventListener('click', () => {
   const blob = new Blob([jsonData], { type: 'application/json' });
   const url = URL.createObjectURL(blob);
 
-  const originalString = nameInput.value;
-  const finalInput = originalString.replace(/\s/g, "");
-  const jsonFileName = finalInput + '.json';
+  const jsonFileName = `${finalInput}.json`; // Use finalInput for the JSON file name
 
   const a = document.createElement('a');
   a.href = url;

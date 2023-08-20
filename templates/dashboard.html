@@ -19,6 +19,7 @@
   </script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
+
 <!-- Image and text -->
 <div class="alert alert-info alert-dismissible fade byebye" role="alert" id="toast">
 
@@ -40,7 +41,7 @@ Update</a></li>
      <li><a class="dropdown-item" onclick="logout()"> <i class="ph ph-sign-out text-dark-emphasis"></i>
 
 Logout</a></li>
-    <li> <a class="dropdown-item" onclick="request()"><i class="ph ph-pen-nib text-dark-emphasis"></i> Request new road.</a></li>
+    <li> <a class="dropdown-item" href="/makeroad"><i class="ph ph-pen-nib text-dark-emphasis"></i> Make your own road.</a></li>
     <li><a class="dropdown-item" id="tourlink"onclick="welcome()" href=""><i class="ph ph-hand-waving text-dark-emphasis"></i>
 
 Show welcome tour</a></li>
@@ -176,9 +177,9 @@ hr.rounded {
 }
 </style>
 
-{% for verse in parsed_data %}
 <script>
 
+console.log('{{ verse.title }}')
 function request() {
   window.location.href = "mailto:jadongearhart@gmail.com?subject=Roads feature request.";
 
@@ -257,16 +258,19 @@ const url = "https://beta.ourmanna.com/api/v1/get";
 
   xhr.send();
 
-
-const arrayOfStrings = [
+var arrayOfStrings = [
     "Psalm100",
     "romans-road",
     "Psalm23",
     "Psalm95",
     "Verses to live by",
-    "{{ verse.title }}"
-    
-  ];
+    {% for verse in parsed_data %} 
+    "{{ verse.title }}", {% endfor %}
+
+
+];
+
+
 
  
 
@@ -456,8 +460,6 @@ if (isIOS() && !isPWA()) {
   showToast();
 }
 </script>
-
-{% endfor %}
 <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script>
     AOS.init();
