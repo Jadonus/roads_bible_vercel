@@ -45,7 +45,8 @@
 
         <button id="finishButton" class="btn tiny h6 mb-1">
             <i class="ph ph-flag-checkered h1"></i><br>Finish verse</button>
-
+<button id="undoButton" class="btn tiny mb-1">
+            <i class="bi bi-arrow-counterclockwise h1"></i><br>Undo</button>
         <button id="nextButton" class="btn tiny mb-1">
             <i class="ph ph-arrow-square-right h1"></i><br>Next Verse</button>
 
@@ -111,345 +112,247 @@
 https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
 "></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Get references to the link and spinner elements
-            const link = document.getElementById('myLink');
-            const spinner = document.getElementById('mySpinner');
+       document.addEventListener('DOMContentLoaded', function () {
+    const link = document.getElementById('myLink');
+    const spinner = document.getElementById('mySpinner');
 
-            // Attach click event listener to the link
-            link.addEventListener('click', function () {
-                // Show the spinner
-                spinner.style.display = 'block';
+    link.addEventListener('click', function () {
+        spinner.style.display = 'block';
 
-                // Simulate some asynchronous task
-                setTimeout(function () {
-                    // Hide the spinner after the task is completed
-                    spinner.style.display = 'none';
-                }, 2000); // Replace this with your actual task
-            });
+        setTimeout(function () {
+            spinner.style.display = 'none';
+        }, 2000);
+    });
+});
+
+var sentences = document.querySelectorAll("p[id^='sentence']");
+var currentSentenceIndex = 0;
+var hiddenWordIndices = [];
+var hideButton = document.getElementById("incrementButton");
+var nextButton = document.getElementById("nextButton");
+var finishButton = document.getElementById("finishButton");
+var progressBar = document.getElementById("progressBar");
+
+hideButton.addEventListener('click', function () {
+    hideRandomWords(3);
+}, true);
+
+nextButton.addEventListener('click', function () {
+    moveToNextSentence();
+    var username = "Anonymous";
+    saveUserProgress(username, currentSentenceIndex);
+}, true);
+
+var finishButtonClicks = 0;
+
+finishButton.addEventListener('click', function () {
+    finishButtonClicks++;
+    if (finishButtonClicks === 1) {
+        hideAllWords();
+    } else if (finishButtonClicks === 2) {
+        revealAllWords();
+
+        var randomIndices = [];
+
+        isHidden = false;
+
+        finishButtonClicks = 0;
+    }
+}, true);
+
+function hideRandomWords(numWords) {
+    var currentSentence = sentences[currentSentenceIndex];
+    var sentenceText = currentSentence.textContent;
+
+    var words = sentenceText.split(" ");
+
+    var visibleWordIndices = words
+        .map(function (_, index) {
+            return index;
+        })
+        .filter(function (index) {
+            return hiddenWordIndices.indexOf(index) === -1;
         });
-        var sentences = document.querySelectorAll("p[id^='sentence']");
-        var currentSentenceIndex = 0;
-        var hiddenWordIndices = [];
-        // Other JavaScript code...
 
-        // Function to save the user's progress using AJAX
-        var sentences = document.querySelectorAll("p[id^='sentence']");
-        var currentSentenceIndex = 0;
-        var hiddenWordIndices = [];
-        var hideButton = document.getElementById("incrementButton"); // Get the hide button element
-        var nextButton = document.getElementById("nextButton"); // Get the next button element
-        var finishButton = document.getElementById("finishButton"); // Get the finish button element
-        var progressBar = document.getElementById("progressBar"); // Get the progress bar element
+    if (visibleWordIndices.length === 0) {
+        console.log("No visible words left to hide.");
+        hideButton.disabled = true;
+        return;
+    }
 
-        hideButton.addEventListener('click', function () {
-            hideRandomWords(3);
-        }, true);
+    numWords = Math.min(numWords, visibleWordIndices.length);
 
-        nextButton.addEventListener('click', function () {
-            moveToNextSentence();
-            var username = "Anonymous"; // You should get the actual username from your Django backend if the user is authenticated.
-            saveUserProgress(username, currentSentenceIndex);
-        }, true);
+    var randomIndices = [];
+    while (randomIndices.length < numWords && visibleWordIndices.length > 0) {
+        var randomIndex = Math.floor(Math.random() * visibleWordIndices.length);
+        var randomVisibleIndex = visibleWordIndices[randomIndex];
+        randomIndices.push(randomVisibleIndex);
+        visibleWordIndices.splice(randomIndex, 1);
+    }
 
-        var finishButtonClicks = 0; // Variable to track the number of finish button clicks
+    hiddenWordIndices = hiddenWordIndices.concat(randomIndices);
 
-        finishButton.addEventListener('click', function () {
-            finishButtonClicks++;
-            if (finishButtonClicks === 1) {
-                hideAllWords();
-            } else if (finishButtonClicks === 2) {
-                revealAllWords();
+    for (var i = 0; i < words.length; i++) {
+        if (hiddenWordIndices.indexOf(i) !== -1) {
+            words[i] = '<span class="hide-word">' + words[i] + "</span>";
+        }
+    }
 
-                var randomIndices = [];
+    currentSentence.innerHTML = words.join(" ");
 
-                isHidden = false;
+    if (hiddenWordIndices.length === words.length) {
+        hideButton.disabled = true;
+    }
+}
 
-                finishButtonClicks = 0; // Reset the click counter
+function hideAllWords() {
+    var currentSentence = sentences[currentSentenceIndex];
+    var words = currentSentence.textContent.split(" ");
+
+    hiddenWordIndices = [];
+    for (var i = 0; i < words.length; i++) {
+        hiddenWordIndices.push(i);
+        words[i] = '<span class="hide-word">' + words[i] + "</span>";
+    }
+
+    currentSentence.innerHTML = words.join(" ");
+    hideButton.disabled = true;
+}
+
+function revealAllWords() {
+    var currentSentence = sentences[currentSentenceIndex];
+    var words = currentSentence.getElementsByTagName("span");
+
+    for (var i = 0; i < words.length; i++) {
+        words[i].classList.remove("hide-word");
+    }
+
+    hideButton.disabled = false;
+}
+
+function moveToNextSentence() {
+    currentSentenceIndex++;
+
+    if (currentSentenceIndex >= sentences.length) {
+        console.log("You have finished all the sentences.");
+        currentSentenceIndex = sentences.length - 1;
+        hideButton.disabled = true;
+        nextButton.disabled = true;
+        finishButton.disabled = true;
+        swal("You Finished this road!", {
+            title: "Good job!",
+            icon: "success",
+            buttons: {
+                catch: {
+                    text: "Back to dashboard",
+                    value: "catch",
+                },
+                text: "try again",
+            },
+            allowOutsideClick: false
+        }).then((value) => {
+            switch (value) {
+                case "catch":
+                    window.location.href = "{% url 'dashboard' %}";
+                    break;
+                default:
+                    location.reload();
             }
-        }, true);
+        });
+        return;
+    }
 
-        function hideRandomWords(numWords) {
-            var currentSentence = sentences[currentSentenceIndex];
-            var sentenceText = currentSentence.textContent;
+    hiddenWordIndices = [];
+    hideButton.disabled = false;
+    nextButton.disabled = false;
+    finishButton.disabled = false;
 
-            var words = sentenceText.split(" ");
+    var currentSentence = sentences[currentSentenceIndex - 1];
+    currentSentence.style.display = "none";
 
-            var visibleWordIndices = words
-                .map(function (_, index) {
-                    return index;
-                })
-                .filter(function (index) {
-                    return hiddenWordIndices.indexOf(index) === -1;
-                });
+    var nextSentence = sentences[currentSentenceIndex];
+    nextSentence.style.display = "block";
 
-            if (visibleWordIndices.length === 0) {
-                console.log("No visible words left to hide.");
-                hideButton.disabled = true; // Disable the hide button if there are no visible words
-                return;
-            }
+    var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
+    progressBar.style.width = progressWidth + "%";
+    progressBar.setAttribute("aria-valuenow", progressWidth);
+}
 
-            // Adjust numWords to ensure it doesn't exceed the number of visible words
-            numWords = Math.min(numWords, visibleWordIndices.length);
+for (var i = 1; i < sentences.length; i++) {
+    sentences[i].style.display = "none";
+}
 
-            var randomIndices = [];
-            while (randomIndices.length < numWords && visibleWordIndices.length > 0) {
-                var randomIndex = Math.floor(Math.random() * visibleWordIndices.length);
-                var randomVisibleIndex = visibleWordIndices[randomIndex];
-                randomIndices.push(randomVisibleIndex);
-                visibleWordIndices.splice(randomIndex, 1);
-            }
+var USERNAME_COOKIE_NAME = "user_progress_username";
+var SENTENCE_COOKIE_NAME = "user_progress_sentence";
 
-            hiddenWordIndices = hiddenWordIndices.concat(randomIndices);
+function saveUserProgress(username, sentenceIndex) {
+    Cookies.set(USERNAME_COOKIE_NAME, username, { expires: 7 });
+    Cookies.set(SENTENCE_COOKIE_NAME, sentenceIndex);
+}
 
-            for (var i = 0; i < words.length; i++) {
-                if (hiddenWordIndices.indexOf(i) !== -1) {
-                    words[i] = '<span class="hide-word">' + words[i] + "</span>";
-                }
-            }
+function restoreUserProgress() {
+    var username = Cookies.get(USERNAME_COOKIE_NAME);
+    var sentenceIndex = Cookies.get(SENTENCE_COOKIE_NAME);
 
-            currentSentence.innerHTML = words.join(" ");
+    if (username && sentenceIndex) {
+        currentSentenceIndex = parseInt(sentenceIndex);
 
-            console.log("Total Hidden Words in Sentence " + (currentSentenceIndex + 1) + ": " + hiddenWordIndices.length);
-
-            if (hiddenWordIndices.length === words.length) {
-                hideButton.disabled = true;
+        for (var i = 0; i < sentences.length; i++) {
+            if (i === currentSentenceIndex) {
+                sentences[i].style.display = "block";
+            } else {
+                sentences[i].style.display = "none";
             }
         }
 
-        function hideAllWords() {
-            var currentSentence = sentences[currentSentenceIndex];
-            var words = currentSentence.textContent.split(" ");
+        var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
+        progressBar.style.width = progressWidth + "%";
+        progressBar.setAttribute("aria-valuenow", progressWidth);
+    }
+}
 
-            hiddenWordIndices = [];
-            for (var i = 0; i < words.length; i++) {
-                hiddenWordIndices.push(i);
-                words[i] = '<span class="hide-word">' + words[i] + "</span>";
-            }
+var backButton = document.getElementById("backButton");
 
-            currentSentence.innerHTML = words.join(" ");
-            hideButton.disabled = true;
-        }
+backButton.addEventListener('click', function () {
+    moveToPreviousSentence();
+}, true);
 
-        function revealAllWords() {
-            var currentSentence = sentences[currentSentenceIndex];
-            var words = currentSentence.getElementsByTagName("span");
+function moveToPreviousSentence() {
+    currentSentenceIndex--;
 
-            for (var i = 0; i < words.length; i++) {
-                words[i].classList.remove("hide-word");
-            }
+    if (currentSentenceIndex < 0) {
+        console.log("You are already at the beginning.");
+        currentSentenceIndex = 0;
+        backButton.disabled = true;
+        return;
+    }
 
-            hideButton.disabled = false;
+    hiddenWordIndices = [];
+    hideButton.disabled = false;
+    nextButton.disabled = false;
+    finishButton.disabled = false;
 
-        }
+    if (currentSentenceIndex + 1 < sentences.length) {
+        var currentSentence = sentences[currentSentenceIndex + 1];
+        currentSentence.style.display = "none";
+    }
 
-        function moveToNextSentence() {
-            currentSentenceIndex++;
+    var previousSentence = sentences[currentSentenceIndex];
+    previousSentence.style.display = "block";
 
-            if (currentSentenceIndex >= sentences.length) {
-                console.log("You have finished all the sentences.");
-                hideButton.disabled = true;
-                nextButton.disabled = true;
-                swal("You Finished this road!", {
-                    title: "Good job!",
-                    icon: "success",
-                    buttons: {
-                        catch: {
-                            text: "Back to dashboard",
-                            value: "catch",
-                        },
-                        text: "try again",
-                    },
-                })
-                    .then((value) => {
-                        switch (value) {
+    var progressWidth = (currentSentenceIndex / (sentences.length - 1)) * 100;
+    progressBar.style.width = progressWidth + "%";
+    progressBar.setAttribute("aria-valuenow", progressWidth);
 
+    backButton.disabled = (currentSentenceIndex === 0);
+}
 
+// Hide all sentences except the first one
+for (var i = 1; i < sentences.length; i++) {
+    sentences[i].style.display = "none";
+}
 
-                            case "catch":
-                                window.location.href = "{% url 'dashboard' %}";
-                                break;
-
-                            default:
-
-                                location.reload();
-                        }
-                    }); finishButton.disabled = true;
-                return;
-            }
-
-
-            // Reset hiddenWordIndices array and enable the buttons
-            hiddenWordIndices = [];
-            hideButton.disabled = false;
-            nextButton.disabled = false;
-            finishButton.disabled = false;
-
-            // Hide the current sentence
-            var currentSentence = sentences[currentSentenceIndex - 1];
-            currentSentence.style.display = "none";
-
-            // Show the next sentence
-            var nextSentence = sentences[currentSentenceIndex];
-            nextSentence.style.display = "block";
-
-            // Update the progress bar
-            var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
-            progressBar.style.width = progressWidth + "%";
-            progressBar.setAttribute("aria-valuenow", progressWidth);
-        }
-
-
-        // Hide all sentences except the first one
-        for (var i = 1; i < sentences.length; i++) {
-            sentences[i].style.display = "none";
-        }
-
-        var USERNAME_COOKIE_NAME = "user_progress_username";
-        var SENTENCE_COOKIE_NAME = "user_progress_sentence";
-
-        function saveUserProgress(username, sentenceIndex) {
-            Cookies.set(USERNAME_COOKIE_NAME, username, { expires: 7 }); // Set the username cookie to expire in 7 days
-            Cookies.set(SENTENCE_COOKIE_NAME, sentenceIndex);
-        }
-
-        function restoreUserProgress() {
-            var username = Cookies.get(USERNAME_COOKIE_NAME);
-            var sentenceIndex = Cookies.get(SENTENCE_COOKIE_NAME);
-
-            if (username && sentenceIndex) {
-                // Restore the user's progress
-                currentSentenceIndex = parseInt(sentenceIndex);
-
-                // Find the sentence element and hide all sentences except the current one
-                for (var i = 0; i < sentences.length; i++) {
-                    if (i === currentSentenceIndex) {
-                        sentences[i].style.display = "block";
-                    } else {
-                        sentences[i].style.display = "none";
-                    }
-                }
-
-                // Update the progress bar
-                var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
-                progressBar.style.width = progressWidth + "%";
-                progressBar.setAttribute("aria-valuenow", progressWidth);
-            }
-        }
-
-        var backButton = document.getElementById("backButton"); // Get the back button element
-
-        backButton.addEventListener('click', function () {
-            moveToPreviousSentence();
-        }, true);
-
-        function moveToPreviousSentence() {
-            currentSentenceIndex--;
-
-            if (currentSentenceIndex < 0) {
-                console.log("You are already at the beginning.");
-                currentSentenceIndex = 0; // Make sure the index doesn't go below 0
-                backButton.disabled = true;
-                return;
-            }
-
-            // Reset hiddenWordIndices array and enable the buttons
-            hiddenWordIndices = [];
-            hideButton.disabled = false;
-            nextButton.disabled = false;
-            finishButton.disabled = false;
-
-            // Hide the current sentence if it exists
-            if (currentSentenceIndex + 1 < sentences.length) {
-                var currentSentence = sentences[currentSentenceIndex + 1];
-                currentSentence.style.display = "none";
-            }
-
-            // Show the previous sentence
-            var previousSentence = sentences[currentSentenceIndex];
-            previousSentence.style.display = "block";
-
-            // Update the progress bar
-            var progressWidth = (currentSentenceIndex / (sentences.length - 1)) * 100;
-            progressBar.style.width = progressWidth + "%";
-            progressBar.setAttribute("aria-valuenow", progressWidth);
-
-            // Enable/disable the back button based on the current sentence index
-            backButton.disabled = (currentSentenceIndex === 0);
-        }
-        function moveToNextSentence() {
-            currentSentenceIndex++;
-
-            if (currentSentenceIndex >= sentences.length) {
-                console.log("You have finished all the sentences.");
-                currentSentenceIndex = sentences.length - 1; // Make sure the index doesn't go beyond the last sentence
-                hideButton.disabled = true;
-                nextButton.disabled = true;
-                finishButton.disabled = true;
-                swal("You Finished this road!", {
-
-                    title: "Good job!",
-                    icon: "success",
-
-                    buttons: {
-                        catch: {
-                            text: "Back to dashboard",
-                            value: "catch",
-                        },
-                        text: "try again",
-                    },
-
-                    allowOutsideClick: false
-                })
-                    .then((value) => {
-                        switch (value) {
-
-
-
-                            case "catch":
-                                window.location.href = "{% url 'dashboard' %}";
-                                break;
-
-                            default:
-
-                                location.reload();
-                        }
-                    });
-                return;
-            }
-
-            // Reset hiddenWordIndices array and enable the buttons
-            hiddenWordIndices = [];
-            hideButton.disabled = false;
-            nextButton.disabled = false;
-            finishButton.disabled = false;
-
-            // Hide the current sentence if it exists
-            if (currentSentenceIndex - 1 >= 0) {
-                var currentSentence = sentences[currentSentenceIndex - 1];
-                currentSentence.style.display = "none";
-            }
-
-            // Show the next sentence
-            var nextSentence = sentences[currentSentenceIndex];
-            nextSentence.style.display = "block";
-
-            // Update the progress bar
-            var progressWidth = (currentSentenceIndex / (sentences.length - 1)) * 100;
-            progressBar.style.width = progressWidth + "%";
-            progressBar.setAttribute("aria-valuenow", progressWidth);
-
-            // Enable/disable the back button based on the current sentence index
-            backButton.disabled = (currentSentenceIndex === 0);
-        }
-
-        // Hide all sentences except the first one
-        for (var i = 1; i < sentences.length; i++) {
-            sentences[i].style.display = "none";
-        }
-
-        // Check for an existing localStorage entry and restore the user's progress
-        restoreUserProgress();
-
+// Check for an existing localStorage entry and restore the user's progress
+restoreUserProgress();
     </script>
     {% endblock %}
