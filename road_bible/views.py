@@ -132,7 +132,7 @@ def verses_view(request, group_name):
             break
     # Initialize an empty list to store retrieved verses
     retrieved_verses = []
-    gradient = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
+    '''  gradient = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
     # Logic to make a gradient title image.
     img = Image.open(gradient)
 
@@ -156,7 +156,8 @@ def verses_view(request, group_name):
     draw.text((x, y), msg, font=font, fill=(255, 255, 255))
     image_path = os.path.join(settings.STATIC_ROOT, imgname)
 
-    img.save(image_path)
+   img.save(image_path) 
+   '''
     #
     ##
     #
