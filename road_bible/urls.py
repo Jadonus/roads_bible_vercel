@@ -54,7 +54,6 @@ urlpatterns = [
     path('', include('pwa.urls')),
     path('dashboard/', views.my_view, name='dashboard'),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("roads/Psalm100", TemplateView.as_view(template_name="Psalm100.html"), name="Psalm100"),
     path("roads/vacation", TemplateView.as_view(template_name="vacation.html"), name="vacation"),
     path('save_progress/', views.save_progress, name='save_progress'),
     path('restore_progress/', views.restore_progress, name='restore_progress'),
