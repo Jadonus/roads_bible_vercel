@@ -115,7 +115,7 @@ document.getElementById('addVerseBtn').addEventListener('click', () => {
   const desc = document.getElementById('descInput').value
 
   // Assign the value to finalInput
-  finalInput = nameInputValue.replace(/\s/g, "@");
+  finalInput = nameInputValue.replace(/\s/g, "");
 
   const bookId = bookNumberMapping[bookInputValue];
 
@@ -136,7 +136,6 @@ document.getElementById('addVerseBtn').addEventListener('click', () => {
       book_id: bookId,
       chapter: chapterInput,
       verse_number: verseNumberInput,
-      title: nameInputValue
     });
   }
 

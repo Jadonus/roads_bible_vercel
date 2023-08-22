@@ -33,9 +33,26 @@
 </nav>
 <div class="text-center card mx-auto p-1 bg-body-secondary" style="width: 80vw; border-width: 0px; font-size: 24px">
     <div class="card-body">
-        {% for verse in verses %}
-        <p id="sentence{{ forloop.counter }}">{{ verse }} (NIV)</p>
-        {% endfor %}
+{% for verse in verses %}
+    <p id="sentence{{ forloop.counter }}">
+        {{ verse.verse }}<br>
+        {{ verse.reference }}
+    </p>
+{% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
 </div>
 <div class="d-flex justify-content-center bg-opacity-50  bg-body-tertiary fixed-bottom" style="">
@@ -230,6 +247,7 @@ https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
 
             currentSentence.innerHTML = words.join(" ");
             hideButton.disabled = true;
+            visibleWordIndices = []
         }
 
         function revealAllWords() {
@@ -241,7 +259,8 @@ https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
             }
 
             hideButton.disabled = false;
-
+            
+        visibleWordIndices = []
         }
 
         function moveToNextSentence() {
@@ -470,5 +489,7 @@ function revealLastHiddenWords(numWords) {
     // Enable the hide button now that some words are revealed
     hideButton.disabled = false;
 }
+visibleWordIndices = []
+
     </script>
     {% endblock %}

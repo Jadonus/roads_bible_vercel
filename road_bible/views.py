@@ -164,6 +164,7 @@ def verses_view(request, group_name):
     # . API grabbing and such...
     #
     #
+    verse_references = {}
 
     # API integration: Loop through each verse info and retrieve the text
     api_base_url = 'https://bible-go-api.rkeplin.com/v1/books/1/chapters/1/{verse_id}?translation=NIV'
@@ -183,12 +184,22 @@ def verses_view(request, group_name):
 
         verse_text = api_data.get('verse', 'Verse not found')
         print("Verse Text:", verse_text)
+        versedata1 = api_data.get('book', {}).get('name', 'Book not found')
 
-        retrieved_verses.append(verse_text)
+
+        versedata2 = api_data.get('chapterId')
+        versedata3 = api_data.get('verseId')
+        reference = f"{api_data['book']['name']} {api_data['chapterId']}:{api_data['verseId']} (NIV)"
+        retrieved_verses.append({
+            'verse': api_data.get('verse', 'Verse not found'),
+            'reference': reference,
+        })  # Append the API data to the list
 
     context = {
         'group_name': group_name,
         'verses': retrieved_verses,
     }
+
+    print("Verses Info:", verses_info)
 
     return render(request, 'defaultroadload.html', context)
