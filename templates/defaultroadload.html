@@ -22,15 +22,15 @@
   </button>
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
     <li><a class="dropdown-item" onclick="window.alert('Verse info: Scripture quotations marked (NIV) are taken from the Holy Bible, New International Version®, NIV®. Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™ Used by permission of Zondervan. All rights reserved worldwide. www.zondervan.comThe “NIV” and “New International Version” are trademarks registered in the United States Patent and Trademark Office by Biblica, Inc.™')" href="#">Verse Info</a></li>
-    <li><a class="dropdown-item" onclick="switchToFirstLetterMode()"href="#">First Letter Mode</a></li>
-    <li><a class="dropdown-item" href="#">Something else here</a></li>
+    <li><a class="dropdown-item" id="flm"onclick="toggle1Mode()"href="#">First Letter Mode</a></li>
+    <li><a onclick="printDiv()"class="dropdown-item" href="#">Print Current Verse</a></li>
   </ul>
 </div>
 
     </div>
 </nav>
 
-<div class="text-center card mx-auto p-1 bg-body-secondary" style="width: 80vw; border-width: 0px; font-size: 24px">
+<div id="print"class="text-center card mx-auto p-1 bg-body-secondary" style="width: 80vw; border-width: 0px; font-size: 24px">
     <div class="card-body">
 {% for verse in verses %}
     <p id="sentence{{ forloop.counter }}">
@@ -38,22 +38,10 @@
         {{ verse.reference }}
     </p>
 {% endfor %}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    
     </div>
 </div>
+
 <div class="d-flex justify-content-center bg-opacity-50  bg-body-tertiary fixed-bottom" style="">
     <div class="text-center  btn-group p-2 pb-5 rounded-top-5 ">
 <button id="showverse" onclick="toggleMode()"class="btn tiny  mb-1">
@@ -534,7 +522,7 @@ function hideEverythingExceptFirstLetter() {
             }
         });
 
-        sentence.textContent = firstLetters.replace('(', '').replace(/[0-9]/g, '').toUpperCase().split('').join(' '); // Replace the content with first letters
+        sentence.textContent = firstLetters.replace('(', '').replace(/[0-9]/g, '').toUpperCase().split('').join(' ').replace('"', ''); // Replace the content with first letters
     });
 }
 var isOriginalMode = false; // Flag to track the current mode
@@ -548,6 +536,48 @@ function toggleMode() {
     
     isOriginalMode = !isOriginalMode; // Toggle the mode
 }
+var is1OriginalMode = true; // Flag to track the current mode
+var original1Sentences = {}; // Store original content of sentences
+
+function toggle1Mode() {
+    if (is1OriginalMode) {
+        switchToFirstLetterMode();
+
+document.getElementById("flm").innerHTML = "Random Word Mode";
+    } else {
+        revertToOriginalState();
+    document.getElementById("incrementButton").style.display = "block";
+    document.getElementById("finishButton").style.display = "block";
+    document.getElementById("undoButton").style.display = "block";
+    document.getElementById("showverse").style.display = "none";
+
+document.getElementById("flm").innerHTML = "First Letter Mode";
+
+
+    }
+    
+    is1OriginalMode = !is1OriginalMode; // Toggle the mode
+}
+function printDiv() {
+    var divContents = document.getElementById("print").innerHTML;
+    
+    var printWindow = window.open('', '_blank');
+    printWindow.document.write('<html>');
+    printWindow.document.write('<body>');
+    printWindow.document.write(divContents);
+
+    printWindow.document.write("<style> body { font-size: 2rem; font-family: Helvetica; margin: 5rem; }");
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    
+    printWindow.print();
+    printWindow.close();
+    location.reload()
+}
+
+// Call the print function
+
+
 
     </script>
 
