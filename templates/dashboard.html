@@ -83,7 +83,7 @@ Development roadmap</a></li>
   {% if verse.url %}
 
 <div id="{{ verse.title }}" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
-  <img src="{% static verse.img %}" class="card-img-top" alt="...">
+  <img src="{% static verse.img %}" loading="lazy"class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">{{ verse.title }}</h5>
     <p class="card-text">{{ verse.description }}</p>
