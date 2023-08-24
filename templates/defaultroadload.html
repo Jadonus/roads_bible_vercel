@@ -563,11 +563,11 @@ function printDiv() {
     
     var printWindow = window.open('', '_blank');
     printWindow.document.write('<html>');
-    printWindow.document.write('<body>');
+    printWindow.document.write('<body> <div class="daone">');
     printWindow.document.write(divContents);
 
-    printWindow.document.write("<style> body { font-size: 2rem; font-family: Helvetica; margin: 5rem; }");
-    printWindow.document.write('</body></html>');
+    printWindow.document.write("</div><style> body{ text-align: center; font-family: Helvetica; font-size:5rem }.daone { font-size: 2rem; font-family: Helvetica; margin: 5rem; padding: 2rem; border-radius: 10px; border-style: solid;border-width: medium; }");
+    printWindow.document.write('</style></body></html>');
     printWindow.document.close();
     
     printWindow.print();

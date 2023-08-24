@@ -1,0 +1,36 @@
+[
+  {
+    "book_id": 47,
+    "chapter": 3,
+    "verse_number": 17,
+    "title": "Freedom",
+    "url": "/roads/Freedom",
+    "img": "Freedom.png",
+    "description": "Several Verses about the freedom found in God. "
+  },
+  {
+    "book_id": 43,
+    "chapter": 8,
+    "verse_number": 36
+  },
+  {
+    "book_id": 48,
+    "chapter": 5,
+    "verse_number": 13
+  },
+  {
+    "book_id": 48,
+    "chapter": 5,
+    "verse_number": 1
+  },
+  {
+    "book_id": 43,
+    "chapter": 8,
+    "verse_number": 32
+  },
+  {
+    "book_id": 19,
+    "chapter": 118,
+    "verse_number": 5
+  }
+]

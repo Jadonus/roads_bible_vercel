@@ -6,7 +6,6 @@ workbox.setConfig({
 
 // Precache your assets (optional)
 workbox.precaching.precacheAndRoute([]);
-
 // Use StaleWhileRevalidate strategy for caching
 workbox.routing.registerRoute(
   new RegExp('/static'),
