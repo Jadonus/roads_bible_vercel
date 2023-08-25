@@ -45,36 +45,41 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 <script>
-  window.OneSignalDeferred = window.OneSignalDeferred || [];
-  OneSignalDeferred.push(function(OneSignal) {
-    OneSignal.init({
-      appId: "812fcdb7-72b5-46ef-afd7-8680bb358698",
-      safari_web_id: "web.onesignal.auto.48d9c6a2-4943-4221-b17b-a4e235bf1c7d",
-      notifyButton: {
-        enable: true,
+ window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(function(OneSignal) {
+  OneSignal.init({
+    appId: "812fcdb7-72b5-46ef-afd7-8680bb358698",
+    safari_web_id: "web.onesignal.auto.48d9c6a2-4943-4221-b17b-a4e235bf1c7d",
+    notifyButton: {
+      enable: false, // Disable the default bell icon
+    },
+    promptOptions: {
+      customlink: {
+        enabled: true, // Enable the custom link
+        style: "link", // Use a link style
+        size: "small",
+        color: {
+          button: '#E12D30',
+          text: '#adb5bd',
+        },
+        text: {
+          subscribe: "Allow Reminders",
+          unsubscribe: "Stop reminders",
+        },
+        unsubscribeEnabled: true,
       },
-// Your other init options here
-promptOptions: {
-  customlink: {
-    enabled: true, /* Required to use the Custom Link */
-    style: "link", /* Has value of 'button' or 'link' */
-    size: "small", /* One of 'small', 'medium', or 'large' */
-    color: {
-      button: '#E12D30', /* Color of the button background if style = "button" */
-      text: '#adb5bd', /* Color of the prompt's text */
     },
-    text: {
-      subscribe: "Allow Reminders", /* Prompt's text when not subscribed */
-      unsubscribe: "Stop reminders", /* Prompt's text when subscribed */
-    },
-    unsubscribeEnabled: true, /* Controls whether the prompt is visible after subscription */
-  }
-}
-notifyButton: {
-    enable: false,
-}
-    });
   });
+});
+In this version, I've corrected the placement of the notifyButton option and set its enable value to false to disable the default bell icon. The promptOptions for the custom link prompt are correctly placed within the init function, and the rest of the options seem properly configured.
+
+Make sure to include this corrected code on your website where you're integrating OneSignal to achieve the desired behavior of disabling the bell icon and enabling the custom link for subscription prompts.
+
+
+
+
+
+
 </script>
 
   </head>
