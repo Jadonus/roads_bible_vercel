@@ -53,7 +53,6 @@ Donate</a></li>
 Development roadmap</a></li>
   </ul>
 </div>
- 
  <h2 class="text-center pt-5 fw-bold display-4">Hello <span class="">{{user.username}}</span>, Start memorizing bible verses</h2>
 <div class=" text-center container-fluid  p-5 ">
 
@@ -132,6 +131,7 @@ hr.rounded {
 .hihi {
   display: block
 }
+
 </style>
 
 <script>
@@ -146,19 +146,22 @@ document.getElementById('tourlink').addEventListener('click', function(event) {
     welcome()
     })
 function welcome() {
+const el = document.createElement('div')
+el.innerHTML = "<a href='https://app.tango.us/app/workflow/Getting-Started-with-Roads-c0bc783c83ed44508f84c7d219d450d2'>More Intructions</a>"
 swal({
         title: "Hey! 👋",
-        text: "Looks like it's your first visit! Here is a quick tour. If You need more detailed, interactive instructions, go too https://app.tango.us/app/workflow/Getting-Started-with-Roads-c0bc783c83ed44508f84c7d219d450d2 ",
-        buttons: ["Cancel", "Start tour"]
+        text: "Looks like it's your first visit! Here is a quick tour. If You need more detailed, interactive instructions, go too the link below ",
+        buttons: ["Cancel", "Start tour"],
+        content: el
     }).then((willDelete) => {
         if (willDelete) {
             swal({
                 title: "Overview",
-                text: "The main place to be is here, the dashboard. Here you can memorize the verse of the day or pick a road to memorize further. Roads are groups of at least five verses. Roads currently have 1 mode, the random hidden words mode. When you click the hide more button, Some words will be hidden.",
+                text: "The main place to be is here, the dashboard. Here you can memorize the verse of the day or pick a road to memorize further. Roads are groups of at least five verses. Roads currently has 2 modes: Random Word mode and First letter mode. ",
                 buttons: ["Cancel", "Next"]
             }).then((next) => {
                 if (next) {
-              swal({ title: "Almost done!", button: "Start memorizing!", text: "Pressing the 'finish' button, will hide all words. (Pressing it again will reveal them) You can navigate between roads using the Previous and next buttons. You should be ready to start memorizing. After closing this, Scroll down and pick a road of your choosing." })
+              swal({ title: "Almost done!", button: "Start memorizing! 🎉", text: "Try Searching for a Road in the searchbar, or scroll to find one. " })
                 }
             });
         }
@@ -169,19 +172,25 @@ swal({
 
 var ls = localStorage.getItem('namespace.visited');
 if (ls == null) {
+const el = document.createElement('div')
+el.innerHTML = "<a href='https://app.tango.us/app/workflow/Getting-Started-with-Roads-c0bc783c83ed44508f84c7d219d450d2'>More Intructions</a>"
      swal({
-        title: "Hey! 👋",
-        text: "Looks like it's your first visit! Here is a quick tour.",
-        buttons: ["Cancel", "Start tour"]
+         title: "Hey! 👋",
+        text: "Looks like it's your first visit! Here is a quick tour. If You need more detailed, interactive instructions, go too the link below ",
+        buttons: ["Cancel", "Start tour"],
+        content: el
     }).then((willDelete) => {
         if (willDelete) {
             swal({
                 title: "Overview",
-                text: "The main place to be is here, the dashboard. Here you can memorize the verse of the day or pick a road to memorize further. Roads are groups of at least five verses. Roads currently have 1 mode, the random hidden words mode. When you click the hide more button, Some words will be hidden.",
+
+                text: "The main place to be is here, the dashboard. Here you can memorize the verse of the day or pick a road to memorize further. Roads are groups of at least five verses. Roads currently has 2 modes: Random Word mode and First letter mode. ",
                 buttons: ["Cancel", "Next"]
             }).then((next) => {
                 if (next) {
-              swal({ title: "Almost done!", button: "Start memorizing!", text: "Pressing the 'finish' button, will hide all words. (Pressing it again will reveal them) You can navigate between roads using the Previous and next buttons. You should be ready to start memorizing. After closing this, Scroll down and pick a road of your choosing." })
+
+              swal({ title: "Almost done!", button: "Start memorizing! 🎉", text: "Try Searching for a Road in the searchbar, or scroll to find one. " })
+
                 }
             });
         }
@@ -274,7 +283,6 @@ function revealAllWords() {
         const link = document.createElement("a");
         link.href = "#" + searchResults[i];
         link.textContent = searchResults[i];
-    'whitenoise.middleware.WhiteNoiseMiddleware',
         listItem.appendChild(link);
         resultContainer.appendChild(listItem);
       }
