@@ -50,6 +50,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
          name='password_reset_complete'),
     path('serviceworker.js', TemplateView.as_view(template_name='serviceworker.js', content_type='application/javascript'), name='service-worker'),
+    path('OneSignalSDKWorker.js', TemplateView.as_view(template_name='OneSignalSDKWorker.js', content_type='application/javascript')),
     path("get_progress/", views.get_user_progress, name="get_progress"), 
     path('', include('pwa.urls')),
     path('dashboard/', views.my_view, name='dashboard'),
