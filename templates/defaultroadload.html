@@ -34,7 +34,10 @@
       >
         <i class="ph h3 ph-dots-three-circle"></i>
       </button>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+      <ul
+        class="dropdown-menu dropdown-menu-end"
+        aria-labelledby="dropdownMenuLink"
+      >
         <li>
           <a
             class="dropdown-item"
@@ -48,27 +51,25 @@
             >First Letter Mode</a
           >
         </li>
-        <li>
-          
-        </li>
-      <div class="dropdown dropstart">
-        <a
-          class="dropdown-item dropdown-toggle"
-          href="#"
-          id="dropdown-layouts"
-          data-bs-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          >Print Current Verse</a
-        >
-        <div class="dropdown-menu" aria-labelledby="dropdown-layouts">
-          <a class="dropdown-item" onclick="printDiv()" href="#">Flashcard</a>
+        <li></li>
+        <div class="dropdown dropstart">
+          <a
+            class="dropdown-item dropdown-toggle"
+            href="#"
+            id="dropdown-layouts"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >Print Current Verse</a
+          >
+          <div class="dropdown-menu" aria-labelledby="dropdown-layouts">
+            <a class="dropdown-item" onclick="printDiv()" href="#">Flashcard</a>
 
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" onclick="printBigDiv()"href="#">Poster</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" onclick="printBigDiv()" href="#">Poster</a>
+          </div>
         </div>
-      </div>
-    </ul>
+      </ul>
     </div>
   </div>
 </nav>
@@ -92,7 +93,7 @@
   class="d-flex justify-content-center bg-opacity-50 bg-body-tertiary fixed-bottom"
   style=""
 >
-  <div class="text-center btn-group p-2 pb-5 rounded-top-5">
+  <div class="text-center btn-group p-2 pb-5 rounded-top-5 no-print">
     <button id="showverse" onclick="toggleMode()" class="btn tiny mb-1">
       <i class="ph ph-selection h1"></i><br />Show Verse
     </button>
@@ -179,6 +180,11 @@
     .hidden-sentence {
       display: none;
     }
+ @media print {
+    .no-print {
+      display: none; /* Hide the element when printing */
+    }
+  }
   </style>
 
   <script src="
@@ -637,8 +643,10 @@ https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
       var divContents = document.getElementById("print").innerHTML;
 
       var printWindow = window.open("", "_blank");
-      
-      printWindow.document.write("<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'>");
+
+      printWindow.document.write(
+        "<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'>"
+      );
 
       printWindow.document.write('<body> <div class="daone">');
       printWindow.document.write(divContents);
@@ -650,12 +658,15 @@ https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
       printWindow.document.close();
 
       printWindow.print();
+
     }
- function printBigDiv() {
+    function printBigDiv() {
       var divContents = document.getElementById("print").innerHTML;
 
-      var printWindow = window.open("", "_blank");
-      printWindow.document.write("<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'>");
+      var printWindow = window.open("", "NEWWINDOW");
+      printWindow.document.write(
+        "<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'>"
+      );
       printWindow.document.write('<body> <div class="daone">');
       printWindow.document.write(divContents);
 
