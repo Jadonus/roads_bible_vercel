@@ -5,7 +5,7 @@ import sys
 from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
 
-def make_image(image_name):
+def make_image(image_name, msg):
     gradient_path = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
     
     img = Image.open(gradient_path)
@@ -14,12 +14,13 @@ def make_image(image_name):
     if img.mode != 'RGB':
         img = img.convert('RGB')
     
-    msg = image_name
-    font = ImageFont.truetype('static/libsans.otf', 170)
+    font_path = os.path.join(settings.STATIC_ROOT, 'libsans.otf')
+    font = ImageFont.truetype(font_path, 150)
     
-    text_width, text_height = font.getsize(msg)
-    image_width, image_height = img.size
     draw = ImageDraw.Draw(img)
+    
+    text_width, text_height = draw.textsize(msg, font=font)
+    image_width, image_height = img.size
     
     x = (image_width - text_width) // 2
     y = (image_height - text_height) // 2
@@ -29,7 +30,7 @@ def make_image(image_name):
     image_path = os.path.join(settings.STATIC_ROOT, f"{image_name}.png")
     
     img.save(image_path)
-    print("\033[32mImage Cretaed in /static! 👏")
+    print("\033[32mImage Created in /static! 👏")
 
 def main():
     """Run administrative tasks."""
@@ -39,10 +40,11 @@ def main():
         
         if len(sys.argv) > 1 and sys.argv[1] == 'makeimage':
             if len(sys.argv) > 2:
-                image_name = sys.argv[2]
-                make_image(image_name)
+                msg = " ".join(sys.argv[2:])  # Concatenate all words after 'makeimage'
+                image_name = "".join(sys.argv[2:])  # Use the same for image name
+                make_image(image_name, msg)
             else:
-                print("Please provide an image name after 'makeimage'")
+                print("Please provide a message after 'makeimage'")
                 return
     except ImportError as exc:
         raise ImportError(
