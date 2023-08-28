@@ -29,21 +29,19 @@ def my_view(request):
     # Get a list of all JSON files in the directory
     json_files = [file for file in os.listdir(json_directory) if file.endswith('.json')]
 
-    # Initialize a list to store parsed data for all files
-    parsed_data = []
+    combined_data = []
 
     for json_file in json_files:
         with open(os.path.join(json_directory, json_file), 'r') as file:
             data = json.load(file)
-            parsed_data.extend(data)  # Extend the list with data from the current file
+            number_of_groups = len(data)
+            combined_data.append({'parsed_data': data, 'num_groups': number_of_groups})
 
     context = {
-        'parsed_data': parsed_data,
+        'combined_data': combined_data,
     }
 
     return render(request, 'dashboard.html', context)
-
-
 
 
 

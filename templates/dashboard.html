@@ -77,23 +77,24 @@ Development roadmap</a></li>
   </div>
 <ul style="list-style: none;"class="text-center fs-3" id="searchResults"></ul>
   
-{% for verse in parsed_data %}
-  {% if verse.url %}
+{% for entry in combined_data %}
+  {% for verse in entry.parsed_data %}
+    {% if verse.url %}
+      <div id="{{ verse.title }}" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+        <img src="{% static verse.img %}" loading="lazy" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{ verse.title }}</h5>
+          <p class="card-text">{{ verse.description }}</p>
 
-<div id="{{ verse.title }}" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
-  <img src="{% static verse.img %}" loading="lazy"class="card-img-top" alt="...">
-  <div class="card-body">
-    <h5 class="card-title">{{ verse.title }}</h5>
-    <p class="card-text">{{ verse.description }}</p>
+          <p class="text-muted">{{ entry.num_groups }} verses </p>
 
-    <a class="btn btn-primary stretched-link" href="{{ verse.url }}">Start memorizing</a>
-  </div>
-</div>
-  {% endif %}
-
+          <a class="btn btn-primary stretched-link" href="{{ verse.url }}">Start memorizing</a>
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
 {% endfor %}
 
-</div>
 <style>
 html {
 
@@ -224,8 +225,9 @@ const url = "https://beta.ourmanna.com/api/v1/get";
   xhr.send();
 
 var arrayOfStrings = [
-    {% for verse in parsed_data %} 
-    "{{ verse.title }}", {% endfor %}
+    {% for entry in combined_data %}
+  {% for verse in entry.parsed_data %}
+    "{{ verse.title }}", {% endfor %} {% endfor %}
 
 
 ];
