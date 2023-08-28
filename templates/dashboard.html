@@ -58,18 +58,17 @@ Development roadmap</a></li>
  <h2 class="text-center pt-5 fw-bold display-4">Hello <span class="">{{user.username}}</span>, Start memorizing bible verses</h2>
 <div class=" text-center container-fluid  p-5 ">
 
-<hr class="rounded">
+<hr class="rounded bg-body-secondary">
 <h1>Verse of The day</h1>
 
 <p id="sentence" class="lead"></p>
 
 <span class="ml-2 spinner-border spinner-grow mx-auto m-5" style="width: 3rem; height: 3rem;"role="status" id="mySpinner"></span>
-<button id="incrementButton" class="btn btn-primary">Hide</button>
-<button id="finishButton" class="btn btn-primary">Finish</button>
+<button id="incrementButton" class="btn btn-primary">Hide More</button>
+<button id="finishButton" class="btn btn-primary">Hide all</button>
 </div>
 
  <div class="container p-5 mx-auto">
-   <h1 data-aos="zoom-in" class="p-5 text-center  ">Find the perfect road for you</h1>
 <div class="d-flex align-items-center justify-content-center input-group">
 
      <span class="input-group-text bg-primary" id="basic-addon1"><i class="bi bi-search"></i></span>
@@ -77,8 +76,6 @@ Development roadmap</a></li>
 
   </div>
 <ul style="list-style: none;"class="text-center fs-3" id="searchResults"></ul>
-   <h1 class="animate__animated animate__shakeY text-center animate__infinite animate__slower animate__delay-5s"><i class="bi bi-arrow-bar-down"></i></h1>
-
   
 {% for verse in parsed_data %}
   {% if verse.url %}
@@ -117,7 +114,7 @@ nav{
   }
 
 hr.rounded {
-  border-top: 8px solid #bbb;
+  border-top: 8px solid; 
   border-radius: 5px;
 }
 .gradient {
