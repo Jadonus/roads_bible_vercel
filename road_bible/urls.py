@@ -67,6 +67,7 @@ urlpatterns = [
     path("requestroad", TemplateView.as_view(template_name="requestroad.html"), name="requestroad"),
     path('roads/<str:group_name>/', views.verses_view, name='verses_view'),
 
+    path('roads/eli/<str:group_name>/', views.verses_eli_view, name='verses_eli_view'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -201,3 +201,96 @@ def verses_view(request, group_name):
     print("Verses Info:", verses_info)
 
     return render(request, 'defaultroadload.html', context)
+#
+#
+#
+#
+def verses_eli_view(request, group_name):
+    json_file_path = f'static/roads/eli/{group_name}.json'
+    with open(json_file_path, 'r') as json_file:
+        verses_info = json.load(json_file)
+        print("Parsed JSON:", verses_info)
+
+    title = 'Title not found'
+    img = 'No image found'
+
+    # Loop through each verse info and retrieve the title
+    for verse_info in verses_info:
+        title = verse_info.get('title')
+
+        imgname = verse_info.get('img')
+        if title and img:
+            break
+    # Initialize an empty list to store retrieved verses
+    retrieved_verses = []
+    '''  gradient = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
+    # Logic to make a gradient title image.
+    img = Image.open(gradient)
+
+    msg = title
+    font = ImageFont.truetype('static/libsans.otf', 170)
+
+# Get text dimensions using ImageFont.getsize
+    text_width, text_height = font.getsize(msg)
+
+# Get image dimensions
+    image_width, image_height = img.size
+
+# Create a drawing object
+    draw = ImageDraw.Draw(img)
+
+# Calculate the starting point for the centered text
+    x = (image_width - text_width) // 2
+    y = (image_height - text_height) // 2
+
+# Draw the text at the centered position
+    draw.text((x, y), msg, font=font, fill=(255, 255, 255))
+    image_path = os.path.join(settings.STATIC_ROOT, imgname)
+
+   img.save(image_path) 
+   '''
+    #
+    ##
+    #
+    # . API grabbing and such...
+    #
+    #
+    verse_references = {}
+
+    # API integration: Loop through each verse info and retrieve the text
+    api_base_url = 'https://bible-go-api.rkeplin.com/v1/books/1/chapters/1/{verse_id}?translation=NIV'
+    for verse_info in verses_info:
+        verse_id = adjust_verse_number(
+            verse_info['book_id'],
+            verse_info['chapter'],
+            verse_info['verse_number']
+        )
+        api_url = api_base_url.format(verse_id=verse_id)
+        print(api_url)
+        api_response = requests.get(api_url)
+        print("API Response:", api_response.text)
+
+        api_data = api_response.json()
+        print("API Data:", api_data)
+
+        verse_text = api_data.get('verse', 'Verse not found')
+        print("Verse Text:", verse_text)
+        versedata1 = api_data.get('book', {}).get('name', 'Book not found')
+
+
+        versedata2 = api_data.get('chapterId')
+        versedata3 = api_data.get('verseId')
+        reference = f"{api_data['book']['name']} {api_data['chapterId']}:{api_data['verseId']} (NIV)"
+        retrieved_verses.append({
+            'verse': api_data.get('verse', 'Verse not found'),
+            'reference': reference,
+        })  # Append the API data to the list
+
+    context = {
+        'group_name': group_name,
+        'verses': retrieved_verses,
+    }
+
+    print("Verses Info:", verses_info)
+
+    return render(request, 'defaultroadload.html', context)

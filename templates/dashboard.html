@@ -76,7 +76,19 @@ Development roadmap</a></li>
 
   </div>
 <ul style="list-style: none;"class="text-center fs-3" id="searchResults"></ul>
-  
+ {% if user.username == "eli" %}
+    <div id="Eli's Verses" data-aos="fade-right" class="card mx-auto m-5" style="width: 18rem;">
+        <img src="{% static "Eli.png" %}" loading="lazy" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Eli's Verses</h5>
+          <p class="card-text">A collection of verses made just for Eli. Long live the pickle!!!</p>
+
+          <p class="text-muted">1 verse </p>
+
+          <a class="btn btn-primary stretched-link" href="/roads/eli/test">Start memorizing</a>
+        </div>
+      </div>
+{% endif %}
 {% for entry in combined_data %}
   {% for verse in entry.parsed_data %}
     {% if verse.url %}
