@@ -642,7 +642,9 @@ https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
     function printDiv() {
       var divContents = document.getElementById("print").innerHTML;
 
-      var printWindow = window.open("", "_blank");
+      
+      var printWindow =window.open('', 'PRINT', 'height=400,width=600');
+
 
       printWindow.document.write(
         "<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'>"
@@ -658,15 +660,16 @@ https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
       printWindow.document.close();
 
       printWindow.print();
+ printWindow.close()
+      return true;
+
 
     }
     function printBigDiv() {
       var divContents = document.getElementById("print").innerHTML;
 
-      var printWindow = window.open("", "NEWWINDOW");
-      printWindow.document.write(
-        "<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'>"
-      );
+      var printWindow =window.open('', 'PRINT', 'height=400,width=600');
+      printWindow.document.write("<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'><meta name='apple-mobile-web-app-capable' content='yes'><meta name='apple-mobile-web-app-title' content='Roads'>");
       printWindow.document.write('<body> <div class="daone">');
       printWindow.document.write(divContents);
 
@@ -677,6 +680,9 @@ https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
       printWindow.document.close();
 
       printWindow.print();
+      printWindow.close()
+      return true;
+
     }
 
     // Call the print function
