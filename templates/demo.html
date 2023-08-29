@@ -1,0 +1,686 @@
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<nav class="navbar navbar-expand-sm">
+  <div class="container-fluid">
+    <a
+      class="d-flex align-items-center fs-4 ml-4 mb-4 link-underline link-underline-opacity-0"
+      id="myLink"
+     onclick="history.back()"
+    >
+      <i class="bi bi-chevron-left"></i>
+      Back
+      <span
+        class="mx-3 spinner-border spinner-border-sm"
+        role="status"
+        id="mySpinner"
+        style="display: none"
+      ></span>
+    </a>
+
+    <div class="dropdown dropdown-center">
+      <button
+        class="btn"
+        href="#"
+        role="button"
+        id="dropdownMenuLink"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="ph h3 ph-dots-three-circle"></i>
+      </button>
+      <ul
+        class="dropdown-menu dropdown-menu-end"
+        aria-labelledby="dropdownMenuLink"
+      >
+        <li>
+          <a
+            class="dropdown-item"
+            onclick="window.alert('Verse info: Scripture quotations marked (NIV) are taken from the Holy Bible, New International Version®, NIV®. Copyright © 1973, 1978, 1984, 2011 by Biblica, Inc.™ Used by permission of Zondervan. All rights reserved worldwide. www.zondervan.comThe “NIV” and “New International Version” are trademarks registered in the United States Patent and Trademark Office by Biblica, Inc.™')"
+            href="#"
+            >Verse Info</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" id="flm" onclick="toggle1Mode()" href="#"
+            >First Letter Mode</a
+          >
+        </li>
+        <li></li>
+        <div class="dropdown dropstart">
+          <a
+            class="dropdown-item dropdown-toggle"
+            href="#"
+            id="dropdown-layouts"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            >Print Current Verse</a
+          >
+          <div class="dropdown-menu" aria-labelledby="dropdown-layouts">
+            <a class="dropdown-item" onclick="printDiv()" href="#">Flashcard</a>
+
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" onclick="printBigDiv()" href="#">Poster</a>
+          </div>
+        </div>
+      </ul>
+    </div>
+  </div>
+</nav>
+<button type="button" class="btn btn-primary visually-hidden" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+ <div class="modal" id="myModal">
+            <div class="modal-dialog-centered modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hello! 👋 </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This is the Roads demo. You can access this any time without an account. Your progress will not be saved, and you may miss some features. If you want a bigger selection of verses, progress saving, and other cool stuff,  <a href="/accounts/signup"class="btn btn-primary mr-5">Sign Up</a>  </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Great!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<div
+  id="print"
+  class="text-center card mx-auto p-1 bg-body-secondary"
+  style="width: 80vw; border-width: 0px; font-size: 24px"
+>
+
+
+  <div class="card-body">
+    <p id="sentence1">
+      For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life. <br /> John 3:16 (NIV)
+    </p>
+<p id="sentence2">
+      The LORD is my shepherd, I shall not be in want. <br /> Psalm 23:1 (NIV)
+    </p>
+  </div>
+</div>
+
+<div
+  class="d-flex justify-content-center bg-opacity-50 bg-body-tertiary fixed-bottom"
+  style=""
+>
+  <div class="text-center btn-group p-2 pb-5 rounded-top-5 no-print">
+    <button id="showverse" onclick="toggleMode()" class="btn tiny mb-1">
+      <i class="ph ph-selection h1"></i><br />Show Verse
+    </button>
+    <button id="incrementButton" class="btn tiny mb-1">
+      <i class="ph ph-x-square h1"></i><br />Hide More
+    </button>
+
+    <button id="finishButton" class="btn tiny h6 mb-1">
+      <i class="ph ph-flag-checkered h1"></i><br />Hide all
+    </button>
+    <button
+      id="undoButton"
+      onclick="revealLastHiddenWords()"
+      class="btn tiny mb-1"
+    >
+      <i class="bi bi-arrow-counterclockwise h1"></i><br />Undo
+    </button>
+    <button id="nextButton" class="btn tiny mb-1">
+      <i class="ph ph-arrow-square-right h1"></i><br />Next Verse
+    </button>
+
+    <button class="btn tiny mb-1" id="backButton">
+      <i class="ph ph-arrow-square-left h1"></i><br />Previous
+    </button>
+  </div>
+</div>
+<div class="progress-container">
+  <div class="progress m-5">
+    <div
+      id="progressBar"
+      class="progress-bar lrm-5"
+      role="progressbar"
+      style="width: 0%"
+      aria-valuenow="0"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    ></div>
+  </div>
+  <style>
+    nav {
+      margin: 0;
+    }
+
+    .hide-word {
+      color: transparent;
+      text-shadow: 0 0 13px #000;
+    }
+
+    html,
+    body {
+      overflowx: hidden;
+    }
+
+    body {
+      padding-bottom: 40px;
+
+      overflow-x: hidden;
+    }
+
+    hr.rounded {
+      border-top: 8px solid #bbb;
+      border-radius: 5px;
+    }
+
+    .progress-container {
+      padding: 0 15vw;
+      /* Adjust the padding as needed */
+      max-width: 600vw;
+      /* Set a maximum width for the progress bar container */
+      margin: 0 auto;
+      /* Center the container on the screen */
+    }
+
+    bb {
+      background-color: #343a40;
+    }
+
+    .tiny {
+      font-size: 0.8rem;
+    }
+    .first-letter {
+      color: red;
+    }
+    .hidden-sentence {
+      display: none;
+    }
+ @media print {
+    .no-print {
+      display: none; /* Hide the element when printing */
+    }
+  }
+  </style>
+
+  <script src="
+https://cdn.jsdelivr.net/npm/js-cookie@3.0.5/dist/js.cookie.min.js
+"></script>
+  <script>
+var myModal = document.getElementById('myModal')
+var modal = new bootstrap.Modal(myModal)
+modal.show()
+    document.addEventListener("DOMContentLoaded", function () {
+      // Get references to the link and spinner elements
+      const link = document.getElementById("myLink");
+      const spinner = document.getElementById("mySpinner");
+
+      // Attach click event listener to the link
+      link.addEventListener("click", function () {
+        // Show the spinner
+        spinner.style.display = "block";
+
+        // Simulate some asynchronous task
+        setTimeout(function () {
+          // Hide the spinner after the task is completed
+          spinner.style.display = "none";
+        }, 2000); // Replace this with your actual task
+      });
+    });
+    var sentences = document.querySelectorAll("p[id^='sentence']");
+    var currentSentenceIndex = 0;
+    var hiddenWordIndices = [];
+
+    var sentences = document.querySelectorAll("p[id^='sentence']");
+    var currentSentenceIndex = 0;
+    var hiddenWordIndices = [];
+
+    document.getElementById("showverse").style.display = "none";
+    var hideButton = document.getElementById("incrementButton"); // Get the hide button element
+    var nextButton = document.getElementById("nextButton"); // Get the next button element
+    var finishButton = document.getElementById("finishButton"); // Get the finish button element
+    var progressBar = document.getElementById("progressBar"); // Get the progress bar element
+
+    hideButton.addEventListener(
+      "click",
+      function () {
+        hideRandomWords(3);
+      },
+      true
+    );
+
+    nextButton.addEventListener(
+      "click",
+      function () {
+        moveToNextSentence();
+        var username = "Anonymous"; // You should get the actual username from your Django backend if the user is authenticated.
+        saveUserProgress(username, currentSentenceIndex);
+      },
+      true
+    );
+
+    var finishButtonClicks = 0; // Variable to track the number of finish button clicks
+
+    finishButton.addEventListener(
+      "click",
+      function () {
+        finishButtonClicks++;
+        if (finishButtonClicks === 1) {
+          hideAllWords();
+        } else if (finishButtonClicks === 2) {
+          revealAllWords();
+
+          var randomIndices = [];
+
+          isHidden = false;
+
+          finishButtonClicks = 0; // Reset the click counter
+        }
+      },
+      true
+    );
+
+    function hideRandomWords(numWords) {
+      var currentSentence = sentences[currentSentenceIndex];
+      var sentenceText = currentSentence.textContent;
+      var words = sentenceText.split(" ");
+
+      var visibleWordIndices = words
+        .map(function (_, index) {
+          return index;
+        })
+        .filter(function (index) {
+          return hiddenWordIndices.indexOf(index) === -1;
+        });
+
+      if (visibleWordIndices.length === 0) {
+        console.log("No visible words left to hide.");
+        hideButton.disabled = true; // Disable the hide button if there are no visible words
+        return;
+      }
+
+      // Adjust numWords to ensure it doesn't exceed the number of visible words
+      numWords = Math.min(numWords, visibleWordIndices.length);
+
+      var randomIndices = [];
+      while (randomIndices.length < numWords && visibleWordIndices.length > 0) {
+        var randomIndex = Math.floor(Math.random() * visibleWordIndices.length);
+        var randomVisibleIndex = visibleWordIndices[randomIndex];
+        randomIndices.push(randomVisibleIndex);
+        visibleWordIndices.splice(randomIndex, 1);
+      }
+
+      hiddenWordIndices = hiddenWordIndices.concat(randomIndices);
+
+      for (var i = 0; i < words.length; i++) {
+        if (hiddenWordIndices.indexOf(i) !== -1) {
+          words[i] = '<span class="hide-word">' + words[i] + "</span>";
+        }
+      }
+
+      currentSentence.innerHTML = words.join(" ");
+
+      console.log(
+        "Total Hidden Words in Sentence " +
+          (currentSentenceIndex + 1) +
+          ": " +
+          hiddenWordIndices.length
+      );
+
+      if (hiddenWordIndices.length === words.length) {
+        hideButton.disabled = true;
+      }
+    }
+
+    function hideAllWords() {
+      var currentSentence = sentences[currentSentenceIndex];
+      var words = currentSentence.textContent.split(" ");
+
+      hiddenWordIndices = [];
+      for (var i = 0; i < words.length; i++) {
+        hiddenWordIndices.push(i);
+        words[i] = '<span class="hide-word">' + words[i] + "</span>";
+      }
+
+      currentSentence.innerHTML = words.join(" ");
+      hideButton.disabled = true;
+      visibleWordIndices = [];
+    }
+
+    function revealAllWords() {
+      var currentSentence = sentences[currentSentenceIndex];
+      var words = currentSentence.getElementsByTagName("span");
+
+      for (var i = 0; i < words.length; i++) {
+        words[i].classList.remove("hide-word");
+      }
+
+      hideButton.disabled = false;
+
+      visibleWordIndices = [];
+    }
+
+    function moveToNextSentence() {
+      currentSentenceIndex++;
+
+      if (currentSentenceIndex >= sentences.length) {
+        console.log("You have finished all the sentences.");
+        hideButton.disabled = true;
+        nextButton.disabled = true;
+        swal("You Finished this road!", {
+          title: "Good job!",
+          icon: "success",
+          buttons: {
+            catch: {
+              text: "Back to dashboard",
+              value: "catch",
+            },
+            text: "try again",
+          },
+        }).then((value) => {
+          switch (value) {
+            case "catch":
+              window.location.href = "{% url 'dashboard' %}";
+              break;
+
+            default:
+              location.reload();
+          }
+        });
+        finishButton.disabled = true;
+        return;
+      }
+
+      // Reset hiddenWordIndices array and enable the buttons
+      hiddenWordIndices = [];
+      hideButton.disabled = false;
+      nextButton.disabled = false;
+      finishButton.disabled = false;
+
+      // Hide the current sentence
+      var currentSentence = sentences[currentSentenceIndex - 1];
+      currentSentence.style.display = "none";
+
+      // Show the next sentence
+      var nextSentence = sentences[currentSentenceIndex];
+      nextSentence.style.display = "block";
+
+      // Update the progress bar
+      var progressWidth = ((currentSentenceIndex + 1) / sentences.length) * 100;
+      progressBar.style.width = progressWidth + "%";
+      progressBar.setAttribute("aria-valuenow", progressWidth);
+    }
+
+    // Hide all sentences except the first one
+    for (var i = 1; i < sentences.length; i++) {
+      sentences[i].style.display = "none";
+    }
+
+    
+
+    var backButton = document.getElementById("backButton"); // Get the back button element
+
+    backButton.addEventListener(
+      "click",
+      function () {
+        moveToPreviousSentence();
+      },
+      true
+    );
+
+    function moveToPreviousSentence() {
+      currentSentenceIndex--;
+
+      if (currentSentenceIndex < 0) {
+        console.log("You are already at the beginning.");
+        currentSentenceIndex = 0; // Make sure the index doesn't go below 0
+        backButton.disabled = true;
+        return;
+      }
+
+      // Reset hiddenWordIndices array and enable the buttons
+      hiddenWordIndices = [];
+      hideButton.disabled = false;
+      nextButton.disabled = false;
+      finishButton.disabled = false;
+
+      // Hide the current sentence if it exists
+      if (currentSentenceIndex + 1 < sentences.length) {
+        var currentSentence = sentences[currentSentenceIndex + 1];
+        currentSentence.style.display = "none";
+      }
+
+      // Show the previous sentence
+      var previousSentence = sentences[currentSentenceIndex];
+      previousSentence.style.display = "block";
+
+      // Update the progress bar
+      var progressWidth = (currentSentenceIndex / (sentences.length - 1)) * 100;
+      progressBar.style.width = progressWidth + "%";
+      progressBar.setAttribute("aria-valuenow", progressWidth);
+
+      // Enable/disable the back button based on the current sentence index
+      backButton.disabled = currentSentenceIndex === 0;
+    }
+    function moveToNextSentence() {
+      currentSentenceIndex++;
+
+      if (currentSentenceIndex >= sentences.length) {
+        console.log("You have finished all the sentences.");
+        currentSentenceIndex = sentences.length - 1; // Make sure the index doesn't go beyond the last sentence
+        hideButton.disabled = true;
+        nextButton.disabled = true;
+        finishButton.disabled = true;
+        swal("You Finished this road!", {
+          title: "Good job!",
+          icon: "success",
+
+          buttons: {
+            catch: {
+              text: "Back to dashboard",
+              value: "catch",
+            },
+            text: "try again",
+          },
+
+          allowOutsideClick: false,
+        }).then((value) => {
+          switch (value) {
+            case "catch":
+              window.location.href = "{% url 'dashboard' %}";
+              break;
+
+            default:
+              location.reload();
+          }
+        });
+        return;
+      }
+
+      // Reset hiddenWordIndices array and enable the buttons
+      hiddenWordIndices = [];
+      hideButton.disabled = false;
+      nextButton.disabled = false;
+      finishButton.disabled = false;
+
+      // Hide the current sentence if it exists
+      if (currentSentenceIndex - 1 >= 0) {
+        var currentSentence = sentences[currentSentenceIndex - 1];
+        currentSentence.style.display = "none";
+      }
+
+      // Show the next sentence
+      var nextSentence = sentences[currentSentenceIndex];
+      nextSentence.style.display = "block";
+
+      // Update the progress bar
+      var progressWidth = (currentSentenceIndex / (sentences.length - 1)) * 100;
+      progressBar.style.width = progressWidth + "%";
+      progressBar.setAttribute("aria-valuenow", progressWidth);
+
+      // Enable/disable the back button based on the current sentence index
+      backButton.disabled = currentSentenceIndex === 0;
+    }
+
+    // Hide all sentences except the first one
+    for (var i = 1; i < sentences.length; i++) {
+      sentences[i].style.display = "none";
+    }
+
+    // Check for an existing localStorage entry and restore the user's progress
+    restoreUserProgress();
+    function revealLastHiddenWords(numWords) {
+      var currentSentence = sentences[currentSentenceIndex];
+      var words = currentSentence.getElementsByClassName("hide-word");
+
+      var revealedWords = 0;
+
+      for (var i = words.length - 1; i >= 0; i--) {
+        if (revealedWords === numWords) {
+          break;
+        }
+
+        words[i].classList.remove("hide-word");
+        hiddenWordIndices.pop(); // Remove the index of the revealed word from the hiddenWordIndices array
+        revealedWords++;
+      }
+
+      // Enable the hide button now that some words are revealed
+      hideButton.disabled = false;
+    }
+    visibleWordIndices = [];
+    var originalSentences = {};
+
+    function switchToFirstLetterMode() {
+      document.getElementById("incrementButton").style.display = "none";
+      document.getElementById("finishButton").style.display = "none";
+
+      document.getElementById("undoButton").style.display = "none";
+      document.getElementById("showverse").style.display = "block";
+      var sentences = document.querySelectorAll("p[id^='sentence']");
+      sentences.forEach((sentence) => {
+        originalSentences[sentence.id] = sentence.textContent;
+      });
+
+      hideEverythingExceptFirstLetter();
+    }
+
+    function revertToOriginalState() {
+      // Get sentences and revert their content
+      var sentences = document.querySelectorAll("p[id^='sentence']");
+      sentences.forEach((sentence) => {
+        if (originalSentences.hasOwnProperty(sentence.id)) {
+          sentence.textContent = originalSentences[sentence.id];
+        }
+      });
+    }
+    function hideEverythingExceptFirstLetter() {
+      var sentences = document.querySelectorAll("p[id^='sentence']");
+
+      sentences.forEach((sentence) => {
+        var words = sentence.textContent.trim().split(/\s+/);
+        var firstLetters = "";
+
+        words.forEach((word) => {
+          if (word.length > 0) {
+            firstLetters += word[0];
+          }
+        });
+
+        sentence.textContent = firstLetters
+          .replace("(", "")
+          .replace(/[0-9]/g, "")
+          .toUpperCase()
+          .split("")
+          .join(" ")
+          .replace('"', ""); // Replace the content with first letters
+      });
+    }
+    var isOriginalMode = false; // Flag to track the current mode
+
+    function toggleMode() {
+      if (isOriginalMode) {
+        hideEverythingExceptFirstLetter();
+      } else {
+        revertToOriginalState();
+      }
+
+      isOriginalMode = !isOriginalMode; // Toggle the mode
+    }
+    var is1OriginalMode = true; // Flag to track the current mode
+    var original1Sentences = {}; // Store original content of sentences
+
+    function toggle1Mode() {
+      if (is1OriginalMode) {
+        switchToFirstLetterMode();
+
+        document.getElementById("flm").innerHTML = "Random Word Mode";
+      } else {
+        revertToOriginalState();
+        document.getElementById("incrementButton").style.display = "block";
+        document.getElementById("finishButton").style.display = "block";
+        document.getElementById("undoButton").style.display = "block";
+        document.getElementById("showverse").style.display = "none";
+
+        document.getElementById("flm").innerHTML = "First Letter Mode";
+      }
+
+      is1OriginalMode = !is1OriginalMode; // Toggle the mode
+    }
+    function printDiv() {
+      var divContents = document.getElementById("print").innerHTML;
+
+      
+      var printWindow =window.open('', 'PRINT', 'height=400,width=600');
+
+
+      printWindow.document.write(
+        "<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'>"
+      );
+
+      printWindow.document.write('<body> <div class="daone">');
+      printWindow.document.write(divContents);
+
+      printWindow.document.write(
+        "</div><style> body{ text-align: center; font-family: Helvetica; font-size:5rem }.daone { font-size: 2rem; font-family: Helvetica; margin: 5rem; padding: 2rem; border-radius: 10px; border-style: solid;border-width: medium; }"
+      );
+      printWindow.document.write("</style></body></html>");
+      printWindow.document.close();
+
+      printWindow.print();
+ printWindow.close()
+      return true;
+
+
+    }
+    function printBigDiv() {
+      var divContents = document.getElementById("print").innerHTML;
+
+      var printWindow =window.open('', 'PRINT', 'height=400,width=600');
+      printWindow.document.write("<html><meta name='apple-mobile-web-app-status-bar-style' content='#212529'><meta name='apple-mobile-web-app-capable' content='yes'><meta name='apple-mobile-web-app-title' content='Roads'>");
+      printWindow.document.write('<body> <div class="daone">');
+      printWindow.document.write(divContents);
+
+      printWindow.document.write(
+        "</div><style> body{ display: grid; place-items: center; font-family: Helvetica; font-size:10rem }.daone { font-size: 4rem; font-family: Helvetica; margin: 2rem; padding: 2rem;}"
+      );
+      printWindow.document.write("</style></body></html>");
+      printWindow.document.close();
+
+      printWindow.print();
+      printWindow.close()
+      return true;
+
+    }
+
+    // Call the print function
+  </script>
+
+  {% endblock %}
+</div>
