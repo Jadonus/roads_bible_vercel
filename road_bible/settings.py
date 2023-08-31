@@ -9,9 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+from dotenv import load_dotenv
 
 from pathlib import Path
 import os
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,11 +28,12 @@ DEBUG = False
 
 ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "localhost", "192.168.207.164", "www.roadsbible.com", "roads-bible-vercel-git-main-jadonus.vercel.app/"]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = False 
+EMAIL_HOST = 'smtp.mail.me.com'
+EMAIL_USE_TLS = True 
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jadongearhart@gmail.com' 
-EMAIL_HOST_PASSWORD = 'kmolelwgnxvxwiqr'
+EMAIL_HOST_USER = 'jadongearhart@icloud.com' 
+EMAIL_HOST_PASSWORD = str(os.getenv('ipassword'))
+DEFAULT_FROM_EMAIL = 'support@roadsbible.com'
 
 # Application definition
 
@@ -133,9 +136,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "/dashboard"
 
 PWA_SERVICE_WORKER_PATH = '/static/serviceworker.js'
-LOGOUT_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "/accounts/login"
 PWA_APP_NAME = 'Roads'
-PWA_APP_DESCRIPTION = "My app description"
+PWA_APP_DESCRIPTION = "Roads is a bible memory app, built for the modern user. "
 PWA_APP_THEME_COLOR = '#212529'
 PWA_APP_BACKGROUND_COLOR = '#212529'
 PWA_APP_DISPLAY = 'standalone'
@@ -171,7 +174,7 @@ PWA_APP_SHORTCUTS = [
 ]
 PWA_APP_SCREENSHOTS = [
     {
-      'src': '/static/images/icons/splash-750x1334.png',
+      'src': '/static/roadsrmbg.png',
       'sizes': '750x1334',
       "type": "image/png"
     }

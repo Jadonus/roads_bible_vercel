@@ -7,3 +7,4 @@ virtualenv==20.21.0
 livereload==2.6.3
 requests==2.31.0
 Pillow==9.5.0
+python-dotenv==1.0.0

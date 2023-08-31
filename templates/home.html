@@ -50,7 +50,6 @@ Roads
     <p class="animate__animated animate__fadeIn mx-2" id="label">
       Bible memory verses for the modern user
     </p>
-    <a href="/demo" class="">View a demo</a>
     <div class="d-flex justify-content-center">
 <div class="parallax-container">
   <img
@@ -107,7 +106,9 @@ Roads
     <p class="lead">
       Unlike most Bible memory apps, Roads lays the verses out in predefined
       "Roads". <br />This means you dont have to spend time finding the right
-      verse to memorize.
+      verse to memorize.<br>
+
+    <a href="/demo" class="text-decoration-none why">Try it out. <i class="ph ph-arrow-right "></i></a>
     </p>
     <hr class="rounded ms-5 m-5" />
     <p class="lead">
@@ -142,7 +143,7 @@ Roads
           data-bs-parent="#accordionFlushExample"
         >
           <div class="accordion-body">
-            Currently there are 9 Roads, with many more actively being made.
+            Currently there are 11 Roads, with many more actively being made.
           </div>
         </div>
       </div>
@@ -198,8 +199,9 @@ Roads
         </div>
       </div>
     </div>
-    <footer class="bg-body-secondary">
-      <p class="text-center lead">Roads</p>
+    <footer class="bg-body-secondary bg-opacity-25">
+      <p class="text-center lead ">Roads <img src ="{% static 'roads.png' %}" style="width:40px; height:40px;"></p>
+      
       <p class="text-muted text-center">
         2023 Jadon Gearhart, Apache 2.0 licence.
       </p>
@@ -268,6 +270,7 @@ Roads
 
   /* Set a smooth transition for animation */
 }
+
 
 
       </style>
