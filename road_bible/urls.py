@@ -60,6 +60,7 @@ urlpatterns = [
     path('restore_progress/', views.restore_progress, name='restore_progress'),
     path("roads/Versestoliveby", TemplateView.as_view(template_name="Versestoliveby.html"), name="Versestoliveby"),
     
+    path('betatesters/', TemplateView.as_view(template_name="betatesters.html"), name='betatesters'),
     path("makeroad", TemplateView.as_view(template_name="makeroad.html"), name="makeroad"),
     path("418", TemplateView.as_view(template_name="418.html"), name="418"),
     path("roadmap", TemplateView.as_view(template_name="roadmap.html"), name="roadmap"),

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content%}
+<body>
+<nav class="navbar navbar-expand-lg ">
+  <div class="container-fluid">
+    <a class="navbar-brand text-body" href="/">
+Roads
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto mx-2"> <!-- Change 'justify-content-right' to 'ms-auto' -->
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#about-section">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/dashboard">Dashboard</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary" href="/accounts/signup">Sign Up</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+    <h1 class="text-center m-5 font-weight-bold display-3">Hello beta testers!</h1>
+    <div class="text-center bg-body-secondary rounded m-5 p-5">
+    <p class="h3 ">This page is to have any resources you may need in one place.</p> 
+    <div class="d-flex justify-content-center">
+    </div>
+    <p class="text-weight-bold mt-3 h4">Support, bugs, or feature requests can be sent to either my email at support@roadsbible.com, or my phone number at 717-856-8910. The roadmap can be found  <a href="https://roadsbible.com/roadmap">here</a></p>
+
+</div>
+</body>
+{% endblock %}
