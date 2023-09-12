@@ -2,36 +2,43 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+import pyperclip as pc
 from PIL import Image, ImageDraw, ImageFont
+from subprocess import run
 from django.conf import settings
-
-def make_image(image_name, msg):
-    gradient_path = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
+try:
+    def make_image(image_name, msg):
+        gradient_path = os.path.join(settings.STATIC_ROOT, 'gradient.jpg')
     
-    img = Image.open(gradient_path)
+        img = Image.open(gradient_path)
     
     # Convert the image to RGB mode if it's not already in RGB
-    if img.mode != 'RGB':
-        img = img.convert('RGB')
+        if img.mode != 'RGB':
+            img = img.convert('RGB')
+      
+        font_path = os.path.join(settings.STATIC_ROOT, 'libsans.otf')
+        font = ImageFont.truetype(font_path, 150)
     
-    font_path = os.path.join(settings.STATIC_ROOT, 'libsans.otf')
-    font = ImageFont.truetype(font_path, 150)
+        draw = ImageDraw.Draw(img)
     
-    draw = ImageDraw.Draw(img)
+        text_width, text_height = draw.textsize(msg, font=font)
+        image_width, image_height = img.size
     
-    text_width, text_height = draw.textsize(msg, font=font)
-    image_width, image_height = img.size
+        x = (image_width - text_width) // 2
+        y = (image_height - text_height) // 2
     
-    x = (image_width - text_width) // 2
-    y = (image_height - text_height) // 2
+        draw.text((x, y), msg, font=font, fill=(255, 255, 255))
     
-    draw.text((x, y), msg, font=font, fill=(255, 255, 255))
-    
-    image_path = os.path.join(settings.STATIC_ROOT, f"{image_name}.png")
-    
-    img.save(image_path)
-    print("\033[32mImage Created in /static! 👏")
-
+        image_path = os.path.join(settings.STATIC_ROOT, f"{image_name}.png")
+        process= run(['gum', 'confirm', 'Are You sure about that?'])
+        if process.returncode == 0:
+            pc.copy(image_name)
+            print("\033[32mImage Created in /static! Copied to clipboard as well. 👏")
+            img.save(image_path)
+        else:
+            print('\033[31;49mOk Scaredy-cat... 😈 ')
+except:
+    print("Hi")
 def main():
     """Run administrative tasks."""
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'road_bible.settings')

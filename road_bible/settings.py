@@ -9,11 +9,9 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-from dotenv import load_dotenv
 
 from pathlib import Path
 import os
-load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -89,10 +87,10 @@ WSGI_APPLICATION = 'road_bible.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'URL': 'postgresql://postgres:v6GPdLniITwWPQBcT4rr@containers-us-west-101.railway.app:7763/railway',
+        'URL': str(os.getenv('RAILWAY_URL')),
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'v6GPdLniITwWPQBcT4rr',
+        'PASSWORD': str(os.getenv('RAILWAY_PASS')),
         'HOST': 'containers-us-west-101.railway.app',
         'PORT': 7763,
     }
