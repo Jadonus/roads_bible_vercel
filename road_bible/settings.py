@@ -135,7 +135,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = "roads-frontend.vercel.app"
+LOGIN_REDIRECT_URL = "https://roads-frontend.vercel.app"
 
 PWA_SERVICE_WORKER_PATH = '/static/serviceworker.js'
 LOGOUT_REDIRECT_URL = "/accounts/login"
