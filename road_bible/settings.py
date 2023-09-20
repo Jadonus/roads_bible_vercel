@@ -24,12 +24,13 @@ SECRET_KEY = 'django-insecure-&x$2rzcqf5w_jkx(zzz+u=99$(f^l^l*hw7f^wgi5cajc$92jp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "localhost", "192.168.207.164", "www.roadsbible.com", "roads-bible-vercel-git-main-jadonus.vercel.app/", "localhost:8100"]
+ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "localhost", "192.168.207.164",
+                 "www.roadsbible.com", "roads-bible-vercel-git-main-jadonus.vercel.app/", "localhost:8100"]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.me.com'
-EMAIL_USE_TLS = True 
+EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'jadongearhart@icloud.com' 
+EMAIL_HOST_USER = 'jadongearhart@icloud.com'
 EMAIL_HOST_PASSWORD = str(os.getenv('ipassword'))
 DEFAULT_FROM_EMAIL = 'support@roadsbible.com'
 
@@ -106,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
-     
+
 ]
 
 
@@ -121,7 +122,9 @@ USE_I18N = True
 
 USE_TZ = True
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "https://dashboard.roadsbible.com",
+]
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -130,12 +133,12 @@ CORS_ALLOW_ALL_ORIGINS = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-   os.path.join(BASE_DIR, '/static')
-]# Default primary key field type
+    os.path.join(BASE_DIR, '/static')
+]  # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = "https://roads-frontend.vercel.app"
+LOGIN_REDIRECT_URL = "https://dashboard.roadsbible.com"
 
 PWA_SERVICE_WORKER_PATH = '/static/serviceworker.js'
 LOGOUT_REDIRECT_URL = "/accounts/login"
@@ -176,8 +179,8 @@ PWA_APP_SHORTCUTS = [
 ]
 PWA_APP_SCREENSHOTS = [
     {
-      'src': '/static/roadsrmbg.png',
-      'sizes': '750x1334',
-      "type": "image/png"
+        'src': '/static/roadsrmbg.png',
+        'sizes': '750x1334',
+        "type": "image/png"
     }
 ]
