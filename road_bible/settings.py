@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-&x$2rzcqf5w_jkx(zzz+u=99$(f^l^l*hw7f^wgi5cajc$92jp
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "localhost", "192.168.207.164", "www.roadsbible.com", "roads-bible-vercel-git-main-jadonus.vercel.app/"]
+ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "localhost", "192.168.207.164", "www.roadsbible.com", "roads-bible-vercel-git-main-jadonus.vercel.app/", "localhost:8100"]
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.mail.me.com'
 EMAIL_USE_TLS = True 
@@ -45,10 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "accounts",
     "pwa",
+    "corsheaders",
     "livereload",
 ]
 
 MIDDLEWARE = [
+
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -118,6 +121,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -131,7 +135,7 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-LOGIN_REDIRECT_URL = "/dashboard"
+LOGIN_REDIRECT_URL = "roads-frontend.vercel.app"
 
 PWA_SERVICE_WORKER_PATH = '/static/serviceworker.js'
 LOGOUT_REDIRECT_URL = "/accounts/login"
