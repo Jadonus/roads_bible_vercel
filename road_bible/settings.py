@@ -149,7 +149,7 @@ PWA_APP_BACKGROUND_COLOR = '#212529'
 PWA_APP_DISPLAY = 'standalone'
 PWA_APP_SCOPE = '/'
 PWA_APP_ORIENTATION = 'any'
-PWA_APP_START_URL = 'https://da'
+PWA_APP_START_URL = 'https://dashboard.roadsbible.com'
 PWA_APP_STATUS_BAR_COLOR = '#212529'
 PWA_APP_ICONS = [
     {
