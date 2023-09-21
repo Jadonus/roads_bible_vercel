@@ -124,6 +124,7 @@ USE_TZ = True
 
 CORS_ALLOWED_ORIGINS = [
     "https://dashboard.roadsbible.com",
+    "http://localhost:5173"
 ]
 
 # Static files (CSS, JavaScript, Images)
