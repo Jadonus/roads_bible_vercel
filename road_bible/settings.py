@@ -147,7 +147,6 @@ PWA_APP_DESCRIPTION = "Roads is a bible memory app, built for the modern user. "
 PWA_APP_THEME_COLOR = '#212529'
 PWA_APP_BACKGROUND_COLOR = '#212529'
 PWA_APP_DISPLAY = 'standalone'
-PWA_APP_SCOPE = '/'
 PWA_APP_ORIENTATION = 'any'
 PWA_APP_START_URL = 'https://dashboard.roadsbible.com'
 PWA_APP_STATUS_BAR_COLOR = '#212529'
