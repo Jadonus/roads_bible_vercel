@@ -181,8 +181,8 @@ def save_progress(request):
         # Your POST request handling logic goes here
         # You can access form data and process it
         # For example:
-        post_data = request.POST  # This contains your POST data
-        print(post_data)
+        print(dict(request.POST.items()))
+
         # Process the data and do something with it
         return JsonResponse({'message': 'POST request received successfully'})
     else:
