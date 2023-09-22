@@ -6,6 +6,7 @@ import requests
 from django.template.defaultfilters import slugify
 import os
 from django.views.decorators.csrf import csrf_exempt
+from .models import RoadProgress
 
 from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
@@ -179,13 +180,23 @@ def verses_eli_view(request, group_name):
     return render(request, 'defaultroadload.html', context)
 @csrf_exempt
 def save_progress(request):
-  if request.method == 'POST':
+    if request.method == 'POST':
+        user = request.user  # Get the logged-in user
         try:
             data = json.loads(request.body)
-            print(data)
-            # Your processing logic here
-            return JsonResponse({'message': 'Data received successfully'})
+            road = data.get('road')
+            index = data.get('index', 0)  # Default to 0 if 'index' is not provided in the JSON data
+
+            # Create or update the RoadProgress entry for the user and road
+            progress, created = RoadProgress.objects.get_or_create(user=user, road=road, defaults={'index': index})
+
+            if not created:
+                # If the entry already exists, update the index
+                progress.index = index
+                progress.save()
+
+            return JsonResponse({'message': 'Progress saved successfully'})
         except json.JSONDecodeError as e:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
-  else:
+    else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)

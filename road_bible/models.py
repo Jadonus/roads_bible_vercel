@@ -1,7 +1,12 @@
-from django.contrib.auth.models import User
 from django.db import models
+from django.contrib.auth.models import User
 
-class UserProgress(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    current_sentence_index = models.IntegerField(default=0)
-    hidden_word_indices = models.TextField(default="")
+class RoadProgress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    road = models.CharField(max_length=255)  # You can adjust the max_length as needed
+    index = models.PositiveIntegerField()
+
+    def __str__(self):
+        print('done')
+        return f'{self.user.username} on {self.road} at index {self.index}'
+       
