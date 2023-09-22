@@ -5,6 +5,7 @@ import json
 import requests
 from django.template.defaultfilters import slugify
 import os
+from django.views.decorators.csrf import csrf_exempt
 
 from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
@@ -176,6 +177,7 @@ def verses_eli_view(request, group_name):
     }
 
     return render(request, 'defaultroadload.html', context)
+@csrf_exempt
 def save_progress(request):
     if request.method == 'POST':
         # Your POST request handling logic goes here

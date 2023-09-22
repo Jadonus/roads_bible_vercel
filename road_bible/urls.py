@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.views.decorators.csrf import csrf_exempt
 
 from django.views import View
 from django.contrib.staticfiles.storage import staticfiles_storage
