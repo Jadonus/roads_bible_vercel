@@ -186,9 +186,9 @@ def save_progress(request):
             data = json.loads(request.body)
             road = data.get('road')
             index = data.get('index', 0)  # Default to 0 if 'index' is not provided in the JSON data
-
+            user_name = data.get('username', "unknown")  # Default to the logged-in
             # Create or update the RoadProgress entry for the user and road
-            progress, created = RoadProgress.objects.get_or_create(user=user, road=road, defaults={'index': index})
+            progress, created = RoadProgress.objects.get_or_create(user_name=user_name, road=road, defaults={'index': index})
 
             if not created:
                 # If the entry already exists, update the index
