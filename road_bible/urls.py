@@ -59,7 +59,7 @@ urlpatterns = [
     path('save_progress/', views.save_progress, name='save_progress'),
     path('restore_progress/', views.restore_progress, name='restore_progress'),
     path("roads/Versestoliveby", TemplateView.as_view(template_name="Versestoliveby.html"), name="Versestoliveby"),
-    
+    path("api/save_progress/", views.save_progress, name='save_progress'), 
     path('betatesters/', TemplateView.as_view(template_name="betatesters.html"), name='betatesters'),
     path("makeroad", TemplateView.as_view(template_name="makeroad.html"), name="makeroad"),
     path("418", TemplateView.as_view(template_name="418.html"), name="418"),
