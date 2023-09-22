@@ -179,13 +179,13 @@ def verses_eli_view(request, group_name):
     return render(request, 'defaultroadload.html', context)
 @csrf_exempt
 def save_progress(request):
-    if request.method == 'POST':
-        # Your POST request handling logic goes here
-        # You can access form data and process it
-        # For example:
-        print(dict(request.POST.items()))
-
-        # Process the data and do something with it
-        return JsonResponse({'message': 'POST request received successfully'})
-    else:
+  if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print(data)
+            # Your processing logic here
+            return JsonResponse({'message': 'Data received successfully'})
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+  else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
