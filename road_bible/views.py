@@ -7,6 +7,7 @@ from django.template.defaultfilters import slugify
 import os
 from django.views.decorators.csrf import csrf_exempt
 from .models import RoadProgress
+from django.core import serializers
 
 from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
@@ -207,9 +208,11 @@ def get_saved_progress(request):
         info = json.loads(request.body)
         user_name = info.get('username', "unknown")
         progress = RoadProgress.objects.filter(user_name=user_name)
-        print(progress)
 
-        return JsonResponse({ 'message':progress}, status=200)
+        # Convert the QuerySet to a list of dictionaries
+        progress_data = serializers.serialize('json', progress)
+
+        return JsonResponse({'progress': progress_data}, status=200)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
 # models.py
