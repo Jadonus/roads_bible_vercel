@@ -183,7 +183,7 @@ def save_progress(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
-            road = data.get('road')
+            road = data.get('road', 'default')
             index = data.get('index', 0)  # Default to 0 if 'index' is not provided in the JSON data
             user_name = data.get('username', "unknown")  # Default to "unknown" if 'username' is not provided in the JSON data
 
