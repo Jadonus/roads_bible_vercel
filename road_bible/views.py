@@ -211,7 +211,7 @@ def get_saved_progress(request):
 
         # Convert the QuerySet to a list of dictionaries
         progress_data = serializers.serialize('json', progress)
-
+        print(progress_data)
         return JsonResponse({'progress': progress_data}, status=200)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
