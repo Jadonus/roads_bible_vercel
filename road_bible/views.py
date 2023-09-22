@@ -80,7 +80,7 @@ def get_user_progress(request):
     return JsonResponse({}, status=401)
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
-def save_progress(request):
+def saveold_progress(request):
     if request.method == 'POST' and request.user.is_authenticated:
         username = request.user.username
         sentence_index = int(request.POST.get('sentence_index', 0))
@@ -200,5 +200,14 @@ def save_progress(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
+def get_saved_progress(request):
+    if request.method == 'POST':
+        info = json.loads(request.body)
+        user_name = info.get('username', "unknown")
+        progress = RoadProgress.objects.filter(user_name=user_name)
+        print(progress)
 
+        return JsonResponse({ 'message':progress}, status=200)
+    else:
+        return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
 # models.py

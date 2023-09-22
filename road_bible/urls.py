@@ -66,7 +66,7 @@ urlpatterns = [
     path("roads/chromecast", TemplateView.as_view(template_name="chromecast.html"), name="chromecast"),
     path("requestroad", TemplateView.as_view(template_name="requestroad.html"), name="requestroad"),
     path('roads/<str:group_name>/', views.verses_view, name='verses_view'),
-
+    path('api/get_saved_progress/', views.get_saved_progress, name='get_saved_progress'),
     path("demo", TemplateView.as_view(template_name="demo.html"), name="demo"),
     path('roads/eli/<str:group_name>/', views.verses_eli_view, name='verses_eli_view'),
 ]
