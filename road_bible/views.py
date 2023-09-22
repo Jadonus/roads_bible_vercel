@@ -176,3 +176,14 @@ def verses_eli_view(request, group_name):
     }
 
     return render(request, 'defaultroadload.html', context)
+def save_progress(request):
+    if request.method == 'POST':
+        # Your POST request handling logic goes here
+        # You can access form data and process it
+        # For example:
+        post_data = request.POST  # This contains your POST data
+        print(post_data)
+        # Process the data and do something with it
+        return JsonResponse({'message': 'POST request received successfully'})
+    else:
+        return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
