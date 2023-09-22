@@ -181,13 +181,13 @@ def verses_eli_view(request, group_name):
 @csrf_exempt
 def save_progress(request):
     if request.method == 'POST':
-        user = request.user  # Get the logged-in user
         try:
             data = json.loads(request.body)
             road = data.get('road')
             index = data.get('index', 0)  # Default to 0 if 'index' is not provided in the JSON data
-            user_name = data.get('username', "unknown")  # Default to the logged-in
-            # Create or update the RoadProgress entry for the user and road
+            user_name = data.get('username', "unknown")  # Default to "unknown" if 'username' is not provided in the JSON data
+
+            # Create or update the RoadProgress entry for the user name and road
             progress, created = RoadProgress.objects.get_or_create(user_name=user_name, road=road, defaults={'index': index})
 
             if not created:
@@ -200,3 +200,5 @@ def save_progress(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
+
+# models.py
