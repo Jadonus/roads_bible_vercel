@@ -204,6 +204,7 @@ def save_progress(request):
 
 @csrf_exempt
 def get_saved_progress(request):
+    print('yes')
     if request.method == 'POST':
         try:
 
