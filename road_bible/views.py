@@ -200,6 +200,8 @@ def save_progress(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
+
+@csrf_exempt
 def get_saved_progress(request):
     if request.method == 'POST':
         info = json.loads(request.body)
