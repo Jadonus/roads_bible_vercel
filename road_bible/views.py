@@ -212,7 +212,7 @@ def get_saved_progress(request):
             print(info)
             user_name = info.get('username', "unknown")
             road_name = info.get('road', 'default')
-            progress = RoadProgress.objects.filter(username=user_name, road=road_name).first()
+            progress = RoadProgress.objects.filter(user_name=user_name, road=road_name).first()
 
 
             # Convert the QuerySet to a list of dictionaries
