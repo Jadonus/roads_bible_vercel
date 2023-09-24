@@ -204,23 +204,25 @@ def save_progress(request):
 
 @csrf_exempt
 def get_saved_progress(request):
-    print('yes')
     if request.method == 'POST':
         try:
-
             info = json.loads(request.body)
-            print(info)
             user_name = info.get('username', "unknown")
             road_name = info.get('road', 'default')
             progress = RoadProgress.objects.filter(user_name=user_name, road=road_name).first()
 
-
-            # Convert the QuerySet to a list of dictionaries
-            progress_data = serializers.serialize('json', progress)
-            print(progress_data)
-            return JsonResponse({'progress': progress_data}, status=200)
+            # Check if progress exists before attempting to serialize it
+            if progress:
+                progress_data = {
+                    'user_name': progress.user_name,
+                    'road': progress.road,
+                    'index': progress.index,
+                }
+                return JsonResponse({'progress': progress_data}, status=200)
+            else:
+                return JsonResponse({'error': 'Progress not found'}, status=404)
         except json.JSONDecodeError as e:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
-# models.py
+
