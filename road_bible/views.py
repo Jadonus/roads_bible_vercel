@@ -185,22 +185,26 @@ def save_progress(request):
         try:
             data = json.loads(request.body)
             road = data.get('road', 'default')
-            index = data.get('index', 0)  # Default to 0 if 'index' is not provided in the JSON data
-            user_name = data.get('username', "unknown")  # Default to "unknown" if 'username' is not provided in the JSON data
+            index = data.get('index', 0)
+            user_name = data.get('username', "unknown")
 
-            # Create or update the RoadProgress entry for the user name and road
-            progress, created = RoadProgress.objects.get_or_create(user_name=user_name, road=road, defaults={'index': index})
+            # Check if a RoadProgress entry with the same road and user_name exists
+            existing_progress = RoadProgress.objects.filter(road=road, user_name=user_name).first()
 
-            if not created:
-                # If the entry already exists, update the index
-                progress.index = index
-                progress.save()
+            if existing_progress:
+                # If an entry already exists, update the index
+                existing_progress.index = index
+                existing_progress.save()
+            else:
+                # If no entry exists, create a new one
+                RoadProgress.objects.create(user_name=user_name, road=road, index=index)
 
             return JsonResponse({'message': 'Progress saved successfully'})
         except json.JSONDecodeError as e:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
+
 
 @csrf_exempt
 def get_saved_progress(request):
