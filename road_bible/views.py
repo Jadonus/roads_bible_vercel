@@ -184,6 +184,7 @@ def save_progress(request):
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
+            print('data =>', data)
             road = data.get('road', 'default')
             index = data.get('index', 0)
             user_name = data.get('username', "unknown")
@@ -211,10 +212,10 @@ def get_saved_progress(request):
     if request.method == 'POST':
         try:
             info = json.loads(request.body)
+            print('info =>', info)
             user_name = info.get('username', "unknown")
             road_name = info.get('road', 'default')
             progress = RoadProgress.objects.filter(user_name=user_name, road=road_name).first()
-
             # Check if progress exists before attempting to serialize it
             if progress:
                 progress_data = {
