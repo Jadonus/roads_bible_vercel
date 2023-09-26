@@ -16,9 +16,9 @@
   href="https://fonts.googleapis.com/css?family=Tangerine"
 />
 <body class="text-center">
-<nav class="navbar navbar-expand-lg ">
+<nav class="navbar navbar-expand-lg c">
   <div class="container-fluid">
-    <a class="navbar-brand text-body" href="/">
+    <a class="navbar-brand " href="/">
 Roads
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,33 +33,35 @@ Roads
           <a class="nav-link" href="#about-section">About</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/dashboard">Dashboard</a>
+          <a class="nav-link" href="https://dashboard.roadsbible.com">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="btn btn-primary" href="/accounts/signup">Sign Up</a> <!-- Remove unnecessary class -->
+          <a class="btn btn-primary" href="https://dashboard.roadsbible.com/login">Sign Up</a> <!-- Remove unnecessary class -->
         </li>
       </ul>
     </div>
   </div>
 </nav>
-   
-    <h1 class="display-1 mt-2 animate__animated animate__fadeInUp" id="heading">
-      Roads
-    </h1>
-
-    <p class="animate__animated animate__fadeIn mx-2" id="label">
+  <div class="container">
+    <h1 class="display-3 mt-5 animate__animated animate__fadeInUp" id="heading">
+      
       Bible memory verses for the modern user
+    </h1>
+  </div>
+    <p class="animate__animated animate__fadeIn mx-2" id="label">
     </p>
-    <div class="d-flex justify-content-center">
+    <div class="d-flex justify-content-center imgy " >
 <div class="parallax-container">
   <img
     class="mb-4 parallax-foreground"
-    src="{% static 'roadsrmbg.png' %}"
+    src="{% static 'image1.png' %}"
     alt=""
-    width="450"
-    height="770"
+    width="350"
+    height="690"
+    style="opacity:1;!important"
   />
 </div>
+
     </div>
     
   </div>
@@ -70,7 +72,8 @@ Roads
         <div class="row d-flex justify-content-center align-items-center h-100">
           <div class="col col-lg-9 col-xl-7">
             <div
-              class="bg-body-secondary"
+            data-aos="fade"
+              class="bg"
               style="border-radius: 15px"
             >
               <div class="card-body p-5">
@@ -122,11 +125,11 @@ Roads
 
     <hr class="rounded ms-5 m-5" />
     <h1 class="">Not Sure yet? Read our FAQ</h1>
-    <div class="accordion accordion-flush m-5" id="accordionFlushExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingOne">
+    <div class="bg accordion accordion-flush m-5" id="accordionFlushExample">
+      <div class="bg accordion-item">
+        <h2 class="accordion-header bg" id="flush-headingOne">
           <button
-            class="accordion-button collapsed"
+            class="accordion-button collapsed bg"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#flush-collapseOne"
@@ -138,19 +141,19 @@ Roads
         </h2>
         <div
           id="flush-collapseOne"
-          class="accordion-collapse collapse"
+          class="accordion-collapse collapse bg"
           aria-labelledby="flush-headingOne"
           data-bs-parent="#accordionFlushExample"
         >
-          <div class="accordion-body">
+          <div class="accordion-body bg">
             Currently there are 11 Roads, with many more actively being made.
           </div>
         </div>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingTwo">
+      <div class="accordion-item bg">
+        <h2 class="accordion-header bg" id="flush-headingTwo">
           <button
-            class="accordion-button collapsed"
+            class="accordion-button collapsed bg"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#flush-collapseTwo"
@@ -162,21 +165,21 @@ Roads
         </h2>
         <div
           id="flush-collapseTwo"
-          class="accordion-collapse collapse"
+          class="accordion-collapse collapse bg"
           aria-labelledby="flush-headingTwo"
           data-bs-parent="#accordionFlushExample"
         >
-          <div class="accordion-body">
+          <div class="accordion-body bg">
             Yes, you do. We do sign ups so your progress can be saved. This is
             not possible without accounts. Your information is private and will
             not be shared with others.
           </div>
         </div>
       </div>
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="flush-headingThree">
+      <div class="accordion-item bg">
+        <h2 class="accordion-header bg" id="flush-headingThree">
           <button
-            class="accordion-button collapsed"
+            class="accordion-button collapsed bg"
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#flush-collapseThree"
@@ -199,7 +202,7 @@ Roads
         </div>
       </div>
     </div>
-    <footer class="bg-body-secondary bg-opacity-25">
+    <footer class="bg">
       <p class="text-center lead ">Roads <img src ="{% static 'roads.png' %}" style="width:40px; height:40px;"></p>
       
       <p class="text-muted text-center">
@@ -270,19 +273,48 @@ Roads
 
   /* Set a smooth transition for animation */
 }
+@media (prefers-color-scheme: dark) {
+body {
+  background-color: #0e0e0e;!important;
+color: #eeeeee;!important;
 
+}
+.bg, bg-body-secondary {
+  background-color: #1e1e1e;!important;
+  border-width: 0px;
+  color: #eeeeee;!important;
+}
+.nav-link, .navbar-brand {
+  color: #eeeeee;!important;
+}
+.nav-link:hover {
+  color: var(--bs-color-primary)!important;
+}
+}
+.imgy {
+  background-image: url('{% static "blur.svg" %}');
+  background-repeat: no-repeat;
+  background-size: cover;
+ 
+  
+  transition: opacity 0.3s ease-in-out; /* Add a transition for smooth fading */
 
-
+}
       </style>
 
       <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
       <script>
 const foreground = document.querySelector('.parallax-foreground');
+const imgy = document.querySelector('.imgy')
 
 window.addEventListener('scroll', () => {
   const scrollY = window.scrollY;
   const translateY = -scrollY * 1; // Adjust the multiplier as needed
   foreground.style.top = `${translateY}px`;
+
+  // Calculate the opacity based on scroll position
+  const opacity = 1 - (scrollY / 500); // Adjust 400 to control when fading starts
+  imgy.style.opacity = opacity >= 0 ? opacity : 0;
 });
 </script>
       <script>
