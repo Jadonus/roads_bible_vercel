@@ -187,6 +187,8 @@ def save_progress(request):
             print('data =>', data)
             road = data.get('road', 'default')
             index = data.get('index', 0)
+
+            complete=data.get('complete', False)
             user_name = data.get('username', "unknown")
 
             # Check if a RoadProgress entry with the same road and user_name exists
@@ -195,10 +197,11 @@ def save_progress(request):
             if existing_progress:
                 # If an entry already exists, update the index
                 existing_progress.index = index
+                existing_progress.complete= complete
                 existing_progress.save()
             else:
                 # If no entry exists, create a new one
-                RoadProgress.objects.create(user_name=user_name, road=road, index=index)
+                RoadProgress.objects.create(user_name=user_name, road=road, index=index, complete=complete)
 
             return JsonResponse({'message': 'Progress saved successfully'})
         except json.JSONDecodeError as e:
@@ -230,4 +233,38 @@ def get_saved_progress(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
+
+
+@csrf_exempt
+def gameify(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print('data =>>', data)
+
+            user = data.get('username', "unknown")
+            dbdata = RoadProgress.objects.filter(user_name=user)
+
+            # Initialize a variable to store the total sum
+            total_sum = 0
+
+            for da in dbdata:
+                if da.index > 0:
+                    numverse = da.index + 1
+                    total_sum += numverse  # Add the current value to the total sum
+                else:
+                    print('not started')
+
+            # After the loop, return the total sum
+            if total_sum > 0:
+                return JsonResponse({'numverses': total_sum}, status=200)
+            else:
+                return JsonResponse({'numverses': 'Not started'}, status=200)
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    else:
+        return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status="405")
+   
+    
+
 
