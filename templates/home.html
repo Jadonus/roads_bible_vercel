@@ -5,11 +5,13 @@
 <!DOCTYPE html>
 <html lang="en"> <!-- Add language attribute -->
 <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.26/bundled/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/dixonandmoe/rellax@master/rellax.min.js"></script>
+
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Page Title</title> <!-- Replace with your page title -->
+  <title>Roads</title> <!-- Replace with your page title -->
 </head>
 <script src="https://cdn.tailwindcss.com"></script>
 
@@ -29,10 +31,10 @@
       </h1>
 
       <p class="text-center text-2xl m-6">Currated collections of verses, divided into easy to memorize groups.
-        <img class="mx-auto mb-48" src="{% static 'image1.png' %}" />
+        <img class="mx-auto mb-48 mt-12 rellax" src="{% static 'image1.png' %}" />
     </article>
   </div>
-  <div class="h-screen">
+  <!--<div class="h-screen">
     <div class="pb-20 grid m-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-12">
       <div class="bg-neutral-400 dark:bg-neutral-700 rounded-lg shadow-lg p-12">
         <p class="text-4xl text-center font-extrabold">Psalms 23</p>
@@ -50,7 +52,7 @@
         <p class="text-4xl text-center font-extrabold">Romans Road</p>
       </div>
     </div>
-  </div>
+  </div>-->
   <article class="h-screen mt-48">
     <h1 class="text-center md:text-7xl text-5xl sm:tet-5xl lg:text-8xl xl:text-8x mt-32 font-extrabold "> FAQs
     </h1>
@@ -73,6 +75,10 @@
 
 </html>
 <script>
+  var rellax = new Rellax('.rellax', {
+    speed: 2,
+  });
+
   const lenis = new Lenis({
     smoothTouch: true,
   })
