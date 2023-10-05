@@ -1,297 +1,125 @@
 <!-- templates/home.html -->
-{% extends 'base.html' %}
-{% block title %}Home{% endblock %} {% block content%}
+{% block content %}
 {% load static %}
-<script src="https://unpkg.com/@phosphor-icons/web"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
-<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" <link
-  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Tangerine" />
 
-<body class="text-center">
+<!DOCTYPE html>
+<html lang="en"> <!-- Add language attribute -->
+<script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.26/bundled/lenis.min.js"></script>
 
-  <div class="imgy">
-    <nav class="navbar navbar-expand-lg c">
-      <div class="container-fluid  ">
-        <a class="navbar-brand " href="/">
-          Roads
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto mx-2"> <!-- Change 'justify-content-right' to 'ms-auto' -->
-            <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="/">Home</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#about-section">About</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="https://dashboard.roadsbible.com">Dashboard</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-primary" href="https://dashboard.roadsbible.com/login">Sign Up</a>
-              <!-- Remove unnecessary class -->
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    <div class="container">
-      <h1 class="display-3 mt-2 mb-2 " id="heading">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Page Title</title> <!-- Replace with your page title -->
+</head>
+<script src="https://cdn.tailwindcss.com"></script>
 
-        Bible memory verses for the modern user
+<body data-scroll-container class="text-neutral-900 dark:text-neutral-200 bg-neutral-200 dark:bg-neutral-900">
+  <div class="h-screen">
+    <div class="flex flex-col items-center justify-center">
+      <img class="w-48 m-12 shadow " src="{% static 'better.png' %}" />
+      <h1 data-scroll class="text-8xl font-bold">Roads</h1>
+      <p class="text-2xl m-6 text-center">Bible memory verses for the modern user.</p>
+      <a class="py-4 m-6 text-xl px-12 xl:px-48 lg:px-48 font-semibold rounded-lg shadow-lg text-neutral-100 dark:text-neutral-900 bg-neutral-900 dark:bg-neutral-200"
+        href="https://dashboard.roadsbible.com/login">Start Memorizing</a>
+    </div>
+  </div>
+  <div class="flex flex-col items-center justify-center">
+    <article>
+      <h1 class="text-center md:text-7xl text-5xl sm:tet-5xl lg:text-8xl xl:text-8x mt-32 font-extrabold ">This is Roads
       </h1>
-    </div>
-    <p class="animate__animated animate__fadeIn mx-2" id="label">
-    </p>
-    <div class="d-flex justify-content-center ">
-      <div class="parallax-container">
-        <img class="mb-4 parallax-foreground" src="{% static 'image1.png' %}" alt="" width="340" height="690"
-          style="opacity:1;!important" />
-      </div>
 
-    </div>
-
+      <p class="text-center text-2xl m-6">Currated collections of verses, divided into easy to memorize groups.
+        <img class="mx-auto mb-48" src="{% static 'image1.png' %}" />
+    </article>
   </div>
-  </div>
-  <div id="about-section" class="about-section mt-5">
-    <section class="vh-100">
-      <div class="container py-5 h-100 position-sticky mb-5" id="fixed-item">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-          <div class="col col-lg-9 col-xl-7">
-            <div data-aos="fade" class="bg" style="border-radius: 15px">
-              <div class="card-body p-5">
-                <div class="text-center mb-4 pb-2">
-                  <img src="{% static 'images/lantern.png' %}" alt="Bulb" width="100" />
-                </div>
-
-                <figure class="text-center mb-0">
-                  <blockquote class="blockquote">
-                    <p class="pb-3">
-                      <i class="fas fa-quote-left fa-xs text-primary"></i>
-                      <span class="lead font-italic">
-                        Your word is a lamp to my feet And a light to my path.
-                      </span>
-                      <i class="fas fa-quote-right fa-xs text-primary"></i>
-                    </p>
-                  </blockquote>
-                  <figcaption class="blockquote-footer mb-0">
-                    Psalm 119:105
-                  </figcaption>
-                </figure>
-              </div>
-            </div>
-          </div>
-        </div>
+  <div class="h-screen">
+    <div class="pb-20 grid m-12 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-12">
+      <div class="bg-neutral-400 dark:bg-neutral-700 rounded-lg shadow-lg p-12">
+        <p class="text-4xl text-center font-extrabold">Psalms 23</p>
       </div>
-    </section>
-    <h1 class="display-4 alfm">Roads Is Different.</h1>
-    <p class="lead">
-      Unlike most Bible memory apps, Roads lays the verses out in predefined
-      "Roads". <br />This means you dont have to spend time finding the right
-      verse to memorize.<br>
 
-      <a href="/demo" class="text-decoration-none why">Try it out. <i class="ph ph-arrow-right "></i></a>
-    </p>
-    <hr class="rounded ms-5 m-5" />
-    <p class="lead">
-      Roads is also <span class="text-success fw-bold fst-italic">free</span>,
-      with no subscriptions getting in the way.
-    </p>
-
-    <a class="btn btn-success col-sm-1.1 mb-2" href="{% url 'signup' %}">Sign Up Now!
-    </a>
-
-    <hr class="rounded ms-5 m-5" />
-    <h1 class="">Not Sure yet? Read our FAQ</h1>
-    <div class="bg accordion accordion-flush m-5" id="accordionFlushExample">
-      <div class="bg accordion-item">
-        <h2 class="accordion-header bg" id="flush-headingOne">
-          <button class="accordion-button collapsed bg" type="button" data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-            How many Roads are availible?
-          </button>
-        </h2>
-        <div id="flush-collapseOne" class="accordion-collapse collapse bg" aria-labelledby="flush-headingOne"
-          data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body bg">
-            Currently there are 11 Roads, with many more actively being made.
-          </div>
-        </div>
+      <div class="bg-neutral-400 dark:bg-neutral-700 rounded-lg shadow-lg p-12">
+        <p class="text-4xl text-center font-extrabold">Psalms 100</p>
       </div>
-      <div class="accordion-item bg">
-        <h2 class="accordion-header bg" id="flush-headingTwo">
-          <button class="accordion-button collapsed bg" type="button" data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-            Do I need to sign up?
-          </button>
-        </h2>
-        <div id="flush-collapseTwo" class="accordion-collapse collapse bg" aria-labelledby="flush-headingTwo"
-          data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body bg">
-            Yes, you do. We do sign ups so your progress can be saved. This is
-            not possible without accounts. Your information is private and will
-            not be shared with others.
-          </div>
-        </div>
+
+      <div class="bg-neutral-400 dark:bg-neutral-700 rounded-lg shadow-lg p-12">
+        <p class="text-4xl text-center font-extrabold">Peace</p>
       </div>
-      <div class="accordion-item bg">
-        <h2 class="accordion-header bg" id="flush-headingThree">
-          <button class="accordion-button collapsed bg" type="button" data-bs-toggle="collapse"
-            data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-            Can I make my own Road?
-          </button>
-        </h2>
-        <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-          data-bs-parent="#accordionFlushExample">
-          <div class="accordion-body">
-            Yes, too an extent you can. <a href="/makeroad">This link </a> Will
-            take you too the page.
-          </div>
-        </div>
+
+      <div class="bg-neutral-400 dark:bg-neutral-700 rounded-lg shadow-lg p-12">
+        <p class="text-4xl text-center font-extrabold">Romans Road</p>
       </div>
     </div>
-    <footer class="bg">
-      <p class="text-center lead ">Roads <img src="{% static 'roads.png' %}" style="width:40px; height:40px;"></p>
-
-      <p class="text-muted text-center">
-        2023 Jadon Gearhart, Apache 2.0 licence.
-      </p>
-
-      <div class="container">
-        <div class="row align-items-start g-0">
-          <div class="col">
-            <a class="link-underline link-underline-opacity-0" href="https://dashbord.roadsbible.com/login">Signup <i
-                class="ph ph-sign-in"></i></a>
-          </div>
-          <div class="col">
-            <a class="link-underline link-underline-opacity-0" href="https://dashbord.roadsbible.com/login">Login <i
-                class="ph ph-pen"></i></a>
-          </div>
-          <div class="col">
-            <a class="link-underline link-underline-opacity-0" href="https://dashbord.roadsbible.com/">Dashboard <i
-                class="ph ph-road-horizon"></i></a>
-          </div>
-        </div>
-      </div>
-      <style>
-        html {
-          font-size: 24px;
-
-          font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-
-        }
-
-        body {
-          overflow: auto;
-          /* or overflow-y: auto; to hide only the vertical scrollbar */
-          scrollbar-width: none;
-          /* Hide the scrollbar on Firefox */
-          overflow-x: hidden;
-          --bs-primary-rgb: rgb(255,255,255);
-
-          -ms-overflow-style: none;
-          /* Hide the scrollbar on IE/Edge */
-        }
-
-        /* Show the scrollbar for WebKit-based browsers (e.g., Chrome, Safari) */
-        body::-webkit-scrollbar {
-          width: 0;
-          /* Set the width to 0 to hide the scrollbar */
-          height: 0;
-        }
-
-        hr.rounded {
-          border-top: 8px solid #bbb;
-          border-radius: 5px;
-        }
-
-        .imgy {
-          background-image: url('{% static "blur.svg" %}');
-          background-repeat: no-repeat;
-          background-size: cover;
-          background-blend-mode: darken;
-          background-color: rgba(255, 255, 255, 0.7);
-          /* Adjust the alpha value (0.7) as needed */
-          transition: opacity 0.3s ease-in-out;
-          /* Add a transition for smooth fading */
-
-        }
-
-        .parallax-foreground {
-          /* Set a higher z-index to ensure the foreground stays on top */
-          z-index: 2;
-
-          /* Set initial position for the foreground */
-          position: relative;
-          top: 0;
-          transition: ease-in-out;
-
-          scale: 1;
-          transition: scale 0.1s ease-in-out;
-          /* Set a smooth transition for animation */
-        }
-
-        @media (prefers-color-scheme: dark) {
-          body {
-            background-color: #0e0e0e;
-            color: #eeeeee;
-
-          }
-
-          .bg,
-          bg-body-secondary {
-            background-color: #1e1e1e;
-            border-width: 0px;
-            color: #eeeeee;
-          }
-
-          .nav-link,
-          .navbar-brand {
-            color: #eeeeee;
-            !important;
-          }
-
-          .nav-link:hover {
-            color: var(--bs-color-primary) !important;
-          }
-
-          .imgy {
-            background-image: url('{% static "blur.svg" %}');
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-blend-mode: darken;
-            background-color: rgba(0, 0, 0, 0.7);
-            /* Adjust the alpha value (0.7) as needed */
-            transition: opacity 0.3s ease-in-out;
-            /* Add a transition for smooth fading */
-
-          }
-      </style>
-
-      <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-      <script>
-        const foreground = document.querySelector('.parallax-foreground');
-        const imgy = document.querySelector('.imgy')
-
-        window.addEventListener('scroll', () => {
-          const scrollY = window.scrollY;
-          const translateY = -scrollY * 1; // Adjust the multiplier as needed
-          foreground.style.top = `${translateY}px`;
-
-          // Calculate the opacity based on scroll position
-          const opacity = 1 - (scrollY / 500); // Adjust 400 to control when fading starts
-          imgy.style.opacity = opacity >= 0 ? opacity : 0;
-        });
-      </script>
-      <script>
-        AOS.init();
-      </script>
-
-      {% endblock %}
-    </footer>
   </div>
+  <article class="h-screen mt-48">
+    <h1 class="text-center md:text-7xl text-5xl sm:tet-5xl lg:text-8xl xl:text-8x mt-32 font-extrabold "> FAQs
+    </h1>
+
+    <p class="text-center text-2xl m-6">Coming soon...</p>
+    <div class="text-center bg-neutral-500 m-12 p-6 rounded-lg dark:bg-neutral-700">
+      <details class="p-6">
+        <summary class="text-2xl ">Is Roads Free?</summary>
+        Yes!
+      </details>
+      <details class=" p-6">
+        <summary class="text-2xl">MORE</summary>
+        Yes!
+      </details>
+    </div>
+  </article>
+
+
 </body>
+
+</html>
+<script>
+  const lenis = new Lenis({
+    smoothTouch: true,
+  })
+
+  lenis.on('scroll', (e) => {
+    console.log(e)
+  })
+
+  function raf(time) {
+    lenis.raf(time)
+    requestAnimationFrame(raf)
+  }
+  console.log('hmm')
+  requestAnimationFrame(raf)
+
+</script>
+<style>
+  details>summary {
+    list-style-type: '⬇️';
+  }
+
+  details[open]>summary {
+    list-style-type: '❌';
+  }
+
+  .shadow {
+    filter: drop-shadow(0 0 2em #ffffffaa);
+  }
+
+  html.lenis {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto;
+  }
+
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  .lenis.lenis-scrolling iframe {
+    pointer-events: none;
+  }
+</style>
+{%endblock%}
