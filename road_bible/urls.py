@@ -44,7 +44,8 @@ urlpatterns = [
     
 
 
-
+   
+    path('api/settings', views.settings, name='settings'),
     path('password-reset/', ResetPasswordView.as_view(), name='password_reset'),
     path('', TemplateView.as_view(template_name='home.html'), name='home'), # new
     path('password-reset-complete/',

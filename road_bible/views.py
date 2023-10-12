@@ -5,10 +5,11 @@ import json
 import requests
 from django.template.defaultfilters import slugify
 import os
-from django.views.decorators.csrf import csrf_exempt
 from .models import RoadProgress
-from django.core import serializers
+from .models import Settings
 
+from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
 from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
 from django.http import FileResponse, HttpRequest, HttpResponse
@@ -116,18 +117,23 @@ def adjust_verse_number(book_id, chapter, verse_number):
 
 
 from django.http import JsonResponse
-
+@csrf_exempt
 def verses_view(request, group_name):
     json_file_path = f'static/roads/{group_name}.json'
     with open(json_file_path, 'r') as json_file:
         verses_info = json.load(json_file)
         print("Parsed JSON:", verses_info)
+    data=json.loads(request.body)
+    print(data)
 
+    user = data['username']
     # Initialize an empty list to store retrieved verses
     retrieved_verses = []
-
+    translation = Settings.objects.filter(user_name=user).first()
+    translation_value = translation.translation
+    print(translation_value)
     # API integration: Loop through each verse info and retrieve the text
-    api_base_url = 'https://bible-go-api.rkeplin.com/v1/books/1/chapters/1/{verse_id}?translation=NIV'
+    api_base_url = f'https://bible-go-api.rkeplin.com/v1/books/1/chapters/1/{{verse_id}}?translation={translation_value}'
     for verse_info in verses_info:
         verse_id = adjust_verse_number(
             verse_info['book_id'],
@@ -147,7 +153,7 @@ def verses_view(request, group_name):
         versedata1 = api_data.get('book', {}).get('name', 'Book not found')
         versedata2 = api_data.get('chapterId')
         versedata3 = api_data.get('verseId')
-        reference = f"{api_data['book']['name']} {api_data['chapterId']}:{api_data['verseId']} (NIV)"
+        reference = f"{api_data['book']['name']} {api_data['chapterId']}:{api_data['verseId']} ({translation_value})"
         retrieved_verses.append({
             'verse': api_data.get('verse', 'Verse not found'),
             'reference': reference,
@@ -264,7 +270,35 @@ def gameify(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status="405")
-   
+@csrf_exempt
+def settings(request): 
+    
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print('data =>>', data)
+
+            user = data.get('username', "unknown")
+            userget, created = Settings.objects.get_or_create(user_name=user)
+
+        # Loop through the data and update the corresponding values
+            for key, value in data.items():
+                if key != 'username':
+                    setattr(userget, key, value) 
+
+            userget.save()
+        
+            if created:
+                print('yay')
+            # The user was just created
+            # You can do something specific here if needed
+
+            dataa = serializers.serialize('json', [userget])
+            return HttpResponse(dataa, content_type='application/json', status=200)
+        except json.JSONDecodeError as e:
+            return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+    else:
+        return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status=405)
     
 
 

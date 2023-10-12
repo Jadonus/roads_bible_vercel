@@ -22,7 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&x$2rzcqf5w_jkx(zzz+u=99$(f^l^l*hw7f^wgi5cajc$92jp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["192.168.200.185", "roadsbible.vercel.app", "localhost", "192.168.207.164",
                  "www.roadsbible.com", "roads-bible-vercel-git-main-jadonus.vercel.app/", "localhost:8100"]
@@ -125,9 +125,15 @@ USE_TZ = True
 
 CORS_ALLOWED_ORIGINS = [
     "https://dashboard.roadsbible.com",
-    "http://localhost:5173"
+    "http://localhost:5173",
+    "http://localhost:8000"
 ]
-
+CORS_ALLOW_METHODS = [
+    'GET',
+    'POST',
+    'PUT',
+    'DELETE',
+]
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
