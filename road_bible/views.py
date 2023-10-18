@@ -1,3 +1,5 @@
+from .forms import ReplaceWordsForm
+import re
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import random
@@ -7,6 +9,8 @@ from django.template.defaultfilters import slugify
 import os
 from .models import RoadProgress
 from .models import Settings
+from .models import CustomRoads
+from django.views.decorators.http import require_POST
 
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
@@ -19,18 +23,22 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
+
+
 @require_GET
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # one day
 def favicon(request: HttpRequest) -> HttpResponse:
     file = (settings.BASE_DIR / "static" / "favicon.png").open("rb")
     return FileResponse(file)
-from .forms import ReplaceWordsForm
-import re
+
+
 def my_view(request):
-    json_directory = 'static/roads'  # Update this to the directory containing JSON files
+    # Update this to the directory containing JSON files
+    json_directory = 'static/roads'
 
     # Get a list of all JSON files in the directory
-    json_files = [file for file in os.listdir(json_directory) if file.endswith('.json')]
+    json_files = [file for file in os.listdir(
+        json_directory) if file.endswith('.json')]
 
     combined_data = []
 
@@ -38,7 +46,8 @@ def my_view(request):
         with open(os.path.join(json_directory, json_file), 'r') as file:
             data = json.load(file)
             number_of_groups = len(data)
-            combined_data.append({'parsed_data': data, 'num_groups': number_of_groups})
+            combined_data.append(
+                {'parsed_data': data, 'num_groups': number_of_groups})
 
     context = {
         'combined_data': combined_data,
@@ -47,20 +56,17 @@ def my_view(request):
     return JsonResponse(context)
 
 
-
-
-
-
-
 @require_GET
 @cache_control(max_age=60 * 60 * 24, immutable=True, public=True)  # one day
 def favicon(request: HttpRequest) -> HttpResponse:
     file = (settings.BASE_DIR / "static" / "favicon.png").open("rb")
     return FileResponse(file)
 
+
 def save_user_progress(request):
     if request.method == "POST" and request.user.is_authenticated:
-        current_sentence_index = int(request.POST.get("current_sentence_index", 0))
+        current_sentence_index = int(
+            request.POST.get("current_sentence_index", 0))
         hidden_word_indices = request.POST.get("hidden_word_indices", "")
         # Save the progress in the database (using UserProgress model)
         # ...
@@ -68,6 +74,7 @@ def save_user_progress(request):
         return JsonResponse({"success": True})
 
     return JsonResponse({"success": False}, status=400)
+
 
 def get_user_progress(request):
     if request.user.is_authenticated:
@@ -80,8 +87,12 @@ def get_user_progress(request):
         })
 
     return JsonResponse({}, status=401)
+
+
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
+
+
 def saveold_progress(request):
     if request.method == 'POST' and request.user.is_authenticated:
         username = request.user.username
@@ -93,15 +104,16 @@ def saveold_progress(request):
     return JsonResponse({'success': False})
 
 
-
 def restore_progress(request):
     if request.method == 'GET' and request.user.is_authenticated:
         # Retrieve the user's progress from the database or data store
         # For example, you could use Django models to fetch the progress from the database.
         # Your implementation may vary based on your project's structure.
-        sentence_index = 0  # Replace this with the actual sentence index retrieved from the database.
+        # Replace this with the actual sentence index retrieved from the database.
+        sentence_index = 0
         return JsonResponse({'sentence_index': sentence_index})
     return JsonResponse({'sentence_index': 0})
+
 
 def adjust_verse_number(book_id, chapter, verse_number):
     book_id = int(book_id)
@@ -112,21 +124,100 @@ def adjust_verse_number(book_id, chapter, verse_number):
     print(verse_number)
     adjusted_number = str(book_id * 1000000 + chapter * 1000 + verse_number)
     ads = str(adjusted_number)
-    return ads 
+    return ads
     print(ads)
 
 
-from django.http import JsonResponse
+@csrf_exempt
+def save_verses(request):
+    try:
+        data = json.loads(request.body)
+        verses = data.get('verses', [])
+        title = data.get('title', '')
+        creator = data.get('username', '')
+
+        custom_road, created = CustomRoads.objects.get_or_create(
+            title=title,
+            creator=creator,
+            defaults={'verses': verses}
+        )
+
+        if not created:
+            custom_road.verses = verses
+            custom_road.save()
+
+        return JsonResponse({'status': 'Data saved successfully'})
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON data'}, status=400)
+
+
+@csrf_exempt
+def user_dash(request):
+    data = json.loads(request.body)
+    user = data.get('username', '')
+
+    if user:
+        roads = CustomRoads.objects.filter(creator=user)
+        combined_data = []
+
+        for road in roads:
+            title = road.title
+            verses = road.verses
+            num = 0  # Initialize num for each road
+            descriptions = []
+            urls = []
+            for verse in verses:
+                num += 1  # Increment num for each verse
+                description = verse.get('description')
+                url = verse.get('url')
+                if description:
+                    descriptions.append(description)
+                    urls.append(url)
+
+            road_data = {
+                'title': title,
+                'num': num,
+                'url': urls,
+                'descriptions': descriptions
+            }
+            combined_data.append(road_data)
+
+        response_data = {
+            'creator': user,
+            'combined_data': combined_data
+        }
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({'error': 'Missing or invalid username'})
+
+
 @csrf_exempt
 def verses_view(request, group_name):
-    json_file_path = f'static/roads/{group_name}.json'
-    with open(json_file_path, 'r') as json_file:
-        verses_info = json.load(json_file)
-        print("Parsed JSON:", verses_info)
-    data=json.loads(request.body)
+    data = json.loads(request.body)
     print(data)
-
+    title = data['title']
     user = data['username']
+    custom = data['custom']
+    print('whyyyyyyyyyyyyyyyyyyyyyyyyyyyy')
+    if custom == 'yes':
+        # Fetch data from the database
+        print('custom')
+        print(title)
+        creator = user
+        try:
+            custom_road = CustomRoads.objects.get(title=title, creator=user)
+            verses = custom_road.verses
+        except CustomRoads.DoesNotExist:
+            return JsonResponse({'error': 'Custom road not found'}, status=404)
+    else:
+        # Fetch data from the JSON file
+        json_file_path = f'static/roads/{group_name}.json'
+        with open(json_file_path, 'r') as json_file:
+            verses_info = json.load(json_file)
+            verses = verses_info
+
+        print("Parsed JSON:", verses)
+
     # Initialize an empty list to store retrieved verses
     retrieved_verses = []
     translation = Settings.objects.filter(user_name=user).first()
@@ -134,7 +225,7 @@ def verses_view(request, group_name):
     print(translation_value)
     # API integration: Loop through each verse info and retrieve the text
     api_base_url = f'https://bible-go-api.rkeplin.com/v1/books/1/chapters/1/{{verse_id}}?translation={translation_value}'
-    for verse_info in verses_info:
+    for verse_info in verses:
         verse_id = adjust_verse_number(
             verse_info['book_id'],
             verse_info['chapter'],
@@ -172,19 +263,23 @@ def verses_view(request, group_name):
 #
 #
 #
+
+
 def verses_eli_view(request, group_name):
     retrieved_verses = [
         {
             'verse': 'See to it that no one takes you captive through hollow and desceptive philosophy, which deoends on human tradition and the elemental spiritual forces of this world rather than on Christ. Collossians 2:8'
         }
     ]
-    
+
     context = {
         'group_name': group_name,
         'verses': retrieved_verses,
     }
 
     return render(request, 'defaultroadload.html', context)
+
+
 @csrf_exempt
 def save_progress(request):
     if request.method == 'POST':
@@ -194,20 +289,22 @@ def save_progress(request):
             road = data.get('road', 'default')
             index = data.get('index', 0)
 
-            complete=data.get('complete', False)
+            complete = data.get('complete', False)
             user_name = data.get('username', "unknown")
 
             # Check if a RoadProgress entry with the same road and user_name exists
-            existing_progress = RoadProgress.objects.filter(road=road, user_name=user_name).first()
+            existing_progress = RoadProgress.objects.filter(
+                road=road, user_name=user_name).first()
 
             if existing_progress:
                 # If an entry already exists, update the index
                 existing_progress.index = index
-                existing_progress.complete= complete
+                existing_progress.complete = complete
                 existing_progress.save()
             else:
                 # If no entry exists, create a new one
-                RoadProgress.objects.create(user_name=user_name, road=road, index=index, complete=complete)
+                RoadProgress.objects.create(
+                    user_name=user_name, road=road, index=index, complete=complete)
 
             return JsonResponse({'message': 'Progress saved successfully'})
         except json.JSONDecodeError as e:
@@ -224,7 +321,8 @@ def get_saved_progress(request):
             print('info =>', info)
             user_name = info.get('username', "unknown")
             road_name = info.get('road', 'default')
-            progress = RoadProgress.objects.filter(user_name=user_name, road=road_name).first()
+            progress = RoadProgress.objects.filter(
+                user_name=user_name, road=road_name).first()
             # Check if progress exists before attempting to serialize it
             if progress:
                 progress_data = {
@@ -270,9 +368,11 @@ def gameify(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status="405")
+
+
 @csrf_exempt
-def settings(request): 
-    
+def settings(request):
+
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
@@ -284,10 +384,10 @@ def settings(request):
         # Loop through the data and update the corresponding values
             for key, value in data.items():
                 if key != 'username':
-                    setattr(userget, key, value) 
+                    setattr(userget, key, value)
 
             userget.save()
-        
+
             if created:
                 print('yay')
             # The user was just created
@@ -299,6 +399,3 @@ def settings(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status=405)
-    
-
-
