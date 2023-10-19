@@ -178,12 +178,13 @@ def user_dash(request):
                 'title': title,
                 'num': num,
                 'url': urls,
+
+                'creator': user,
                 'descriptions': descriptions
             }
             combined_data.append(road_data)
 
         response_data = {
-            'creator': user,
             'combined_data': combined_data
         }
         return JsonResponse(response_data)
@@ -399,3 +400,55 @@ def settings(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status=405)
+
+
+@csrf_exempt
+def delete(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            user = data.get('username')
+            road = data.get('road')
+            try:
+                # Assuming you have a model named 'CustomRoads' that represents your database table
+                # Use filter to get the queryset
+                items_to_delete = CustomRoads.objects.filter(
+                    creator=user, title=road)
+                # Loop through the queryset and print the items for debugging
+                for item in items_to_delete:
+                    print(f"Deleting item:")
+                    print(f"Title: {item.title}")
+                    item.delete()
+
+                return JsonResponse({'message': 'Rows deleted successfully'})
+            except CustomRoads.DoesNotExist:
+                return JsonResponse({'error': 'Rows not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': f'An error occurred: {e}'}, status=400)
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=405)
+
+
+@csrf_exempt
+def getroads(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        user = data.get('username')
+        usertoget = data.get('usertoget')
+        road = data.get('road')
+        try:
+            response = list(CustomRoads.objects.filter(
+                title=road, creator=usertoget))
+
+            # Serialize the response to JSON
+            response_data = serializers.serialize('json', response)
+
+            # Deserialize the JSON string back to a Python object
+            response_data = json.loads(response_data)
+
+            return JsonResponse({'data': response_data}, status=200)
+
+        except CustomRoads.DoesNotExist:
+            return HttpResponse('Whoops! That road does not exist', status=404)
+    else:
+        return HttpResponse('POST only, man!', status=400)

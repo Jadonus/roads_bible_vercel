@@ -83,6 +83,9 @@ urlpatterns = [
     path('roads/eli/<str:group_name>/',
          views.verses_eli_view, name='verses_eli_view'),
     path('userdash/', views.user_dash, name='userdash'),
+    path('api/delete/', views.delete, name='delete'),
+
+    path('api/getroad/', views.getroads, name='getroad'),
     path('api/newroad/', views.save_verses, name='newroad'),
     path('api/gameify', views.gameify, name='gameify'),
 ]
