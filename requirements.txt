@@ -9,3 +9,5 @@ requests==2.31.0
 Pillow==9.5.0
 python-dotenv==1.0.0
 django-cors-headers==4.2.0
+dj-rest-auth==5.0.1
+djangorestframework==3.14.0
