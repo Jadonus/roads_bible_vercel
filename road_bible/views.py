@@ -211,8 +211,10 @@ def verses_view(request, group_name):
         except CustomRoads.DoesNotExist:
             return JsonResponse({'error': 'Custom road not found'}, status=404)
     else:
+
+        atitle = group_name.replace("%20", "_")
         # Fetch data from the JSON file
-        json_file_path = f'static/roads/{group_name}.json'
+        json_file_path = f'static/roads/{atitle}.json'
         with open(json_file_path, 'r') as json_file:
             verses_info = json.load(json_file)
             verses = verses_info
