@@ -136,6 +136,7 @@ USE_TZ = True
 CORS_ALLOWED_ORIGINS = [
     "https://dashboard.roadsbible.com",
     "http://localhost:5173",
+    "http://192.168.207.164",
     "http://localhost:8000"
 ]
 CORS_ALLOW_METHODS = [
