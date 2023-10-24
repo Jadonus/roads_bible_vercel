@@ -11,3 +11,5 @@ python-dotenv==1.0.0
 django-cors-headers==4.2.0
 dj-rest-auth==5.0.1
 djangorestframework==3.14.0
+django-allauth==0.55.2
+django-rest-framework==0.1.0
