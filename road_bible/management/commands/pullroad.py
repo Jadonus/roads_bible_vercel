@@ -25,6 +25,8 @@ class Command(BaseCommand):
 
             if verses:
                 title = ob.title
+
+                title.replace(" ", "_")
                 json_data = json.dumps(verses, indent=4)
 
                 # Define the filename based on the title
