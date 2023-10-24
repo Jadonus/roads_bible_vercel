@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
-
 from django.views import View
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
@@ -26,7 +25,6 @@ from django.views.generic.base import TemplateView  # new
 from django.conf import settings
 from django.conf.urls.static import static
 from . import views
-
 from django.contrib.auth import views as auth_views
 from accounts.views import ResetPasswordView
 app_name = 'road_bible'
@@ -52,6 +50,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(
              template_name='registration/password_reset_complete.html'),
          name='password_reset_complete'),
+
     path('serviceworker.js', TemplateView.as_view(template_name='serviceworker.js',
          content_type='application/javascript'), name='service-worker'),
     path('OneSignalSDKWorker.js', TemplateView.as_view(
@@ -87,6 +86,9 @@ urlpatterns = [
 
     path('api/getroad/', views.getroads, name='getroad'),
     path('api/newroad/', views.save_verses, name='newroad'),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
     path('api/gameify', views.gameify, name='gameify'),
 ]
 if settings.DEBUG:

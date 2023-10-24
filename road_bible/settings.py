@@ -49,7 +49,17 @@ INSTALLED_APPS = [
     "road_bible",
     "corsheaders",
     "livereload",
+    'rest_framework',
+    'rest_framework.authtoken',
+    'dj_rest_auth',  # Don't forget the comma here!
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth.registration',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
 
