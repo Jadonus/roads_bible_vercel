@@ -45,6 +45,8 @@ class Command(BaseCommand):
 
                 subprocess.run(['git', 'add', '.'])
                 subprocess.run(['git', 'commit', '-m', title])
+
+                subprocess.run(['git', 'push'])
             else:
                 self.stdout.write(f'\033[31mNo verses found!\033[39m')
 
