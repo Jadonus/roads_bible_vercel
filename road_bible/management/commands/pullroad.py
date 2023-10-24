@@ -47,6 +47,9 @@ class Command(BaseCommand):
                 subprocess.run(['git', 'commit', '-m', title])
 
                 subprocess.run(['git', 'push'])
+
+                self.stdout.write(
+                    f'\033[32m🚀 Full Success {file_name} Uploaded.\033[39m')
             else:
                 self.stdout.write(f'\033[31mNo verses found!\033[39m')
 
