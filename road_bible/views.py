@@ -95,7 +95,7 @@ def get_user_progress(request):
 
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
-
+@csrf_exempt
 def approve(request):
     data = json.loads(request.body)
     print(data.title)
