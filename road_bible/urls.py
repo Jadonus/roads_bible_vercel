@@ -83,7 +83,7 @@ urlpatterns = [
          views.verses_eli_view, name='verses_eli_view'),
     path('userdash/', views.user_dash, name='userdash'),
     path('api/delete/', views.delete, name='delete'),
-
+    path('api/approve', views.approve, name="approv")
     path('api/getroad/', views.getroads, name='getroad'),
     path('api/newroad/', views.save_verses, name='newroad'),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
