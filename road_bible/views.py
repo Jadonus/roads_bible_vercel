@@ -98,11 +98,11 @@ def custom_404(request, exception):
 @csrf_exempt
 def approve(request):
     data = json.loads(request.body)
-    print(data.title)
-    print(data.username)
+    title = data['title']
+    user = data['username']
     send_mail(
-    f"{data.title} Road approval",
-    f"{data.username} wants you to approve their {data.title} Road",
+    f"{title} Road approval",
+    f"{username} wants you to approve their {title} Road",
     "support@roadsbible.com",
     ["jadongearhart@icloud.com"],
     )
