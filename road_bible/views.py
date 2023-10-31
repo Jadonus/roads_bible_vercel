@@ -107,6 +107,7 @@ def approve(request):
     "support@roadsbible.com",
     ["jadongearhart@icloud.com"],
     )
+    return HttpResponse("Success",status="200" )
 def saveold_progress(request):
     if request.method == 'POST' and request.user.is_authenticated:
         username = request.user.username
