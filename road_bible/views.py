@@ -11,6 +11,10 @@ from .models import RoadProgress
 from .models import Settings
 from .models import CustomRoads
 from django.views.decorators.http import require_POST
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.decorators import authentication_classes, permission_classes
+
 
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
@@ -405,7 +409,11 @@ def settings(request):
 
 
 @csrf_exempt
+@csrf_exempt
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def delete(request):
+    print('tes')
     if request.method == 'POST':
         try:
             data = json.loads(request.body)
