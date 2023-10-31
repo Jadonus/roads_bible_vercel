@@ -103,7 +103,7 @@ def approve(request):
     user = data['username']
     send_mail(
     f"{title} Road approval",
-    f"{username} wants you to approve their {title} Road",
+    f"{user} wants you to approve their {title} Road",
     "support@roadsbible.com",
     ["jadongearhart@icloud.com"],
     )
