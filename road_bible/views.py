@@ -15,6 +15,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import authentication_classes, permission_classes
 
+from django.core.mail import send_mail
 
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
