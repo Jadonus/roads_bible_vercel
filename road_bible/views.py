@@ -96,7 +96,16 @@ def get_user_progress(request):
 def custom_404(request, exception):
     return render(request, '404.html', status=404)
 
-
+def approve(request):
+    data = json.loads(request.body)
+    print(data.title)
+    print(data.username)
+    send_mail(
+    f"{data.title} Road approval",
+    f"{data.username} wants you to approve their {data.title} Road",
+    "support@roadsbible.com",
+    ["jadongearhart@icloud.com"],
+    )
 def saveold_progress(request):
     if request.method == 'POST' and request.user.is_authenticated:
         username = request.user.username
