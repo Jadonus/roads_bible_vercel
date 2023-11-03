@@ -510,21 +510,15 @@ def pdf(request):
     }
     template = get_template('flashcards.html')
     html_content = template.render({'fin': fin})
-
+    
     # Create a Django HttpResponse with PDF content
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="{title}.pdf"'
-
-    # Create a PDF using xhtml2pdf
     result = BytesIO()
-
     pdf = pisa.pisaDocument(BytesIO(html_content.encode("UTF-8")), result)
 
     if not pdf.err:
-        response.write(result.getvalue())
-        result.close()
+        response = FileResponse(result, content_type='application/pdf')
+        response['Content-Disposition'] = f'attachment; filename="{title}.pdf"'
         return response
 
     return HttpResponse('Error during PDF generation: %s' % pdf.err, status=500)
-
     # Create a file-like buffer to receive PDF data.
