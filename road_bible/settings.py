@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "pwa",
     "road_bible",
     "corsheaders",
-    "livereload",
     'rest_framework',
     'rest_framework.authtoken',
     'dj_rest_auth',  # Don't forget the comma here!
