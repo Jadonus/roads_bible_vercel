@@ -19,7 +19,6 @@ from django.http import FileResponse
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
-from PIL import Image, ImageDraw, ImageFont
 from django.conf import settings
 from django.http import FileResponse, HttpRequest, HttpResponse
 from django.views.decorators.cache import cache_control
