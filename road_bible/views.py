@@ -487,11 +487,10 @@ def getroads(request):
 
 @csrf_exempt
 def pdf(request):
-    daata = json.loads(request.body)
 
-    username = daata.get('username')
-    title = daata.get('title')
-    custom = daata.get('custom')
+    username = request.GET.get('username')
+    title = request.GET.get('title')
+    custom = request.GET.get('custom')
 
     dataa = {
         'title': title,
@@ -510,15 +509,21 @@ def pdf(request):
     }
     template = get_template('flashcards.html')
     html_content = template.render({'fin': fin})
-    
+
     # Create a Django HttpResponse with PDF content
+
+    # Create a Django HttpResponse with PDF content
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{title}.pdf"'
+
+    # Create a PDF using xhtml2pdf
     result = BytesIO()
+
     pdf = pisa.pisaDocument(BytesIO(html_content.encode("UTF-8")), result)
 
     if not pdf.err:
-        response = FileResponse(result, content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="{title}.pdf"'
+        response.write(result.getvalue())
+        result.close()
         return response
 
-    return HttpResponse('Error during PDF generation: %s' % pdf.err, status=500)
     # Create a file-like buffer to receive PDF data.
