@@ -16,12 +16,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import authentication_classes, permission_classes
 import io
 from django.http import FileResponse
-from reportlab.lib.pagesizes import letter
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
-from reportlab.pdfgen import canvas
-
-
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
@@ -499,47 +493,11 @@ def pdf(request):
         'username': username,
     }
 
-    try:
-        response = requests.post(
-            f'http://localhost:8000/roads/{title}/', json=dataa)
-        response.raise_for_status()  # Check for HTTP request errors
-        res = response.json()
-        print('res', res)
-        verses = [verse_data['verse']
-                  for verse_data in res['verses']]
-    except requests.exceptions.RequestException as e:
-        print(f"Request error: {e}")
-        verses = []  # Handle the error gracefully, for example, set verses to an empty list
+    response = requests.post(
+        f'http://localhost:8000/roads/{title}/', json=dataa)
+    response.raise_for_status()  # Check for HTTP request errors
+    res = response.json()
+    print('res', res)
+    return HttpResponse("OK", status=200)
 
-    # Create a PDF document
-    output = io.BytesIO()
-    doc = SimpleDocTemplate(output, pagesize=letter)
-
-    # Create a story for your PDF
-    story = []
-
-    styles = getSampleStyleSheet()
-    custom_style = styles['Normal']
-    custom_style.fontSize = 12
-    # Use custom_style instead of styles
-
-    for verse in verses:
-        verse_paragraph = Paragraph(verse, custom_style)
-        verse_paragraph.keepTogether = True  # Prevent splitting across pages
-        verse_paragraph.spaceBefore = 20  # Adjust margin before the paragraph
-        verse_paragraph.spaceAfter = 10  # Adjust margin after a line break
-        story.append(verse_paragraph)
-        # Add each verse with some spacing between them
-
-    # Build the PDF document
-    doc.build(story)
-
-    # Move the buffer's position to the beginning before reading
-    output.seek(0)
-
-    # FileResponse for serving the PDF
-    response = FileResponse(output, as_attachment=True,
-                            filename=f"{title}.pdf")
-
-    return response
     # Create a file-like buffer to receive PDF data.
