@@ -501,7 +501,7 @@ def pdf(request):
     }
 
     response = requests.post(
-        f'http://localhost:8000/roads/{title}/', json=dataa)
+        f'https://www.roadsbible.com/roads/{title}/', json=dataa)
     response.raise_for_status()  # Check for HTTP request errors
     res = response.json()
     print('res', res)
