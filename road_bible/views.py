@@ -28,6 +28,13 @@ from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.contrib.auth.views import PasswordResetView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.template.loader import get_template
+from io import BytesIO
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.lib import colors
+from reportlab.platypus import Table, TableStyle
+from xhtml2pdf import pisa
 
 
 @require_GET
@@ -498,6 +505,27 @@ def pdf(request):
     response.raise_for_status()  # Check for HTTP request errors
     res = response.json()
     print('res', res)
-    return HttpResponse("OK", status=200)
+    fin = {
+        "res": res,
+        "title": title,
+    }
+    template = get_template('flashcards.html')
+    html_content = template.render({'fin': fin})
+
+    # Create a Django HttpResponse with PDF content
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="{title}.pdf"'
+
+    # Create a PDF using xhtml2pdf
+    result = BytesIO()
+
+    pdf = pisa.pisaDocument(BytesIO(html_content.encode("UTF-8")), result)
+
+    if not pdf.err:
+        response.write(result.getvalue())
+        result.close()
+        return response
+
+    return HttpResponse('Error during PDF generation: %s' % pdf.err, status=500)
 
     # Create a file-like buffer to receive PDF data.

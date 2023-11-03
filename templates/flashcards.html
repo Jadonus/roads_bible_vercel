@@ -1,0 +1,28 @@
+<html>
+  <body>
+    <nav>
+        <h1>{{fin.title}}</h1>
+    </nav>
+        <div>
+        {% for verse in fin.res.verses %}
+        <h3>{{ verse.verse }} {{ verse.reference }}</h3>
+      {% endfor %}
+    <div>
+  </body>
+  <style>
+  
+    h1 {
+      font-size: 3.5em;
+    }
+  
+    h3 {
+        font-size: 2em;
+        margin: 1rem;
+    }
+    div {
+        border: 2px solid black;
+        padding: 2rem;
+        border-radius: 20px;
+    } 
+  </style>
+</html>
