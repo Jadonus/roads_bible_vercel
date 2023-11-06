@@ -36,6 +36,7 @@ class Favorites(models.Model):
     index = models.PositiveIntegerField(default=0)
     user_name = models.CharField(max_length=255)
     road = models.BooleanField(default=True)
+    verse= models.CharField(max_length=255, default="N/A")
 
     def __str__(self):
         return f'Title is {self.title}  index is {self.index}creator is{self.user_name} road is {self.road}'
