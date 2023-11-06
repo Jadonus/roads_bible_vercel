@@ -34,6 +34,7 @@ from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib import colors
 from reportlab.platypus import Table, TableStyle
 from xhtml2pdf import pisa
+from road_bible.models import Favorites
 
 
 @require_GET
@@ -430,7 +431,6 @@ def settings(request):
 
 
 @csrf_exempt
-@csrf_exempt
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def delete(request):
@@ -527,3 +527,26 @@ def pdf(request):
         return response
 
     # Create a file-like buffer to receive PDF data.
+
+
+@csrf_exempt
+def newfavorites(request):
+    data = json.loads(request.body)
+    user = data.get('username')
+    road = data.get('road')
+    title = data.get('title')
+    index = data.get('index')
+    Favorites.objects.get_or_create(
+        user_name=user, title=title, index=index, road=road)
+    return HttpResponse("Done!", status=200)
+
+
+@csrf_exempt
+def getfavorites(request):
+    data = json.loads(request.body)
+    user = data.get('username')
+    try:
+        s = list(Favorites.objects.filter(user_name=user).values())
+    except Favorites.DoesNotExist:
+        return HttpResponse("No favorites for this user", status=404)
+    return JsonResponse(s, safe=False, status=200)

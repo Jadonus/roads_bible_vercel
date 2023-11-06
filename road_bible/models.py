@@ -14,7 +14,7 @@ class RoadProgress(models.Model):
 class Settings(models.Model):
     defaultmode = models.CharField(max_length=255, default="randomword")
     color = models.CharField(max_length=255, default='#3876d2')
-    translation = models.CharField(max_length=255, default='NIV')
+    translation = models.CharField(max_length=255, default='NLT')
     # Add a field for user name
     user_name = models.CharField(max_length=255, default="unknown")
 
@@ -29,3 +29,13 @@ class CustomRoads(models.Model):
 
     def __str__(self):
         return f'Verses are {self.verses}  title is {self.title}creator is{self.creator} '
+
+
+class Favorites(models.Model):
+    title = models.CharField(max_length=255)
+    index = models.PositiveIntegerField(default=0)
+    user_name = models.CharField(max_length=255)
+    road = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'Title is {self.title}  index is {self.index}creator is{self.user_name} road is {self.road}'
