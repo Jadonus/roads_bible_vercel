@@ -538,7 +538,7 @@ def newfavorites(request):
     index = data.get('index')
     verse=data.get('verse')
     Favorites.objects.get_or_create(
-        user_name=user, title=title, index=index,verse=verse road=road)
+        user_name=user, title=title, index=index,verse=verse, road=road)
     return HttpResponse("Done!", status=200)
 
 
