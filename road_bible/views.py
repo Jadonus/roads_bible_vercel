@@ -249,7 +249,7 @@ def verses_view(request, group_name):
 
     # Initialize an empty list to store retrieved verses
     retrieved_verses = []
-    translation = Settings.objects.filter(user_name=user).first()
+    translation = Settings.objects.get(user_name=user)
     translation_value = translation.translation
     print(translation_value)
     # API integration: Loop through each verse info and retrieve the text
@@ -278,9 +278,16 @@ def verses_view(request, group_name):
             'verse': api_data.get('verse', 'Verse not found'),
             'reference': reference,
         })  # Append the API data to the list
+    favorites = Favorites.objects.filter(user_name=user)
+    faavs = []
+    for favs in favorites:
+        faavs.append(favs.index)
 
+    print(favorites)
+    print(faavs)
     # Prepare the JSON response
     response_data = {
+        'favorites': faavs,
         'group_name': group_name,
         'verses': retrieved_verses,
     }
@@ -536,9 +543,9 @@ def newfavorites(request):
     road = data.get('road')
     title = data.get('title')
     index = data.get('index')
-    verse=data.get('verse')
+    verse = data.get('verse')
     Favorites.objects.get_or_create(
-        user_name=user, title=title, index=index,verse=verse, road=road)
+        user_name=user, title=title, index=index, verse=verse, road=road)
     return HttpResponse("Done!", status=200)
 
 
