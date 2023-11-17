@@ -252,15 +252,14 @@ def verses_view(request, group_name):
     translation = Settings.objects.get(user_name=user)
     translation_value = translation.translation
     print(translation_value)
+
     # API integration: Loop through each verse info and retrieve the text
-    api_base_url = f'https://bible-go-api.rkeplin.com/v1/books/1/chapters/1/{{verse_id}}?translation={translation_value}'
+    api_base_url = f'https://jsonbible.com/search/verses.php?json={{verse_id}}'
     for verse_info in verses:
-        verse_id = adjust_verse_number(
-            verse_info['book_id'],
-            verse_info['chapter'],
-            verse_info['verse_number']
-        )
-        api_url = api_base_url.format(verse_id=verse_id)
+        print(verse_info['chapter'])
+        send = {"book": verse_info['book_name'],  "chapter": str(verse_info['chapter']),
+                "verse": str(verse_info['verse_number']), "found": 1,  "version": translation_value.lower()}
+        api_url = api_base_url.format(verse_id=json.dumps(send))
         print(api_url)
         api_response = requests.get(api_url)
         print("API Response:", api_response.text)
@@ -270,12 +269,10 @@ def verses_view(request, group_name):
 
         verse_text = api_data.get('verse', 'Verse not found')
         print("Verse Text:", verse_text)
-        versedata1 = api_data.get('book', {}).get('name', 'Book not found')
-        versedata2 = api_data.get('chapterId')
-        versedata3 = api_data.get('verseId')
-        reference = f"{api_data['book']['name']} {api_data['chapterId']}:{api_data['verseId']} ({translation_value})"
+
+        reference = f"{api_data['book']} {api_data['chapter']}:{api_data['verses']} ({translation_value})"
         retrieved_verses.append({
-            'verse': api_data.get('verse', 'Verse not found'),
+            'verse': api_data.get('text', 'Verse not found'),
             'reference': reference,
         })  # Append the API data to the list
     favorites = Favorites.objects.filter(user_name=user)
