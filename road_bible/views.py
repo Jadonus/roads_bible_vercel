@@ -275,13 +275,17 @@ def verses_view(request, group_name):
             'verse': api_data.get('text', 'Verse not found'),
             'reference': reference,
         })  # Append the API data to the list
-    favorites = Favorites.objects.filter(user_name=user)
-    faavs = []
-    for favs in favorites:
-        faavs.append(favs.index)
+    try:
+        favorites = Favorites.objects.filter(user_name=user, title=title)
+        faavs = []
+        for favs in favorites:
+            faavs.append(favs.index)
 
-    print(favorites)
-    print(faavs)
+        print(favorites)
+        print(faavs)
+    except Favorites.DoesNotExist:
+        faavs = []
+
     # Prepare the JSON response
     response_data = {
         'favorites': faavs,
