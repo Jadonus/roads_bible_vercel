@@ -1,4 +1,3 @@
-from .forms import ReplaceWordsForm
 import re
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
@@ -276,14 +275,18 @@ def verses_view(request, group_name):
             'reference': reference,
         })  # Append the API data to the list
     try:
-        favorites = Favorites.objects.filter(user_name=user, title=title)
+        print("AAA")
+
+        favorites = Favorites.objects.filter(
+            user_name=user, title="/roads/" + group_name).values()
         faavs = []
         for favs in favorites:
-            faavs.append(favs.index)
-
+            faavs.append(favs["index"])
+            print(favs["index"])
         print(favorites)
         print(faavs)
     except Favorites.DoesNotExist:
+        print("none")
         faavs = []
 
     # Prepare the JSON response
