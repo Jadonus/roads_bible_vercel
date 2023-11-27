@@ -89,7 +89,7 @@ urlpatterns = [
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/', include('dj_rest_auth.urls')),
     path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
-    path('api/gameify', views.gameify, name='gameify'),
+    path('api/gameify/', views.gameify, name='gameify'),
     path('api/newfav/', views.newfavorites, name="newfav"),
     path('api/getfav/', views.getfavorites, name="getfav"),
     path('api/pdf/', views.pdf, name='pdf'),

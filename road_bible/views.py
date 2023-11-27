@@ -14,6 +14,9 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.decorators import authentication_classes, permission_classes
 import io
+from datetime import timedelta
+from django.utils.timezone import is_aware, make_aware
+
 from django.http import FileResponse
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
@@ -180,8 +183,11 @@ def save_verses(request):
 def user_dash(request):
     data = json.loads(request.body)
     user = data.get('username', '')
+    date = data.get('date')
 
     if user:
+        dbdate = RoadProgress.objects.filter(user_name=user)
+        dbdate.update(date=date)
         roads = CustomRoads.objects.filter(creator=user)
         combined_data = []
 
@@ -386,28 +392,42 @@ def gameify(request):
             data = json.loads(request.body)
             print('data =>>', data)
 
-            user = data.get('username', "unknown")
+            user = data.get('username', 'unknown')
             dbdata = RoadProgress.objects.filter(user_name=user)
+            date = dbdata.values('date').first()
+
+            # Check if date exists for the user and add seven days to it
+            if date and 'date' in date:
+                user_date = date['date']
+                if not is_aware(user_date):  # Check if it's already timezone-aware
+                    # Ensure timezone awareness
+                    user_date = make_aware(user_date)
+                new_date = user_date + timedelta(days=7)
+                print("New date:", new_date)
+            else:
+                print("Date not found or invalid")
 
             # Initialize a variable to store the total sum
             total_sum = 0
-
             for da in dbdata:
-                if da.index > 0:
+                # Consider using a different attribute or check if 'index' exists in your model
+                if hasattr(da, 'index') and da.index > 0:
                     numverse = da.index + 1
                     total_sum += numverse  # Add the current value to the total sum
                 else:
-                    print('not started')
+                    print('Not started or attribute issue')
 
-            # After the loop, return the total sum
+            # After the loop, return the total sum or a message if it's not started
             if total_sum > 0:
                 return JsonResponse({'numverses': total_sum}, status=200)
             else:
                 return JsonResponse({'numverses': 'Not started'}, status=200)
+
         except json.JSONDecodeError as e:
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
+
     else:
-        return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status="405")
+        return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status=405)
 
 
 @csrf_exempt

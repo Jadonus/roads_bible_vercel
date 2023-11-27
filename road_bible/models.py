@@ -1,4 +1,5 @@
 from django.db import models
+import datetime
 
 
 class RoadProgress(models.Model):
@@ -6,6 +7,7 @@ class RoadProgress(models.Model):
     road = models.CharField(max_length=255)
     index = models.PositiveIntegerField()
     complete = models.BooleanField(default=False)
+    date = models.DateTimeField(default=datetime.datetime.now)
 
     def __str__(self):
         return f'{self.user_name} on {self.road} at index {self.index}'
@@ -36,7 +38,7 @@ class Favorites(models.Model):
     index = models.PositiveIntegerField(default=0)
     user_name = models.CharField(max_length=255)
     road = models.BooleanField(default=True)
-    verse= models.CharField(max_length=255, default="N/A")
+    verse = models.CharField(max_length=255, default="N/A")
 
     def __str__(self):
         return f'Title is {self.title}  index is {self.index}creator is{self.user_name} road is {self.road}'

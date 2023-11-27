@@ -18,11 +18,11 @@
 <body data-scroll-container class="text-neutral-900 dark:text-neutral-200 bg-neutral-200 dark:bg-neutral-900">
   <div class="h-screen">
     <div class="flex flex-col items-center justify-center">
-      <img class="w-48 m-12 shadow " src="{% static 'better.png' %}" />
+      <img class="w-48 m-12 lg:mt-48  shadow " src="https://dashboard.roadsbible.com/roads.png" />
       <h1 data-scroll class="text-8xl font-bold">Roads</h1>
       <p class="text-2xl m-6 text-center">Bible memory verses for the modern user.</p>
       <a class="py-4 m-6 text-xl px-12 xl:px-48 lg:px-48 font-semibold rounded-lg shadow-lg text-neutral-100 dark:text-neutral-900 bg-neutral-900 dark:bg-neutral-200"
-        href="https://dashboard.roadsbible.com/login">Start Memorizing</a>
+        href="https://dashboard.roadsbible.com/signup">Start Memorizing</a>
     </div>
   </div>
   <div class="flex flex-col items-center justify-center">
@@ -31,7 +31,7 @@
       </h1>
 
       <p class="text-center text-2xl m-6">Currated collections of verses, divided into easy to memorize groups.
-        <img class="mx-auto mb-48 mt-12 rellax" src="{% static 'image1.png' %}" />
+        <img class="mx-auto mb-48 mt-12 rellax" src="{% static 'screenshot.png' %}" />
     </article>
   </div>
   <!--<div class="h-screen">
@@ -57,7 +57,7 @@
     <h1 class="text-center md:text-7xl text-5xl sm:tet-5xl lg:text-8xl xl:text-8x mt-32 font-extrabold "> FAQs
     </h1>
 
-    <p class="text-center text-2xl m-6">Coming soon...</p>
+    <p class="text-center text-2xl m-6">Info about roads</p>
     <div class="text-center bg-neutral-500 m-12 p-6 rounded-lg dark:bg-neutral-700">
       <details class="p-6">
         <summary class="text-2xl ">Is Roads Free?</summary>
@@ -79,20 +79,9 @@
     speed: 2,
   });
 
-  const lenis = new Lenis({
-    smoothTouch: true,
-  })
 
-  lenis.on('scroll', (e) => {
-    console.log(e)
-  })
 
-  function raf(time) {
-    lenis.raf(time)
-    requestAnimationFrame(raf)
-  }
-  console.log('hmm')
-  requestAnimationFrame(raf)
+
 
 </script>
 <style>
@@ -105,27 +94,7 @@
   }
 
   .shadow {
-    filter: drop-shadow(0 0 2em #ffffffaa);
-  }
-
-  html.lenis {
-    height: auto;
-  }
-
-  .lenis.lenis-smooth {
-    scroll-behavior: auto;
-  }
-
-  .lenis.lenis-smooth [data-lenis-prevent] {
-    overscroll-behavior: contain;
-  }
-
-  .lenis.lenis-stopped {
-    overflow: hidden;
-  }
-
-  .lenis.lenis-scrolling iframe {
-    pointer-events: none;
+    filter: drop-shadow(0 0 2em #6277ecaa);
   }
 </style>
 {%endblock%}
