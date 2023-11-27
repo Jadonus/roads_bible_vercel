@@ -31,7 +31,7 @@
       </h1>
 
       <p class="text-center text-2xl m-6">Currated collections of verses, divided into easy to memorize groups.
-        <img class="mx-auto mb-48 mt-12 rellax" width="400" src="{% static 'screenshot.png' %}" />
+        <div class="mx-auto mb-48 mt-12 rellax image" />
     </article>
   </div>
   <!--<div class="h-screen">
@@ -95,6 +95,21 @@
 
   .shadow {
     filter: drop-shadow(0 0 2em #6277ecaa);
+  }
+
+  @media (max-width: 600px) {
+    .image {
+      background-image: url('screenshot.png');
+      /* Other image styling */
+    }
+  }
+
+  /* For screens larger than 600px (tablets and computers) */
+  @media (min-width: 601px) {
+    .image {
+      background-image: url('ipad.png');
+      /* Other image styling */
+    }
   }
 </style>
 {%endblock%}

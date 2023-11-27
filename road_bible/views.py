@@ -183,11 +183,8 @@ def save_verses(request):
 def user_dash(request):
     data = json.loads(request.body)
     user = data.get('username', '')
-    date = data.get('date')
 
     if user:
-        dbdate = RoadProgress.objects.filter(user_name=user)
-        dbdate.update(date=date)
         roads = CustomRoads.objects.filter(creator=user)
         combined_data = []
 
