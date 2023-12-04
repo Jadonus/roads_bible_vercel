@@ -119,6 +119,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 
 ]
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = True   
 
 
 # Internationalization
