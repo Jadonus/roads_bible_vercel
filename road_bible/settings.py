@@ -159,7 +159,13 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = "https://dashboard.roadsbible.com"
+AUTHENTICATION_BACKENDS = (
+ # Needed to login by username in Django admin, regardless of `allauth`
+ "django.contrib.auth.backends.ModelBackend",
 
+ # `allauth` specific authentication methods, such as login by e-mail
+ "allauth.account.auth_backends.AuthenticationBackend",
+)
 PWA_SERVICE_WORKER_PATH = '/static/serviceworker.js'
 LOGOUT_REDIRECT_URL = "/accounts/login"
 PWA_APP_NAME = 'Roads'
