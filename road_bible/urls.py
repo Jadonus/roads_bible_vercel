@@ -93,6 +93,7 @@ urlpatterns = [
     path('api/newfav/', views.newfavorites, name="newfav"),
     path('api/getfav/', views.getfavorites, name="getfav"),
     path('api/pdf/', views.pdf, name='pdf'),
+    path('api/getlast/', views.get_last_road, name="getlast"),
 
 ]
 if settings.DEBUG:

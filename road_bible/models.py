@@ -1,5 +1,6 @@
 from django.db import models
 import datetime
+from django.utils import timezone
 
 
 class RoadProgress(models.Model):
@@ -7,7 +8,8 @@ class RoadProgress(models.Model):
     road = models.CharField(max_length=255)
     index = models.PositiveIntegerField()
     complete = models.BooleanField(default=False)
-    date = models.DateTimeField(default=datetime.datetime.now)
+    date = models.DateTimeField(default=timezone.now)
+    isCustom = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.user_name} on {self.road} at index {self.index}'

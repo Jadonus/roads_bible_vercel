@@ -6,6 +6,9 @@ import json
 import requests
 from django.template.defaultfilters import slugify
 import os
+from django.utils import timezone
+
+import datetime
 from .models import RoadProgress
 from .models import Settings
 from .models import CustomRoads
@@ -16,7 +19,8 @@ from rest_framework.decorators import authentication_classes, permission_classes
 import io
 from datetime import timedelta
 from django.utils.timezone import is_aware, make_aware
-
+from PIL import Image, ImageDraw
+import math
 from django.http import FileResponse
 from django.core.mail import send_mail
 from django.views.decorators.csrf import csrf_exempt
@@ -334,7 +338,8 @@ def save_progress(request):
 
             complete = data.get('complete', False)
             user_name = data.get('username', "unknown")
-
+            cus = data.get('isCustom', False)
+            da = timezone.now()
             # Check if a RoadProgress entry with the same road and user_name exists
             existing_progress = RoadProgress.objects.filter(
                 road=road, user_name=user_name).first()
@@ -343,11 +348,13 @@ def save_progress(request):
                 # If an entry already exists, update the index
                 existing_progress.index = index
                 existing_progress.complete = complete
+                existing_progress.isCustom = cus
+                existing_progress.date = da
                 existing_progress.save()
             else:
                 # If no entry exists, create a new one
                 RoadProgress.objects.create(
-                    user_name=user_name, road=road, index=index, complete=complete)
+                    user_name=user_name, road=road, index=index, complete=complete, date=da, isCustom=cus)
 
             return JsonResponse({'message': 'Progress saved successfully'})
         except json.JSONDecodeError as e:
@@ -380,6 +387,17 @@ def get_saved_progress(request):
             return JsonResponse({'error': 'Invalid JSON format'}, status=400)
     else:
         return JsonResponse({'error': 'This endpoint only accepts POST requests'}, status=405)
+
+
+@csrf_exempt
+def get_last_road(request):
+    ah = json.loads(request.body)
+    user = ah.get('username')
+    basestuff = RoadProgress.objects.filter(user_name=user)
+    stuff = basestuff.order_by('-date')
+
+    print(stuff)
+    return JsonResponse({"Hi Mate": "HEY"}, status=200, safe=False)
 
 
 @csrf_exempt
