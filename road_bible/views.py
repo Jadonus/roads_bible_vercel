@@ -394,10 +394,14 @@ def get_last_road(request):
     ah = json.loads(request.body)
     user = ah.get('username')
     basestuff = RoadProgress.objects.filter(user_name=user)
-    stuff = basestuff.order_by('-date')
+    stuff = basestuff.order_by('-date').first()
 
     print(stuff)
-    return JsonResponse({"Hi Mate": "HEY"}, status=200, safe=False)
+    if stuff is not None:
+        serialized_stuff = serializers.serialize('json', [stuff, ])
+        return JsonResponse(serialized_stuff, status=200, safe=False)
+    else:
+        return JsonResponse({"error": "No data found"}, status=404)
 
 
 @csrf_exempt
@@ -409,18 +413,8 @@ def gameify(request):
 
             user = data.get('username', 'unknown')
             dbdata = RoadProgress.objects.filter(user_name=user)
-            date = dbdata.values('date').first()
-
+            stuff = dbdata.order_by('-date').first()
             # Check if date exists for the user and add seven days to it
-            if date and 'date' in date:
-                user_date = date['date']
-                if not is_aware(user_date):  # Check if it's already timezone-aware
-                    # Ensure timezone awareness
-                    user_date = make_aware(user_date)
-                new_date = user_date + timedelta(days=7)
-                print("New date:", new_date)
-            else:
-                print("Date not found or invalid")
 
             # Initialize a variable to store the total sum
             total_sum = 0
@@ -434,7 +428,7 @@ def gameify(request):
 
             # After the loop, return the total sum or a message if it's not started
             if total_sum > 0:
-                return JsonResponse({'numverses': total_sum}, status=200)
+                return JsonResponse({'numverses': total_sum, 'lastdate': stuff.date, 'lastroad': stuff.road, 'islastroadcustom': stuff.isCustom}, status=200)
             else:
                 return JsonResponse({'numverses': 'Not started'}, status=200)
 
