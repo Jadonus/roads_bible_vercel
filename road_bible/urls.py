@@ -93,7 +93,8 @@ urlpatterns = [
     path('api/newfav/', views.newfavorites, name="newfav"),
     path('api/getfav/', views.getfavorites, name="getfav"),
     path('api/pdf/', views.pdf, name='pdf'),
-    path('api/getlast/', views.get_last_road, name="getlast"),
+    path('api/newfriend/', views.newfriend, name='freindnew'),
+    path('api/friends/', views.getfrienddata, name="getfr"),
 
 ]
 if settings.DEBUG:

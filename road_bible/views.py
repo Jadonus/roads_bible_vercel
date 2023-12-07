@@ -41,6 +41,8 @@ from reportlab.lib import colors
 from reportlab.platypus import Table, TableStyle
 from xhtml2pdf import pisa
 from road_bible.models import Favorites
+from road_bible.models import Friends
+from django.contrib.auth.models import User
 
 
 @require_GET
@@ -437,6 +439,86 @@ def gameify(request):
 
     else:
         return JsonResponse({'error': 'This is a POST only endpoint, sorry.'}, status=405)
+
+
+@require_POST
+@csrf_exempt
+def newfriend(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        username = data.get('name')
+        friend_to_add = data.get('friendtoadd')
+        imp = data.get('username')
+        try:
+            # Checking if the user exists
+            user_instance = User.objects.get(username=imp)
+
+            # Checking if the friend to add exists
+            friend_instances = User.objects.filter(username=friend_to_add)
+            if friend_instances.exists():
+                # Assuming you have a Friends model
+                # Assuming the user can have multiple friends and saving in an ArrayField
+                user_friends, _ = Friends.objects.get_or_create(
+                    username=username, userid=imp, defaults={'friends': []})
+                friends_list = user_friends.friends
+                if friend_to_add not in friends_list:
+                    friends_list.append(friend_to_add)
+                    user_friends.friends = friends_list
+                    user_friends.save()
+                    return JsonResponse({'message': 'Friend added successfully!'})
+                else:
+                    return JsonResponse({'message': 'Friend already added!'})
+            else:
+                return JsonResponse({'message': 'Friend does not exist!'})
+
+        except User.DoesNotExist:
+            return JsonResponse({'message': 'User not found!'})
+
+    return JsonResponse({'message': 'Method not allowed'}, status=405)
+
+
+@csrf_exempt
+@require_POST
+def getfrienddata(request):
+    d = json.loads(request.body)
+    user = d.get('name')
+    importantuser = d.get('username')
+    fdb = Friends.objects.filter(username=user)
+    friends = []
+    friendspracticedates = []
+    friendspracticetitles = []
+    obj = {
+
+    }
+    final = []
+    for rawname in fdb:
+        for name in rawname.friends:
+
+            print(name)
+            realname = Friends.objects.get(username=name).userid
+            print(realname)
+            basestuff = RoadProgress.objects.filter(user_name=realname)
+            stuff = basestuff.order_by('-date').first()
+            print(stuff.road)
+            print(stuff.date)
+            friends.append(name)
+            friendspracticedates.append(stuff.date)
+            try:
+                friendsroads = CustomRoads.objects.filter(creator=realname)
+                for r in friendsroads:
+
+                    print(r.title)
+                    obj = {
+                        "title": r.title,
+                        "maker": name
+                    }
+                    final.append(obj)
+
+                friendspracticetitles.append(stuff.road)
+
+            except CustomRoads.DoesNotExist:
+                print('this user has no roads')
+    return JsonResponse({'friendsnames': friends, "friendspracticedates": friendspracticedates, "friendspracticetitles": friendspracticetitles, "friendsroads": final}, status=200)
 
 
 @csrf_exempt

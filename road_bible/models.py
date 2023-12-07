@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from django.utils import timezone
+from django.contrib.postgres.fields import ArrayField
 
 
 class RoadProgress(models.Model):
@@ -13,6 +14,12 @@ class RoadProgress(models.Model):
 
     def __str__(self):
         return f'{self.user_name} on {self.road} at index {self.index}'
+
+
+class Friends(models.Model):
+    friends = ArrayField(models.CharField(max_length=255))
+    username = models.CharField(max_length=255)
+    userid = models.CharField(max_length=255, default="NONE")
 
 
 class Settings(models.Model):
