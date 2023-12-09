@@ -449,27 +449,29 @@ def newfriend(request):
         username = data.get('name')
         friend_to_add = data.get('friendtoadd')
         imp = data.get('username')
+
         try:
             # Checking if the user exists
             user_instance = User.objects.get(username=imp)
 
-            # Checking if the friend to add exists
-            friend_instances = User.objects.filter(username=friend_to_add)
-            if friend_instances.exists():
-                # Assuming you have a Friends model
-                # Assuming the user can have multiple friends and saving in an ArrayField
+            if not friend_to_add or not Friends.objects.filter(username=friend_to_add).exists():
+                # If friend's name is absent or doesn't exist, save with an empty friend array
                 user_friends, _ = Friends.objects.get_or_create(
                     username=username, userid=imp, defaults={'friends': []})
-                friends_list = user_friends.friends
-                if friend_to_add not in friends_list:
-                    friends_list.append(friend_to_add)
-                    user_friends.friends = friends_list
-                    user_friends.save()
-                    return JsonResponse({'message': 'Friend added successfully!'})
-                else:
-                    return JsonResponse({'message': 'Friend already added!'})
+                return JsonResponse({'message': 'Data saved with an empty friend array!'})
+
+            # Friend to add exists, proceed to add
+            user_friends, _ = Friends.objects.get_or_create(
+                username=username, userid=imp, defaults={'friends': []})
+            friends_list = user_friends.friends
+
+            if friend_to_add not in friends_list:
+                friends_list.append(friend_to_add)
+                user_friends.friends = friends_list
+                user_friends.save()
+                return JsonResponse({'message': f'{friend_to_add} added to friends!'})
             else:
-                return JsonResponse({'message': 'Friend does not exist!'})
+                return JsonResponse({'message': f'{friend_to_add} is already a friend!'})
 
         except User.DoesNotExist:
             return JsonResponse({'message': 'User not found!'})
