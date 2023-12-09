@@ -455,6 +455,7 @@ def newfriend(request):
             user_instance = User.objects.get(username=imp)
 
             if not friend_to_add or not Friends.objects.filter(username=friend_to_add).exists():
+
                 # If friend's name is absent or doesn't exist, save with an empty friend array
                 user_friends, _ = Friends.objects.get_or_create(
                     username=username, userid=imp, defaults={'friends': []})
@@ -483,30 +484,29 @@ def newfriend(request):
 @require_POST
 def getfrienddata(request):
     d = json.loads(request.body)
-    user = d.get('name')
     importantuser = d.get('username')
-    fdb = Friends.objects.filter(username=user)
+    fdb = Friends.objects.filter(userid=importantuser)
     friends = []
     friendspracticedates = []
     friendspracticetitles = []
     obj = {
 
     }
+    namee = fdb.first().username
     final = []
     for rawname in fdb:
         for name in rawname.friends:
 
-            print(name)
-            realname = Friends.objects.get(username=name).userid
-            print(realname)
-            basestuff = RoadProgress.objects.filter(user_name=realname)
+            basestuff = RoadProgress.objects.filter(user_name=importantuser)
             stuff = basestuff.order_by('-date').first()
             print(stuff.road)
             print(stuff.date)
             friends.append(name)
+
             friendspracticedates.append(stuff.date)
             try:
-                friendsroads = CustomRoads.objects.filter(creator=realname)
+                friendsroads = CustomRoads.objects.filter(
+                    creator=importantuser)
                 for r in friendsroads:
 
                     print(r.title)
@@ -520,7 +520,7 @@ def getfrienddata(request):
 
             except CustomRoads.DoesNotExist:
                 print('this user has no roads')
-    return JsonResponse({'friendsnames': friends, "friendspracticedates": friendspracticedates, "friendspracticetitles": friendspracticetitles, "friendsroads": final}, status=200)
+    return JsonResponse({'friendsnames': friends, "friendspracticedates": friendspracticedates, "friendspracticetitles": friendspracticetitles, "friendsroads": final, "name": namee}, status=200)
 
 
 @csrf_exempt
