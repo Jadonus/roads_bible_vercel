@@ -105,8 +105,8 @@ DATABASES = {
         'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': str(os.getenv('RAILWAY_PASS')),
-        'HOST': 'containers-us-west-101.railway.app',
-        'PORT': 7763,
+        'HOST': 'viaduct.proxy.rlwy.net',
+        'PORT': 46540,
     }
 }
 
@@ -120,7 +120,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ]
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True   
+ACCOUNT_EMAIL_REQUIRED = True
 
 
 # Internationalization
