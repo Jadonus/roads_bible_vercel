@@ -285,6 +285,7 @@ def verses_view(request, group_name):
         })  # Append the API data to the list
     try:
         print("AAA")
+        print(f"GR: {group_name}")
 
         favorites = Favorites.objects.filter(
             user_name=user, title="/roads/" + group_name).values()
