@@ -284,11 +284,13 @@ def verses_view(request, group_name):
             'reference': reference,
         })  # Append the API data to the list
     try:
+        s = group_name.replace("%20", " ")
+
         print("AAA")
-        print(f"GR: {group_name}")
+        print(f"GR: {s}")
 
         favorites = Favorites.objects.filter(
-            user_name=user, title="/roads/" + group_name).values()
+            user_name=user, title="/roads/" + s).values()
         faavs = []
         for favs in favorites:
             faavs.append(favs["index"])
