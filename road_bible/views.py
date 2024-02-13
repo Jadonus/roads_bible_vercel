@@ -300,9 +300,18 @@ def verses_view(request, group_name):
     except Favorites.DoesNotExist:
         print("none")
         faavs = []
+    s = group_name.replace("%20", " ")
+    preogressIndex = 0
+    progress = RoadProgress.objects.filter(user_name=user, road=s)
+    if progress.exists():
+        preogressIndex = progress.get().index
+
+    else:
+        print("Progress not found or index not available")
 
     # Prepare the JSON response
     response_data = {
+        'progress': preogressIndex,
         'favorites': faavs,
         'group_name': group_name,
         'verses': retrieved_verses,
