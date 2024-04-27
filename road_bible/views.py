@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 import random
 import json
+from django.views.generic import TemplateView
 import requests
 from django.template.defaultfilters import slugify
 import os
@@ -687,3 +688,9 @@ def getfavorites(request):
     except Favorites.DoesNotExist:
         return HttpResponse("No favorites for this user", status=404)
     return JsonResponse(s, safe=False, status=200)
+
+def share_road(request, road, creator):
+    print(road)
+    print(creator)
+    context = {'creator': creator, 'road': road}
+    return render(request, 'share_road.html', context)

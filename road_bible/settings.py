@@ -35,7 +35,6 @@ EMAIL_HOST_PASSWORD = str(os.getenv('ipassword'))
 DEFAULT_FROM_EMAIL = 'support@roadsbible.com'
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

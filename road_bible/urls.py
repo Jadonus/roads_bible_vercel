@@ -81,6 +81,7 @@ urlpatterns = [
     path("demo", TemplateView.as_view(template_name="demo.html"), name="demo"),
     path('roads/eli/<str:group_name>/',
          views.verses_eli_view, name='verses_eli_view'),
+    path('share/<str:road>/<str:creator>/', views.share_road),
     path('userdash/', views.user_dash, name='userdash'),
     path('api/delete/', views.delete, name='delete'),
     path('api/approve/', views.approve, name="approve"),
